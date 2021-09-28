@@ -174,8 +174,8 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   Lottie.asset(isLeft
-                      ? 'packages/fl_video_player/assets/lottie/forward_left.json'
-                      : 'packages/fl_video_player/assets/lottie/forward_right.json'),
+                      ? 'packages/fl_video_player/assets/forward_left.json'
+                      : 'packages/fl_video_player/assets/forward_right.json'),
                   if (isLeft
                       ? _flctr.isLeftDbTapIconVisible
                       : _flctr.isRightDbTapIconVisible)
