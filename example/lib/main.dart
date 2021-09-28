@@ -49,7 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const FlVideoPlayer(
-              videoUrl: 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+              videoUrl:
+                  'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
             ),
             const Text(
               'You have pushed the button this many times 1gfg1   :',
