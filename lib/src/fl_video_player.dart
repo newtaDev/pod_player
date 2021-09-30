@@ -33,34 +33,17 @@ class _FlVideoPlayerState extends State<FlVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _flCtr = Get.put(FlVideoController());
-    _videoInit();
-  }
-
-  Future<void> _videoInit() async {
-    _flCtr.checkPlayerType(
-      videoUrl: widget.videoUrl,
-      vimeoVideoId: widget.vimeoVideoId,
-    );
-    try {
-      if (_flCtr.videoPlayerType == FlVideoPlayerType.vimeo) {
-        await _flCtr.vimeoPlayerinit(widget.vimeoVideoId!);
-      } else {
-        _flCtr.initUrl = widget.videoUrl!;
-      }
-      _flCtr.videoCtr = VideoPlayerController.network(_flCtr.initUrl);
-      await _flCtr.videoCtr?.initialize();
-      _flCtr.videoCtr?.addListener(_flCtr.videoListner);
-      setState(() {});
-    } catch (e) {
-      log('cathed $e');
-      rethrow;
-    }
+    _flCtr = Get.put(FlVideoController())
+      ..videoInit(widget.videoUrl, widget.vimeoVideoId).then((value) {
+        setState(() {});
+      });
+    _flCtr.addListenerId('flVideoState', _flCtr.flStateListner);
   }
 
   @override
   void dispose() {
     _flCtr.videoCtr?.removeListener(_flCtr.videoListner);
+    _flCtr.removeListenerId('flVideoState', _flCtr.flStateListner);
     _flCtr.videoCtr?.dispose();
     super.dispose();
   }
@@ -98,7 +81,6 @@ class _FlPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _flCtr = Get.find<FlVideoController>();
-
     final overlayColor = Colors.black38;
     return Stack(
       fit: StackFit.expand,
@@ -142,6 +124,17 @@ class _FlPlayer extends StatelessWidget {
               ],
             ),
           ),
+        ),
+        GetBuilder<FlVideoController>(
+          id: 'flVideoState',
+          builder: (_flCtr) => _flCtr.flVideoState == FlVideoState.loading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: Colors.transparent,
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ))
+              : const SizedBox(),
         )
       ],
     );
@@ -158,15 +151,16 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FlVideoController>(
-      id: isLeft ? 'left-tap' : 'right-tap',
+      id: 'double-tap',
       builder: (_flctr) {
         return SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
-            opacity:
-                _flctr.isLeftDbTapIconVisible || _flctr.isRightDbTapIconVisible
+            opacity: _flctr.isLeftDbTapIconVisible && isLeft
+                ? 1
+                : _flctr.isRightDbTapIconVisible && !isLeft
                     ? 1
                     : 0,
             child: Center(
@@ -185,7 +179,6 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
                         '${_flctr.isLeftDbTapIconVisible ? _flctr.leftDubleTapduration : _flctr.rightDubleTapduration} seconds',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -224,6 +217,7 @@ class _VideoOverlayDetectorState extends State<VideoOverlayDetector> {
     _timer?.cancel();
     _flCtr.leftDoubleTapTimer?.cancel();
     _flCtr.rightDoubleTapTimer?.cancel();
+
     super.dispose();
   }
 
@@ -287,19 +281,33 @@ class _PlayPauseState extends State<_PlayPause>
         child: Material(
           type: MaterialType.transparency,
           shape: const CircleBorder(),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(100),
-            onTap: _flCtr.playPauseVideo,
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: AnimatedIcon(
-                icon: AnimatedIcons.play_pause,
-                progress: _flCtr.playPauseCtr,
-                color: Colors.white,
-                size: 42,
-              ),
-            ),
-          ),
+          child: GetBuilder<FlVideoController>(
+              id: 'flVideoState', builder: (_flCtr) => changeState()),
+        ),
+      ),
+    );
+  }
+
+  Widget changeState() {
+    switch (_flCtr.flVideoState) {
+      case FlVideoState.loading:
+        return const SizedBox();
+      default:
+        return _playPause();
+    }
+  }
+
+  InkWell _playPause() {
+    return InkWell(
+      borderRadius: BorderRadius.circular(100),
+      onTap: _flCtr.playPauseVideo,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: AnimatedIcon(
+          icon: AnimatedIcons.play_pause,
+          progress: _flCtr.playPauseCtr,
+          color: Colors.white,
+          size: 42,
         ),
       ),
     );
