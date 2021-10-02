@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -11,16 +12,22 @@ import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
 
+import 'package:fl_video_player/src/widgets/fl_video_progress_bar.dart';
+
 import 'fl_enums.dart';
 import 'fl_video_controller.dart';
 
 class FlVideoPlayer extends StatefulWidget {
   final String? videoUrl;
   final String? vimeoVideoId;
+  final bool autoPlay;
+  final bool isLooping;
   const FlVideoPlayer({
     Key? key,
     this.videoUrl,
     this.vimeoVideoId,
+    this.autoPlay = true,
+    this.isLooping = false,
   }) : super(key: key);
 
   @override
@@ -34,8 +41,15 @@ class _FlVideoPlayerState extends State<FlVideoPlayer> {
   void initState() {
     super.initState();
     _flCtr = Get.put(FlVideoController())
-      ..videoInit(widget.videoUrl, widget.vimeoVideoId).then((value) {
+      ..videoInit(
+              videoUrl: widget.videoUrl,
+              vimeoVideoId: widget.vimeoVideoId,
+              isLooping: widget.isLooping)
+          .then((value) {
         setState(() {});
+        _flCtr
+          ..autoPlay = widget.autoPlay
+          ..checkAutoPlayVideo();
       });
     _flCtr.addListenerId('flVideoState', _flCtr.flStateListner);
   }
@@ -90,41 +104,56 @@ class _FlPlayer extends StatelessWidget {
           id: 'overlay',
           builder: (_flCtr) => AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
-            opacity: _flCtr.showOverlay ? 1 : 0,
-            child: Row(
+            opacity: _flCtr.overlayVisible ? 1 : 0,
+            child: Stack(
               children: [
-                Expanded(
-                  child: VideoOverlayDetector(
-                    onDoubleTap: _flCtr.onLeftDoubleTap,
-                    child: ColoredBox(
-                      color: overlayColor,
-                      child: const _LeftRightDoubleTapBox(
-                        isLeft: true,
+                Row(
+                  children: [
+                    Expanded(
+                      child: VideoOverlayDetector(
+                        onDoubleTap: _flCtr.onLeftDoubleTap,
+                        child: ColoredBox(
+                          color: overlayColor,
+                          child: const _LeftRightDoubleTapBox(
+                            isLeft: true,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                VideoOverlayDetector(
-                  child: ColoredBox(
-                    color: overlayColor,
-                    child: const _PlayPause(),
-                  ),
-                ),
-                Expanded(
-                  child: VideoOverlayDetector(
-                    onDoubleTap: _flCtr.onRightDoubleTap,
-                    child: ColoredBox(
-                      color: overlayColor,
-                      child: const _LeftRightDoubleTapBox(
-                        isLeft: false,
+                    VideoOverlayDetector(
+                      onTap: _flCtr.togglePlayPauseVideo,
+                      child: ColoredBox(
+                        color: overlayColor,
+                        child: const _PlayPause(),
                       ),
                     ),
-                  ),
+                    Expanded(
+                      child: VideoOverlayDetector(
+                        onDoubleTap: _flCtr.onRightDoubleTap,
+                        child: ColoredBox(
+                          color: overlayColor,
+                          child: const _LeftRightDoubleTapBox(
+                            isLeft: false,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                // if (kIsWeb)
+                //   Align(
+                //     alignment: Alignment.bottomCenter,
+                //     child: FlVideoProgressBar(
+                //       _flCtr.videoCtr!,
+                //       allowScrubbing: true,
+                //       padding: EdgeInsets.all(20),
+                //     ),
+                //   ),
               ],
             ),
           ),
         ),
+
         GetBuilder<FlVideoController>(
           id: 'flVideoState',
           builder: (_flCtr) => _flCtr.flVideoState == FlVideoState.loading
@@ -135,7 +164,22 @@ class _FlPlayer extends StatelessWidget {
                   strokeWidth: 2,
                 ))
               : const SizedBox(),
-        )
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: FlVideoProgressBar(
+            _flCtr.videoCtr!,
+            allowGestures: true,
+            height: 5,
+          ),
+        ),
+        // Center(
+        //     child: Slider(
+        //   value: 0.3,
+        //   onChanged: (value) {
+        //     print(value);
+        //   },
+        // )),
       ],
     );
   }
@@ -176,7 +220,7 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
                     Transform.translate(
                       offset: const Offset(0, 40),
                       child: Text(
-                        '${_flctr.isLeftDbTapIconVisible ? _flctr.leftDubleTapduration : _flctr.rightDubleTapduration} seconds',
+                        '${_flctr.isLeftDbTapIconVisible ? _flctr.leftDoubleTapduration : _flctr.rightDubleTapduration} seconds',
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -196,11 +240,13 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
 class VideoOverlayDetector extends StatefulWidget {
   final Widget? child;
   final void Function()? onDoubleTap;
+  final void Function()? onTap;
 
   const VideoOverlayDetector({
     Key? key,
     this.child,
     this.onDoubleTap,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -208,13 +254,11 @@ class VideoOverlayDetector extends StatefulWidget {
 }
 
 class _VideoOverlayDetectorState extends State<VideoOverlayDetector> {
-  Timer? _timer;
-
   final _flCtr = Get.find<FlVideoController>();
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _flCtr.hoverOverlayTimer?.cancel();
     _flCtr.leftDoubleTapTimer?.cancel();
     _flCtr.rightDoubleTapTimer?.cancel();
 
@@ -224,23 +268,10 @@ class _VideoOverlayDetectorState extends State<VideoOverlayDetector> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-        onHover: (event) {
-          if (kIsWeb) {
-            _flCtr.isShowOverlay(true);
-            _timer?.cancel();
-            _timer = Timer(
-              const Duration(seconds: 2),
-              () => _flCtr.isShowOverlay(false),
-            );
-          }
-        },
-        onExit: (event) {
-          if (kIsWeb) {
-            _flCtr.isShowOverlay(false);
-          }
-        },
+        onHover: (event) => _flCtr.onOverlayHover(),
+        onExit: (event) => _flCtr.onOverlayHoverExit(),
         child: GestureDetector(
-            onTap: _flCtr.toggleVideoOverlay,
+            onTap: widget.onTap ?? _flCtr.toggleVideoOverlay,
             onDoubleTap: widget.onDoubleTap,
             child: widget.child));
   }
@@ -300,7 +331,7 @@ class _PlayPauseState extends State<_PlayPause>
   InkWell _playPause() {
     return InkWell(
       borderRadius: BorderRadius.circular(100),
-      onTap: _flCtr.playPauseVideo,
+      onTap: _flCtr.togglePlayPauseVideo,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: AnimatedIcon(

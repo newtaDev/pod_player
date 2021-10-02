@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:fl_video_player/src/fl_enums.dart';
 import 'package:fl_video_player/src/vimeo_models.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
@@ -20,7 +21,9 @@ class FlVideoController extends GetxController {
 
   ///
   FlVideoState flVideoState = FlVideoState.loading;
-  bool showOverlay = true;
+  bool overlayVisible = true;
+  bool autoPlay = true;
+  bool isLooping = false;
 
   ///
   late String playingVideoUrl;
@@ -31,21 +34,24 @@ class FlVideoController extends GetxController {
   //double tap
   Timer? leftDoubleTapTimer;
   Timer? rightDoubleTapTimer;
-  int leftDubleTapduration = 0;
+  int leftDoubleTapduration = 0;
   int rightDubleTapduration = 0;
   bool isLeftDbTapIconVisible = false;
   bool isRightDbTapIconVisible = false;
 
   ///
   bool _isvideoPlaying = false;
+  Timer? hoverOverlayTimer;
+  Timer? showOverlayTimer;
 
-  ///**init
+  ///**initialize
 
-  Future<void> videoInit(String? videoUrl, String? vimeoVideoId) async {
-    checkPlayerType(
-      videoUrl: videoUrl,
-      vimeoVideoId: vimeoVideoId,
-    );
+  Future<void> videoInit({
+    String? videoUrl,
+    String? vimeoVideoId,
+    bool isLooping = false,
+  }) async {
+    checkPlayerType(videoUrl: videoUrl, vimeoVideoId: vimeoVideoId);
     try {
       if (videoPlayerType == FlVideoPlayerType.vimeo) {
         await vimeoPlayerInit(vimeoVideoId!);
@@ -54,6 +60,8 @@ class FlVideoController extends GetxController {
       }
       videoCtr = VideoPlayerController.network(playingVideoUrl);
       await videoCtr?.initialize();
+      this.isLooping = isLooping;
+      await videoCtr?.setLooping(isLooping);
       videoCtr?.addListener(videoListner);
     } catch (e) {
       log('cathed $e');
@@ -61,14 +69,27 @@ class FlVideoController extends GetxController {
     }
   }
 
-  void videoListner() {
-    //
-    _listneVideoState();
+  void checkAutoPlayVideo() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      if (autoPlay) {
+        if (kIsWeb) await videoCtr?.setVolume(0);
+        flVideoStateChanger(FlVideoState.playing);
+      } else {
+        flVideoStateChanger(FlVideoState.paused);
+      }
+    });
+  }
+
+  Future<void> videoListner() async {
+    if (!videoCtr!.value.isInitialized) {
+      await videoCtr!.initialize();
+    }
+    if (videoCtr!.value.isInitialized) {
+      _listneVideoState();
+    }
   }
 
   void _listneVideoState() {
-    // playVideo(videoCtr!.value.isPlaying);
-
     flVideoStateChanger(
       videoCtr!.value.isBuffering || !videoCtr!.value.isInitialized
           ? FlVideoState.loading
@@ -78,6 +99,7 @@ class FlVideoController extends GetxController {
     );
   }
 
+  ///this func will listne to update id `flVideoState`
   void flStateListner() {
     log(flVideoState.toString());
     switch (flVideoState) {
@@ -128,7 +150,7 @@ class FlVideoController extends GetxController {
   }
 
   ///toogle play pause
-  void playPauseVideo() {
+  void togglePlayPauseVideo() {
     _isvideoPlaying = !_isvideoPlaying;
     flVideoStateChanger(
         _isvideoPlaying ? FlVideoState.playing : FlVideoState.paused);
@@ -139,8 +161,8 @@ class FlVideoController extends GetxController {
     isShowOverlay(true);
     leftDoubleTapTimer?.cancel();
     isLeftDbTapIconVisible = true;
-    updateLeftTapDuration(leftDubleTapduration += 10);
-    seekBackward(Duration(seconds: rightDubleTapduration));
+    updateLeftTapDuration(leftDoubleTapduration += 10);
+    seekBackward(Duration(seconds: leftDoubleTapduration));
     leftDoubleTapTimer = Timer(const Duration(milliseconds: 1500), () {
       isLeftDbTapIconVisible = false;
       updateLeftTapDuration(0);
@@ -165,7 +187,7 @@ class FlVideoController extends GetxController {
 
   ///update doubletap durations
   void updateLeftTapDuration(int val) {
-    leftDubleTapduration = val;
+    leftDoubleTapduration = val;
     update(['double-tap']);
   }
 
@@ -205,25 +227,46 @@ class FlVideoController extends GetxController {
 
   ///toogle video player controls
   void isShowOverlay(bool val, {Duration? delay}) {
-    Future.delayed(delay ?? Duration.zero).then((_) {
-      showOverlay = val;
+    showOverlayTimer?.cancel();
+    showOverlayTimer = Timer(delay ?? Duration.zero, () {
+      overlayVisible = val;
       update(['overlay']);
+      showOverlayTimer?.cancel();
     });
+  }
+
+  void onOverlayHover() {
+    if (kIsWeb) {
+      hoverOverlayTimer?.cancel();
+      isShowOverlay(true);
+      hoverOverlayTimer = Timer(
+        const Duration(seconds: 4),
+        () => isShowOverlay(false),
+      );
+    }
+  }
+
+  void onOverlayHoverExit() {
+    if (kIsWeb) {
+      isShowOverlay(false);
+    }
   }
 
   ///overlay above video contrller
   Future<void> toggleVideoOverlay() async {
-    if (!showOverlay) {
-      showOverlay = true;
+    if (!overlayVisible) {
+      overlayVisible = true;
     } else {
-      showOverlay = false;
+      overlayVisible = false;
     }
     update(['overlay']);
 
-    if (showOverlay) {
-      await Future.delayed(const Duration(seconds: 2)).then((_) {
-        if (showOverlay) showOverlay = false;
+    if (overlayVisible) {
+      showOverlayTimer?.cancel();
+      showOverlayTimer = Timer(const Duration(seconds: 4), () {
+        if (overlayVisible) overlayVisible = false;
         update(['overlay']);
+        showOverlayTimer?.cancel();
       });
       return;
     }

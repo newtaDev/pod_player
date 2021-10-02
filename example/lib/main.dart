@@ -51,7 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
             const FlVideoPlayer(
               videoUrl:
                   'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+              // videoUrl: 'http://techslides.com/demos/sample-videos/small.mp4',
               // vimeoVideoId: '395212534',
+              isLooping: true,
             ),
             const Text(
               'You have pushed the button this many times:',
