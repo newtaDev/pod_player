@@ -74,17 +74,6 @@ class FlVideoController extends GetxController {
     }
   }
 
-  void checkAutoPlayVideo() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      if (autoPlay) {
-        if (kIsWeb) await videoCtr?.setVolume(0);
-        flVideoStateChanger(FlVideoState.playing);
-      } else {
-        flVideoStateChanger(FlVideoState.paused);
-      }
-    });
-  }
-
   Future<void> videoListner() async {
     if (!videoCtr!.value.isInitialized) {
       await videoCtr!.initialize();
@@ -231,6 +220,7 @@ class FlVideoController extends GetxController {
 
   ///*General
   ///
+  ///clacculates video `position` or `duration`
   String calculateVideoDuration(Duration _duration) {
     final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
     final _totalMinute = _duration.inMinutes.toString();
@@ -248,6 +238,18 @@ class FlVideoController extends GetxController {
       videoPosition = videoCtr?.value.position ?? Duration.zero;
       update(['video-progress']);
     }
+  }
+
+  ///checkes wether video should be `autoplayed` initially
+  void checkAutoPlayVideo() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      if (autoPlay) {
+        if (kIsWeb) await videoCtr?.setVolume(0);
+        flVideoStateChanger(FlVideoState.playing);
+      } else {
+        flVideoStateChanger(FlVideoState.paused);
+      }
+    });
   }
 
   ///toogle video player controls
