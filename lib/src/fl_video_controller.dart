@@ -26,6 +26,10 @@ class FlVideoController extends GetxController {
   bool isLooping = false;
 
   ///
+  Duration videoDuration = Duration.zero;
+  Duration videoPosition = Duration.zero;
+
+  ///
   late String playingVideoUrl;
 
   ///vimeo all quality urls
@@ -60,6 +64,7 @@ class FlVideoController extends GetxController {
       }
       videoCtr = VideoPlayerController.network(playingVideoUrl);
       await videoCtr?.initialize();
+      videoDuration = videoCtr?.value.duration ?? Duration.zero;
       this.isLooping = isLooping;
       await videoCtr?.setLooping(isLooping);
       videoCtr?.addListener(videoListner);
@@ -86,7 +91,27 @@ class FlVideoController extends GetxController {
     }
     if (videoCtr!.value.isInitialized) {
       _listneVideoState();
+      updateVideoPosition();
     }
+  }
+
+  void updateVideoPosition() {
+    if (videoPosition.inSeconds !=
+        (videoCtr?.value.position ?? Duration.zero).inSeconds) {
+      videoPosition = videoCtr?.value.position ?? Duration.zero;
+      update(['video-progress']);
+    }
+  }
+
+  String calculateVideoDuration(Duration _duration) {
+    final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
+    final _totalMinute = _duration.inMinutes.toString();
+    final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes))
+        .inSeconds
+        .toString()
+        .padLeft(2, '0');
+    final String videoLength = '$_totalHour$_totalMinute:$_totalSeconds';
+    return videoLength;
   }
 
   void _listneVideoState() {

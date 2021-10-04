@@ -49,11 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const FlVideoPlayer(
-              videoUrl:
-                  'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+              // videoUrl:
+              //     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
               // videoUrl: 'http://techslides.com/demos/sample-videos/small.mp4',
-              // vimeoVideoId: '395212534',
-              isLooping: true,
+              vimeoVideoId: '395212534',
+              autoPlay: false,
             ),
             const Text(
               'You have pushed the button this many times:',

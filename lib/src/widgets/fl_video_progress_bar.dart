@@ -15,7 +15,7 @@ class FlVideoProgressBar extends StatefulWidget {
     Key? key,
     this.colors,
     required this.allowGestures,
-    this.padding = const EdgeInsets.only(top: 5),
+    this.padding = EdgeInsets.zero,
     this.height = 20,
   }) : super(key: key);
 

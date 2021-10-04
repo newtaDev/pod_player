@@ -16,6 +16,7 @@ import 'package:fl_video_player/src/widgets/fl_video_progress_bar.dart';
 
 import 'fl_enums.dart';
 import 'fl_video_controller.dart';
+import 'widgets/material_icon_button.dart';
 
 class FlVideoPlayer extends StatefulWidget {
   final String? videoUrl;
@@ -95,7 +96,6 @@ class _FlPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _flCtr = Get.find<FlVideoController>();
-    final overlayColor = Colors.black38;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -107,39 +107,8 @@ class _FlPlayer extends StatelessWidget {
             opacity: _flCtr.overlayVisible ? 1 : 0,
             child: Stack(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: VideoOverlayDetector(
-                        onDoubleTap: _flCtr.onLeftDoubleTap,
-                        child: ColoredBox(
-                          color: overlayColor,
-                          child: const _LeftRightDoubleTapBox(
-                            isLeft: true,
-                          ),
-                        ),
-                      ),
-                    ),
-                    VideoOverlayDetector(
-                      onTap: _flCtr.togglePlayPauseVideo,
-                      child: ColoredBox(
-                        color: overlayColor,
-                        child: const _PlayPause(),
-                      ),
-                    ),
-                    Expanded(
-                      child: VideoOverlayDetector(
-                        onDoubleTap: _flCtr.onRightDoubleTap,
-                        child: ColoredBox(
-                          color: overlayColor,
-                          child: const _LeftRightDoubleTapBox(
-                            isLeft: false,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                MobileOverlay(),
+
                 // if (kIsWeb)
                 //   Align(
                 //     alignment: Alignment.bottomCenter,
@@ -153,7 +122,6 @@ class _FlPlayer extends StatelessWidget {
             ),
           ),
         ),
-
         GetBuilder<FlVideoController>(
           id: 'flVideoState',
           builder: (_flCtr) => _flCtr.flVideoState == FlVideoState.loading
@@ -173,13 +141,109 @@ class _FlPlayer extends StatelessWidget {
             height: 5,
           ),
         ),
-        // Center(
-        //     child: Slider(
-        //   value: 0.3,
-        //   onChanged: (value) {
-        //     print(value);
-        //   },
-        // )),
+      ],
+    );
+  }
+}
+
+class MobileOverlay extends StatelessWidget {
+  const MobileOverlay({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final overlayColor = Colors.black38;
+    const itemColor = Colors.white;
+
+    final _flCtr = Get.find<FlVideoController>();
+    const durationTextStyle = TextStyle(color: Colors.white70);
+
+    return Stack(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: VideoOverlayDetector(
+                onDoubleTap: _flCtr.onLeftDoubleTap,
+                child: ColoredBox(
+                  color: overlayColor,
+                  child: const _LeftRightDoubleTapBox(
+                    isLeft: true,
+                  ),
+                ),
+              ),
+            ),
+            VideoOverlayDetector(
+              child: ColoredBox(
+                color: overlayColor,
+                child: const _PlayPause(),
+              ),
+            ),
+            Expanded(
+              child: VideoOverlayDetector(
+                onDoubleTap: _flCtr.onRightDoubleTap,
+                child: ColoredBox(
+                  color: overlayColor,
+                  child: const _LeftRightDoubleTapBox(
+                    isLeft: false,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MaterialIconButton(
+                    color: itemColor,
+                    onPressed: () {
+                      print('ahii');
+                    },
+                    child: const Icon(
+                      Icons.more_vert_rounded,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  GetBuilder<FlVideoController>(
+                      id: 'video-progress',
+                      builder: (_flCtr) {
+                        return Text(
+                            _flCtr.calculateVideoDuration(_flCtr.videoPosition),
+                            style: const TextStyle(color: itemColor));
+                      }),
+                  const Text(
+                    ' / ',
+                    style: durationTextStyle,
+                  ),
+                  Text(
+                    _flCtr.calculateVideoDuration(_flCtr.videoDuration),
+                    style: durationTextStyle,
+                  ),
+                  const Spacer(),
+                  MaterialIconButton(
+                    color: itemColor,
+                    onPressed: () {
+                      print('ahii');
+                    },
+                    child: const Icon(
+                      Icons.fullscreen,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
