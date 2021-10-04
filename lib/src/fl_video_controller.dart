@@ -95,25 +95,6 @@ class FlVideoController extends GetxController {
     }
   }
 
-  void updateVideoPosition() {
-    if (videoPosition.inSeconds !=
-        (videoCtr?.value.position ?? Duration.zero).inSeconds) {
-      videoPosition = videoCtr?.value.position ?? Duration.zero;
-      update(['video-progress']);
-    }
-  }
-
-  String calculateVideoDuration(Duration _duration) {
-    final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
-    final _totalMinute = _duration.inMinutes.toString();
-    final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes))
-        .inSeconds
-        .toString()
-        .padLeft(2, '0');
-    final String videoLength = '$_totalHour$_totalMinute:$_totalSeconds';
-    return videoLength;
-  }
-
   void _listneVideoState() {
     flVideoStateChanger(
       videoCtr!.value.isBuffering || !videoCtr!.value.isInitialized
@@ -249,6 +230,25 @@ class FlVideoController extends GetxController {
   }
 
   ///*General
+  ///
+  String calculateVideoDuration(Duration _duration) {
+    final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
+    final _totalMinute = _duration.inMinutes.toString();
+    final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes))
+        .inSeconds
+        .toString()
+        .padLeft(2, '0');
+    final String videoLength = '$_totalHour$_totalMinute:$_totalSeconds';
+    return videoLength;
+  }
+
+  void updateVideoPosition() {
+    if (videoPosition.inSeconds !=
+        (videoCtr?.value.position ?? Duration.zero).inSeconds) {
+      videoPosition = videoCtr?.value.position ?? Duration.zero;
+      update(['video-progress']);
+    }
+  }
 
   ///toogle video player controls
   void isShowOverlay(bool val, {Duration? delay}) {
