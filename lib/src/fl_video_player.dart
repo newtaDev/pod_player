@@ -116,7 +116,8 @@ class FlPlayer extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               opacity: _flCtr.overlayVisible ? 1 : 0,
               child: Stack(
-                children: [
+                fit: StackFit.expand,
+                children: const [
                   MobileOverlay(),
 
                   // if (kIsWeb)
@@ -278,7 +279,7 @@ class MobileOverlay extends StatelessWidget {
     Navigator.push(
       context,
       PageRouteBuilder(
-        opaque:true,
+        opaque: true,
         fullscreenDialog: true,
         pageBuilder: (BuildContext context, _, __) => const FullScreenView(),
         reverseTransitionDuration: const Duration(milliseconds: 400),

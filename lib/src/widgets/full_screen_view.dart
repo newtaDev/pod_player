@@ -44,15 +44,17 @@ class _FullScreenViewState extends State<FullScreenView> {
             builder: (_flCtr) => Center(
               child: ColoredBox(
                 color: Colors.black,
-                child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: Center(
-                      child: _flCtr.videoCtr == null
-                          ? circularProgressIndicator
-                          : _flCtr.videoCtr!.value.isInitialized
-                              ? const FlPlayer()
-                              : circularProgressIndicator,
-                    )),
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: _flCtr.videoCtr == null
+                        ? circularProgressIndicator
+                        : _flCtr.videoCtr!.value.isInitialized
+                            ? const FlPlayer()
+                            : circularProgressIndicator,
+                  ),
+                ),
               ),
             ),
           ),
