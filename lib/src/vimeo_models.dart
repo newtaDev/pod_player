@@ -1,8 +1,8 @@
 class VimeoVideoQalityUrls {
-  String? quality;
+  int quality;
   String? urls;
   VimeoVideoQalityUrls({
-    this.quality,
+    required this.quality,
     this.urls,
   });
 

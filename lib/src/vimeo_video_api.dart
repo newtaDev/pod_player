@@ -16,7 +16,9 @@ class VimeoVideoApi {
       return List.generate(
           jsonData.length,
           (index) => VimeoVideoQalityUrls(
-                quality: jsonData[index]['quality'],
+                quality: int.parse(
+                    (jsonData[index]['quality'] as String?)?.split('p').first ??
+                        '0'),
                 urls: jsonData[index]['url'],
               ));
     } catch (error) {

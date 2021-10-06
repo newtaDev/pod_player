@@ -5,6 +5,7 @@ import 'package:fl_video_player/src/fl_enums.dart';
 import 'package:fl_video_player/src/vimeo_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
@@ -17,13 +18,14 @@ class FlVideoController extends GetxController {
   ///
   late FlVideoPlayerType videoPlayerType;
 
-  late AnimationController playPauseCtr;
+   late AnimationController playPauseCtr;
 
   ///
   FlVideoState flVideoState = FlVideoState.loading;
   bool overlayVisible = true;
   bool autoPlay = true;
   bool isLooping = false;
+  bool isFullScreen = false;
 
   ///
   Duration videoDuration = Duration.zero;
@@ -31,9 +33,21 @@ class FlVideoController extends GetxController {
 
   ///
   late String playingVideoUrl;
+  int? vimeoPlayingVideoQuality;
 
   ///vimeo all quality urls
   List<VimeoVideoQalityUrls>? vimeoVideoUrls;
+  List<String> videoPlaybackSpeeds = [
+    '0.25x',
+    '0.5x',
+    '0.75x',
+    'Normal',
+    '1.25x',
+    '1.5x',
+    '1.75x',
+    '2x',
+  ];
+  String currentPaybackSpeed = 'Normal';
 
   //double tap
   Timer? leftDoubleTapTimer;
@@ -50,28 +64,88 @@ class FlVideoController extends GetxController {
 
   ///**initialize
 
+  void setVideoPlayBack(String _speed) {
+    late double pickedSpeed;
+
+    if (_speed == 'Normal') {
+      pickedSpeed = 1.0;
+      currentPaybackSpeed = 'Normal';
+    } else {
+      pickedSpeed = double.parse(_speed.split('x').first);
+      currentPaybackSpeed = _speed;
+    }
+    videoCtr?.setPlaybackSpeed(pickedSpeed);
+  }
+
+  Future<void> setLooping(bool _isLooped) async {
+    isLooping = _isLooped;
+    await videoCtr?.setLooping(isLooping);
+  }
+
+  Future<void> toggleLooping() async {
+    isLooping = !isLooping;
+    await videoCtr?.setLooping(isLooping);
+  }
+
+  void enableFullScreen() {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    isFullScreen = true;
+  }
+
+  Future<void> disableFullScreen()async {
+    await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    isFullScreen = false;
+  }
+
   Future<void> videoInit({
     String? videoUrl,
     String? vimeoVideoId,
     bool isLooping = false,
+    int? vimeoVideoQuality,
   }) async {
     checkPlayerType(videoUrl: videoUrl, vimeoVideoId: vimeoVideoId);
     try {
       if (videoPlayerType == FlVideoPlayerType.vimeo) {
-        await vimeoPlayerInit(vimeoVideoId!);
+        await vimeoPlayerInit(
+          vimeoVideoId!,
+          vimeoVideoQuality,
+        );
       } else {
         playingVideoUrl = videoUrl!;
       }
       videoCtr = VideoPlayerController.network(playingVideoUrl);
       await videoCtr?.initialize();
       videoDuration = videoCtr?.value.duration ?? Duration.zero;
-      this.isLooping = isLooping;
-      await videoCtr?.setLooping(isLooping);
+      await setLooping(isLooping);
       videoCtr?.addListener(videoListner);
+      update();
     } catch (e) {
       log('cathed $e');
       rethrow;
     }
+  }
+
+  Future<void> changeVideoQuality(int? quality) async {
+    playingVideoUrl = vimeoVideoUrls
+            ?.where((element) => element.quality == quality)
+            .first
+            .urls ??
+        playingVideoUrl;
+    log(playingVideoUrl);
+    vimeoPlayingVideoQuality = quality;
+    videoCtr?.removeListener(videoListner);
+    flVideoStateChanger(FlVideoState.paused);
+    flVideoStateChanger(FlVideoState.loading);
+    videoCtr = VideoPlayerController.network(playingVideoUrl);
+    await videoCtr?.initialize();
+    videoCtr?.addListener(videoListner);
+    await videoCtr?.seekTo(videoPosition);
+    setVideoPlayBack(currentPaybackSpeed);
+    flVideoStateChanger(FlVideoState.playing);
+    update();
   }
 
   Future<void> videoListner() async {
@@ -197,7 +271,12 @@ class FlVideoController extends GetxController {
   Future<void> getVimeoVideoUrls({required String videoId}) async {
     try {
       flVideoStateChanger(FlVideoState.loading);
-      vimeoVideoUrls = await VimeoVideoApi.getvideoQualityLink(videoId);
+      final _vimeoVideoUrls = await VimeoVideoApi.getvideoQualityLink(videoId);
+      //sort
+      _vimeoVideoUrls?.sort((a, b) => a.quality.compareTo(b.quality));
+
+      ///
+      vimeoVideoUrls = _vimeoVideoUrls;
     } catch (e) {
       flVideoStateChanger(FlVideoState.error);
 
@@ -206,16 +285,18 @@ class FlVideoController extends GetxController {
   }
 
   ///get vimeo quality `ex: 1080p` url
-  String? getQualityUrl(String quality) {
+  String? getQualityUrl(int quality) {
     return vimeoVideoUrls
         ?.firstWhere((element) => element.quality == quality)
         .urls;
   }
 
   ///config vimeo player
-  Future<void> vimeoPlayerInit(String videoId) async {
+  Future<void> vimeoPlayerInit(String videoId, int? quality) async {
     await getVimeoVideoUrls(videoId: videoId);
-    playingVideoUrl = getQualityUrl(vimeoVideoUrls?.last.quality ?? '720p')!;
+    final q = quality ?? vimeoVideoUrls?[1].quality ?? 720;
+    playingVideoUrl = getQualityUrl(q).toString();
+    vimeoPlayingVideoQuality = q;
   }
 
   ///*General

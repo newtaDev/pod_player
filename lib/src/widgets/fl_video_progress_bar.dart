@@ -10,16 +10,13 @@ import '../fl_enums.dart';
 import '../fl_video_controller.dart';
 
 class FlVideoProgressBar extends StatefulWidget {
-  const FlVideoProgressBar(
-    this.controller, {
+  const FlVideoProgressBar({
     Key? key,
     this.colors,
     required this.allowGestures,
     this.padding = EdgeInsets.zero,
     this.height = 20,
   }) : super(key: key);
-
-  final VideoPlayerController controller;
 
   final VideoProgressColors? colors;
 
@@ -34,33 +31,12 @@ class FlVideoProgressBar extends StatefulWidget {
 }
 
 class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
-  VideoPlayerController get controller => widget.controller;
-
   VideoProgressColors get colors =>
       widget.colors ??
       VideoProgressColors(
         backgroundColor: Colors.grey.withOpacity(0.5),
         bufferedColor: Colors.grey[500]!,
       );
-
-  @override
-  void initState() {
-    super.initState();
-    controller.addListener(listener);
-  }
-
-  void listener() {
-    if (!mounted) {
-      return;
-    }
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    controller.removeListener(listener);
-    super.dispose();
-  }
 
   double? relativeVal;
   late double relativeWidth;
@@ -69,54 +45,59 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
 
   @override
   Widget build(BuildContext context) {
-    Widget progressIndicator;
-    if (controller.value.isInitialized) {
-      final int duration = controller.value.duration.inMilliseconds;
-      final int position = controller.value.position.inMilliseconds;
+    return GetBuilder<FlVideoController>(
+      id: 'video-progress',
+      builder: (controller) {
+        Widget progressIndicator;
+        if (_flCtr.videoCtr!.value.isInitialized) {
+          final int duration = _flCtr.videoCtr!.value.duration.inMilliseconds;
+          final int position = _flCtr.videoCtr!.value.position.inMilliseconds;
 
-      int maxBuffering = 0;
-      for (final DurationRange range in controller.value.buffered) {
-        final int end = range.end.inMilliseconds;
-        if (end > maxBuffering) {
-          maxBuffering = end;
-        }
-      }
-      relativeVal = position / duration;
-      final double barHeight = _flCtr.overlayVisible
-          ? 20
-          : isHovered
+          int maxBuffering = 0;
+          for (final DurationRange range in _flCtr.videoCtr!.value.buffered) {
+            final int end = range.end.inMilliseconds;
+            if (end > maxBuffering) {
+              maxBuffering = end;
+            }
+          }
+          relativeVal = position / duration;
+          final double barHeight = _flCtr.overlayVisible
               ? 20
-              : widget.height;
-      final alignmentLoc = Alignment.bottomLeft;
-      progressIndicator = _progressWidget(
-        alignmentLoc,
-        barHeight,
-        maxBuffering,
-        duration,
-        position,
-      );
-    } else {
-      progressIndicator = LinearProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(colors.playedColor),
-        backgroundColor: colors.backgroundColor,
-      );
-    }
-    if (widget.allowGestures) {
-      return Padding(
-        padding: widget.padding,
-        child: _VideoGestureDetector(
-          controller: controller,
-          onHoverStart: _onHoverStart,
-          onExit: _onExit,
-          onHorizontalDrag: onHrDrag,
-          onDragStart: () => isHovered = true,
-          onDragEnd: () => isHovered = false,
-          child: progressIndicator,
-        ),
-      );
-    } else {
-      return progressIndicator;
-    }
+              : isHovered
+                  ? 20
+                  : widget.height;
+          const alignmentLoc = Alignment.bottomLeft;
+          progressIndicator = _progressWidget(
+            alignmentLoc,
+            barHeight,
+            maxBuffering,
+            duration,
+            position,
+          );
+        } else {
+          progressIndicator = LinearProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(colors.playedColor),
+            backgroundColor: colors.backgroundColor,
+          );
+        }
+        if (widget.allowGestures) {
+          return Padding(
+            padding: widget.padding,
+            child: _VideoGestureDetector(
+              controller: _flCtr.videoCtr!,
+              onHoverStart: _onHoverStart,
+              onExit: _onExit,
+              onHorizontalDrag: onHrDrag,
+              onDragStart: () => isHovered = true,
+              onDragEnd: () => isHovered = false,
+              child: progressIndicator,
+            ),
+          );
+        } else {
+          return progressIndicator;
+        }
+      },
+    );
   }
 
   void onHrDrag(double val) {

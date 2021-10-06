@@ -7,13 +7,14 @@ class MaterialIconButton extends StatelessWidget {
     this.color,
     required this.child,
     this.radius = 12,
-    required this.onPressed,
+    this.onPressed, this.onHover,
   }) : super(key: key);
 
   final Color? color;
   final Widget child;
   final double radius;
-  final void Function() onPressed;
+  final void Function()? onPressed;
+  final void Function(bool)? onHover;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class MaterialIconButton extends StatelessWidget {
       shape: const CircleBorder(),
       child: InkWell(
         borderRadius: BorderRadius.circular(radius * 4),
+        onHover: onHover,
         onTap: onPressed,
         child: Padding(
           padding: EdgeInsets.all(radius),
