@@ -43,7 +43,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   @override
   void initState() {
     super.initState();
-    _flCtr = Get.put(FlVideoController())
+    _flCtr = Get.put(FlVideoController(), permanent: true)
       ..videoInit(
               videoUrl: widget.videoUrl,
               vimeoVideoId: widget.vimeoVideoId,
@@ -66,7 +66,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     _flCtr.removeListenerId('flVideoState', _flCtr.flStateListner);
     _flCtr.videoCtr?.dispose();
     _flCtr.playPauseCtr.dispose();
-
+    Get.delete<FlVideoController>(force: true);
     super.dispose();
   }
 
@@ -88,7 +88,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
                 child: _flCtr.videoCtr == null
                     ? circularProgressIndicator
                     : _flCtr.videoCtr!.value.isInitialized
-                        ? const Hero(tag: 'flVideo-play', child: FlPlayer())
+                        ? const FlPlayer()
                         : circularProgressIndicator,
               )),
         ),
@@ -168,7 +168,7 @@ class MobileOverlay extends StatelessWidget {
     const itemColor = Colors.white;
     final _flCtr = Get.find<FlVideoController>();
     const durationTextStyle = TextStyle(color: Colors.white70);
-    log('ss');
+    print(_flCtr.overlayVisible);
     return Stack(
       children: [
         Row(
@@ -213,14 +213,13 @@ class MobileOverlay extends StatelessWidget {
                 children: [
                   MaterialIconButton(
                     color: itemColor,
-                    onHover: !kIsWeb
-                        ? (_) {
-                            _flCtr.isShowOverlay(true);
-                          }
-                        : (_) {},
-                    onPressed: _flCtr.overlayVisible
-                        ? () => _bottomSheet(context)
-                        : _flCtr.toggleVideoOverlay,
+                    onPressed: () {
+                      if (_flCtr.overlayVisible) {
+                        _bottomSheet(context);
+                      } else {
+                        _flCtr.toggleVideoOverlay();
+                      }
+                    },
                     child: const Icon(
                       Icons.more_vert_rounded,
                     ),
@@ -247,13 +246,17 @@ class MobileOverlay extends StatelessWidget {
                   const Spacer(),
                   MaterialIconButton(
                     color: itemColor,
-                    onHover:
-                        !kIsWeb ? (_) => _flCtr.isShowOverlay(true) : (_) {},
-                    onPressed: _flCtr.overlayVisible
-                        ? () => _flCtr.isFullScreen
-                            ? _exitFullScreen(context)
-                            : _fullScreen(context)
-                        : _flCtr.toggleVideoOverlay,
+                    onPressed: () {
+                      if (_flCtr.overlayVisible) {
+                        if (_flCtr.isFullScreen) {
+                          _exitFullScreen(context);
+                        } else {
+                          _fullScreen(context);
+                        }
+                      } else {
+                        _flCtr.toggleVideoOverlay();
+                      }
+                    },
                     child: Icon(
                       _flCtr.isFullScreen
                           ? Icons.fullscreen_exit

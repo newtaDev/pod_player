@@ -18,7 +18,7 @@ class FlVideoController extends GetxController {
   ///
   late FlVideoPlayerType videoPlayerType;
 
-   late AnimationController playPauseCtr;
+  late AnimationController playPauseCtr;
 
   ///
   FlVideoState flVideoState = FlVideoState.loading;
@@ -94,9 +94,11 @@ class FlVideoController extends GetxController {
     isFullScreen = true;
   }
 
-  Future<void> disableFullScreen()async {
+  Future<void> disableFullScreen() async {
     await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+
     isFullScreen = false;
   }
 

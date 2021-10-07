@@ -36,24 +36,21 @@ class _FullScreenViewState extends State<FullScreenView> {
         await _flCtr.disableFullScreen();
         return true;
       },
-      child: Hero(
-        tag: 'flVideo-play',
-        child: Scaffold(
-          backgroundColor: Colors.black,
-          body: GetBuilder<FlVideoController>(
-            builder: (_flCtr) => Center(
-              child: ColoredBox(
-                color: Colors.black,
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: _flCtr.videoCtr == null
-                        ? circularProgressIndicator
-                        : _flCtr.videoCtr!.value.isInitialized
-                            ? const FlPlayer()
-                            : circularProgressIndicator,
-                  ),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: GetBuilder<FlVideoController>(
+          builder: (_flCtr) => Center(
+            child: ColoredBox(
+              color: Colors.black,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: _flCtr.videoCtr == null
+                      ? circularProgressIndicator
+                      : _flCtr.videoCtr!.value.isInitialized
+                          ? const FlPlayer()
+                          : circularProgressIndicator,
                 ),
               ),
             ),
