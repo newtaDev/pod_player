@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-import '../fl_enums.dart';
-import '../fl_video_controller.dart';
+import '../utils/fl_enums.dart';
+import '../controllers/fl_video_controller.dart';
 
 class FlVideoProgressBar extends StatefulWidget {
   const FlVideoProgressBar({

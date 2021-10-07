@@ -1,11 +1,11 @@
 import 'package:fl_video_player/fl_video_player.dart';
-import 'package:fl_video_player/src/fl_enums.dart';
+import 'package:fl_video_player/src/utils/fl_enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../fl_video_controller.dart';
+import '../controllers/fl_video_controller.dart';
 
 class FullScreenView extends StatefulWidget {
   const FullScreenView({

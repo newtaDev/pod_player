@@ -1,1 +1,1 @@
-export 'src/fl_video_player.dart';
+export 'src/main.dart';

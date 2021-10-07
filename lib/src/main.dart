@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:io';
 
-import 'package:fl_video_player/src/widgets/full_screen_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +10,10 @@ import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
 
-import 'package:fl_video_player/src/widgets/fl_video_progress_bar.dart';
-
-import 'fl_enums.dart';
-import 'fl_video_controller.dart';
+import 'controllers/fl_video_controller.dart';
+import 'utils/fl_enums.dart';
+import 'widgets/fl_video_progress_bar.dart';
+import 'widgets/full_screen_view.dart';
 import 'widgets/material_icon_button.dart';
 
 class FlVideoPlayer extends StatefulWidget {
@@ -168,7 +165,6 @@ class MobileOverlay extends StatelessWidget {
     const itemColor = Colors.white;
     final _flCtr = Get.find<FlVideoController>();
     const durationTextStyle = TextStyle(color: Colors.white70);
-    print(_flCtr.overlayVisible);
     return Stack(
       children: [
         Row(
@@ -414,7 +410,7 @@ class _VideoQualitySelector extends StatelessWidget {
                     title: Text('${e.quality}p'),
                     onTap: () {
                       Navigator.of(context).pop();
-                      _flctr.changeVideoQuality(e.quality);
+                      _flctr.changeVimeoVideoQuality(e.quality);
                     },
                   ))
               .toList() ??
@@ -560,13 +556,15 @@ class _PlayPauseState extends State<_PlayPause> with TickerProviderStateMixin {
           type: MaterialType.transparency,
           shape: const CircleBorder(),
           child: GetBuilder<FlVideoController>(
-              id: 'flVideoState', builder: (_flCtr) => changeState()),
+            id: 'flVideoState',
+            builder: (_flCtr) => onStateChange(),
+          ),
         ),
       ),
     );
   }
 
-  Widget changeState() {
+  Widget onStateChange() {
     switch (_flCtr.flVideoState) {
       case FlVideoState.loading:
         return const SizedBox();
