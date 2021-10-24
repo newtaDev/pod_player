@@ -61,7 +61,7 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
             }
           }
           relativeVal = position / duration;
-          final double barHeight = _flCtr.overlayVisible
+          final double barHeight = _flCtr.isOverlayVisible
               ? 20
               : isHovered
                   ? 20
@@ -83,7 +83,7 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
         if (widget.allowGestures) {
           return Padding(
             padding: widget.padding,
-            child: _VideoGestureDetector(
+            child: _VideoProgressGestureDetector(
               controller: _flCtr.videoCtr!,
               onHoverStart: _onHoverStart,
               onExit: _onExit,
@@ -134,71 +134,10 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
             height: widget.height,
             isHovered: isHovered,
             showThumbHandler: isHovered ||
-                _flCtr.overlayVisible ||
+                _flCtr.isOverlayVisible ||
                 _flCtr.flVideoState == FlVideoState.paused,
             colors: colors,
             alignmentLoc: alignmentLoc),
-
-        //*old
-        //  LayoutBuilder(
-        //   builder: (context, constraints) {
-        //     relativeWidth =
-        //         constraints.maxWidth * (relativeVal ?? (position / duration));
-        //     return SizedBox(
-        //       height: barHeight,
-        //       width: relativeWidth,
-        //       child: Center(
-        //         child: Stack(
-        //           children: [
-        //             Align(
-        //               alignment: alignmentLoc,
-        //               child: ColoredBox(
-        //                 color: colors.playedColor,
-        //                 child: SizedBox(
-        //                   // duration: const Duration(milliseconds: 50),
-        //                   height: isHovered ? 6 : 5,
-        //                   width: relativeWidth,
-        //                 ),
-        //               ),
-        //             ),
-        //             Align(
-        //               alignment: Alignment.bottomRight,
-        //               child: AnimatedContainer(
-        //                 duration: const Duration(milliseconds: 200),
-        //                 transform: Matrix4.identity()
-        //                   ..translate(
-        //                       0, _flCtr.overlayVisible || isHovered ? 7 : 0),
-        //                 height: _flCtr.overlayVisible
-        //                     ? 20
-        //                     : isHovered
-        //                         ? 20
-        //                         : 0,
-        //                 width: _flCtr.overlayVisible
-        //                     ? 15
-        //                     : isHovered
-        //                         ? 15
-        //                         : 0,
-        //                 decoration: BoxDecoration(
-        //                   shape: BoxShape.circle,
-        //                   color: colors.playedColor,
-        //                   boxShadow: _flCtr.overlayVisible && isHovered
-        //                       ? [
-        //                           BoxShadow(
-        //                             spreadRadius: 4,
-        //                             color:
-        //                                 colors.playedColor.withOpacity(0.3),
-        //                           )
-        //                         ]
-        //                       : [],
-        //                 ),
-        //               ),
-        //             )
-        //           ],
-        //         ),
-        //       ),
-        //     );
-        //   },
-        // ),
       ],
     );
   }
@@ -311,8 +250,8 @@ class _VideoProgressBar extends StatelessWidget {
   }
 }
 
-class _VideoGestureDetector extends StatefulWidget {
-  const _VideoGestureDetector({
+class _VideoProgressGestureDetector extends StatefulWidget {
+  const _VideoProgressGestureDetector({
     Key? key,
     required this.child,
     required this.controller,
@@ -332,10 +271,12 @@ class _VideoGestureDetector extends StatefulWidget {
   final void Function()? onDragEnd;
 
   @override
-  _VideoGestureDetectorState createState() => _VideoGestureDetectorState();
+  _VideoProgressGestureDetectorState createState() =>
+      _VideoProgressGestureDetectorState();
 }
 
-class _VideoGestureDetectorState extends State<_VideoGestureDetector> {
+class _VideoProgressGestureDetectorState
+    extends State<_VideoProgressGestureDetector> {
   bool _controllerWasPlaying = false;
 
   VideoPlayerController get controller => widget.controller;

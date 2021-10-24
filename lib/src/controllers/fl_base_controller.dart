@@ -50,10 +50,15 @@ class FlBaseController extends GetxController {
   }
 
   void updateVideoPosition() {
-    if (_videoPosition.inSeconds !=
-        (_videoCtr?.value.position ?? Duration.zero).inSeconds) {
+    if ((_videoCtr?.value.duration.inSeconds ?? Duration.zero.inSeconds) < 60) {
       _videoPosition = _videoCtr?.value.position ?? Duration.zero;
       update(['video-progress']);
+    } else {
+      if (_videoPosition.inSeconds !=
+          (_videoCtr?.value.position ?? Duration.zero).inSeconds) {
+        _videoPosition = _videoCtr?.value.position ?? Duration.zero;
+        update(['video-progress']);
+      }
     }
   }
 }

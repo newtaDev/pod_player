@@ -3,11 +3,13 @@ part of './fl_video_controller.dart';
 class _FlPlayerController extends FlBaseController {
   late AnimationController playPauseCtr;
   Timer? showOverlayTimer;
+  Timer? showOverlayTimer1;
 
-  bool overlayVisible = true;
+  bool isOverlayVisible = true;
   bool autoPlay = true;
   bool isLooping = false;
   bool isFullScreen = false;
+  bool isMute = false;
 
   List<String> videoPlaybackSpeeds = [
     '0.25x',
@@ -39,6 +41,32 @@ class _FlPlayerController extends FlBaseController {
     await seekTo(_videoCtr!.value.position - videoSeekDuration);
   }
 
+  ///mute
+  /// Toggle mute.
+  Future<void> toggleMute() async {
+    isMute = !isMute;
+    if (isMute) {
+      await setVolume(0);
+    } else {
+      await setVolume(1);
+    }
+    update(['volume']);
+  }
+
+// Set volume between 0.0 - 1.0,
+  /// 0.0 is mute and 1.0 max volume.
+  Future<void> setVolume(
+    double volume,
+  ) async {
+    await _videoCtr?.setVolume(volume);
+    if (volume <= 0) {
+      isMute = true;
+    } else {
+      isMute = false;
+    }
+    update(['volume']);
+  }
+
   ///*controll play pause
   Future<void> playVideo(bool val) async {
     _isvideoPlaying = val;
@@ -65,31 +93,32 @@ class _FlPlayerController extends FlBaseController {
 
   ///toogle video player controls
   void isShowOverlay(bool val, {Duration? delay}) {
-    showOverlayTimer?.cancel();
-    showOverlayTimer = Timer(delay ?? Duration.zero, () {
-      overlayVisible = val;
-      update(['overlay']);
-      showOverlayTimer?.cancel();
+    showOverlayTimer1?.cancel();
+    showOverlayTimer1 = Timer(delay ?? Duration.zero, () {
+      if (isOverlayVisible != val) {
+        isOverlayVisible = val;
+        update(['overlay']);
+      }
     });
   }
 
   ///overlay above video contrller
-  Future<void> toggleVideoOverlay() async {
-    if (!overlayVisible) {
-      overlayVisible = true;
-    } else {
-      overlayVisible = false;
+  void toggleVideoOverlay() {
+    if (!isOverlayVisible) {
+      isOverlayVisible = true;
+      update(['overlay']);
+      return;
     }
-    update(['overlay']);
-
-    if (overlayVisible) {
+    if (isOverlayVisible) {
+      isOverlayVisible = false;
+      update(['overlay']);
       showOverlayTimer?.cancel();
       showOverlayTimer = Timer(const Duration(seconds: 4), () {
-        if (overlayVisible) overlayVisible = false;
-        update(['overlay']);
-        showOverlayTimer?.cancel();
+        if (isOverlayVisible) {
+          isOverlayVisible = false;
+          update(['overlay']);
+        }
       });
-      return;
     }
   }
 
@@ -114,21 +143,29 @@ class _FlPlayerController extends FlBaseController {
   Future<void> toggleLooping() async {
     isLooping = !isLooping;
     await _videoCtr?.setLooping(isLooping);
+    update();
   }
 
   void enableFullScreen() {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    isFullScreen = true;
+    if (!isFullScreen) {
+      isFullScreen = true;
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        update(['full-screen']);
+      });
+    }
   }
 
   Future<void> disableFullScreen() async {
     await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
-
-    isFullScreen = false;
+    if (isFullScreen) {
+      isFullScreen = false;
+      update(['full-screen']);
+    }
   }
 
   ///claculates video `position` or `duration`

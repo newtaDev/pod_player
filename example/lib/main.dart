@@ -30,27 +30,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: const FlVideoPlayer(
-        // videoUrl:
-            // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+        videoUrl:
+            'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
         // videoUrl: 'http://techslides.com/demos/sample-videos/small.mp4',
-        vimeoVideoId: '395212534',
+        // vimeoVideoId: '395212534',
         isLooping: true,
         autoPlay: false,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:fl_video_player/src/utils/fl_enums.dart';
-import 'package:fl_video_player/src/utils/vimeo_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
+import '../main.dart';
+import '../utils/fl_enums.dart';
+import '../utils/vimeo_models.dart';
 import '../utils/vimeo_video_api.dart';
+
 part './fl_base_controller.dart';
 part './fl_gestures_controller.dart';
 part './fl_player_controller.dart';
@@ -35,6 +37,9 @@ class FlVideoController extends _FlGesturesController {
 
   //TODO: convert to getter
 
+  static final player =
+      FlPlayer(videoPlayerCtr: Get.find<FlVideoController>().videoCtr!);
+
   ///*init
   Future<void> videoInit({
     String? videoUrl,
@@ -52,7 +57,10 @@ class FlVideoController extends _FlGesturesController {
       } else {
         _playingVideoUrl = videoUrl!;
       }
-      _videoCtr = VideoPlayerController.network(_playingVideoUrl);
+      _videoCtr = VideoPlayerController.network(
+        _playingVideoUrl,
+        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+      );
       await _videoCtr?.initialize();
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
       await setLooping(isLooping);

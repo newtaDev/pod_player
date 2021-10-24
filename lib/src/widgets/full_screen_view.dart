@@ -49,7 +49,7 @@ class _FullScreenViewState extends State<FullScreenView> {
                   child: _flCtr.videoCtr == null
                       ? circularProgressIndicator
                       : _flCtr.videoCtr!.value.isInitialized
-                          ? const FlPlayer()
+                          ? FlPlayer(videoPlayerCtr: _flCtr.videoCtr!)
                           : circularProgressIndicator,
                 ),
               ),
