@@ -33,19 +33,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const FlVideoPlayer(
-        videoUrl:
-            'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-        // videoUrl: 'http://techslides.com/demos/sample-videos/small.mp4',
-        // vimeoVideoId: '395212534',
+      body: FlVideoPlayer(
+        playerType: FlVideoPlayerType.auto,
+        // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
+        // fromNetworkUrl:
+            // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+            // 'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',
+            //'http://techslides.com/demos/sample-videos/small.mp4',
+        fromVimeoVideoId: '518228118',
         isLooping: true,
         autoPlay: false,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+  
     );
   }
 }

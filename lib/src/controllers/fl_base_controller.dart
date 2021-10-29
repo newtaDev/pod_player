@@ -11,6 +11,7 @@ class FlBaseController extends GetxController {
   CustomOverlay? playBackOverlay;
   CustomOverlay? vimeoQualityOverlay;
   CustomOverlay? settingsOverlay;
+  bool isMute = false;
 
   ///
   FlVideoState _flVideoState = FlVideoState.loading;
@@ -20,7 +21,7 @@ class FlBaseController extends GetxController {
 
   Duration _videoPosition = Duration.zero;
 
-  late String _playingVideoUrl;
+  late String _vimeoVideoUrl;
 
   String _currentPaybackSpeed = 'Normal';
 
@@ -33,8 +34,23 @@ class FlBaseController extends GetxController {
     if (_videoCtr!.value.isInitialized) {
       _listneVideoState();
       updateVideoPosition();
+      // _listneToVolume();
     }
   }
+//TODO
+  // void _listneToVolume() {
+  //   if (_videoCtr!.value.volume == 0) {
+  //     if (isMute) {
+  //       isMute = false;
+  //       update(['volume']);
+  //     }
+  //   } else {
+  //     if (!isMute) {
+  //       isMute = true;
+  //       update(['volume']);
+  //     }
+  //   }
+  // }
 
   void _listneVideoState() {
     flVideoStateChanger(

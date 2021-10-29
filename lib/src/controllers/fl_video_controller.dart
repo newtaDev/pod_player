@@ -1,13 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
-import 'package:fl_video_player/src/widgets/custom_overlay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 import 'package:video_player/video_player.dart';
+import 'package:fl_video_player/src/widgets/custom_overlay.dart';
 
 import '../main.dart';
 import '../utils/fl_enums.dart';
@@ -19,6 +21,9 @@ part './fl_base_controller.dart';
 part './fl_gestures_controller.dart';
 part './fl_player_controller.dart';
 part './fl_vimeo_controller.dart';
+
+String flErrorString(String val) =>
+    '*\n------error------\n\n$val\n\n------end------\n*';
 
 class FlVideoController extends _FlGesturesController {
   ///main videoplayer controller
@@ -42,49 +47,113 @@ class FlVideoController extends _FlGesturesController {
 
   static final player =
       FlPlayer(videoPlayerCtr: Get.find<FlVideoController>().videoCtr!);
+  String? fromNetworkUrl;
+  String? fromVimeoVideoId;
+  String? fromAssets;
+  File? fromFile;
 
   ///*init
   Future<void> videoInit({
-    String? videoUrl,
-    String? vimeoVideoId,
+    final String? fromNetworkUrl,
+    final String? fromVimeoVideoId,
+    final String? fromAssets,
+    final File? fromFile,
+    required final FlVideoPlayerType playerType,
     bool isLooping = false,
     int? vimeoVideoQuality,
     required BuildContext context,
   }) async {
-    if (kIsWeb) {
-      ///this will listne to fullScreen and exitFullScreen state in web
-      _html.document.documentElement?.onFullscreenChange.listen((event) {
-        if (isFullScreen) {
-          closeCustomOverlays();
-          exitFullScreenView(context);
-        } else {
-          closeCustomOverlays();
-          enableFullScreenView(context);
-        }
-      });
-    }
-    checkPlayerType(videoUrl: videoUrl, vimeoVideoId: vimeoVideoId);
+    ///
+    this.fromNetworkUrl = fromNetworkUrl;
+    this.fromVimeoVideoId = fromVimeoVideoId;
+    this.fromAssets = fromAssets;
+    this.fromFile = fromFile;
+    _videoPlayerType = playerType;
+    checkPlayerType();
+    log(_videoPlayerType.toString());
     try {
       if (_videoPlayerType == FlVideoPlayerType.vimeo) {
         await vimeoPlayerInit(
-          vimeoVideoId!,
+          fromVimeoVideoId!,
           vimeoVideoQuality,
         );
-      } else {
-        _playingVideoUrl = videoUrl!;
+      } else if (_videoPlayerType == FlVideoPlayerType.network) {
+        _vimeoVideoUrl = fromNetworkUrl!;
       }
-      _videoCtr = VideoPlayerController.network(
-        _playingVideoUrl,
-        videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-      );
+
+      ///
+      if (kIsWeb) {
+        ///this will listne to fullScreen and exitFullScreen state in web
+        _html.document.documentElement?.onFullscreenChange.listen((event) {
+          if (isFullScreen) {
+            closeCustomOverlays();
+            exitFullScreenView(context);
+          } else {
+            closeCustomOverlays();
+            enableFullScreenView(context);
+          }
+        });
+      }
+      _initializePlayer();
+
       await _videoCtr?.initialize();
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
       await setLooping(isLooping);
       _videoCtr?.addListener(videoListner);
       update();
     } catch (e) {
-      log('cathed $e');
+      log('ERROR ON FLVIDEOPLAYER:  $e');
       rethrow;
+    }
+  }
+
+  void _initializePlayer() {
+    switch (_videoPlayerType) {
+      case FlVideoPlayerType.network:
+
+        ///
+        _videoCtr = VideoPlayerController.network(
+          fromNetworkUrl!,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+        );
+
+        break;
+      case FlVideoPlayerType.vimeo:
+
+        ///
+        _videoCtr = VideoPlayerController.network(
+          _vimeoVideoUrl,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+        );
+
+        break;
+      case FlVideoPlayerType.asset:
+
+        ///
+        _videoCtr = VideoPlayerController.asset(
+          fromAssets!,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+        );
+        break;
+      case FlVideoPlayerType.file:
+
+        ///
+        _videoCtr = VideoPlayerController.file(
+          fromFile!,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+        );
+
+        break;
+      case FlVideoPlayerType.auto:
+        assert(
+          fromNetworkUrl != null,
+          '''---------  fromVideoUrl parameter is required  ---------''',
+        );
+        _videoCtr = VideoPlayerController.network(
+          fromNetworkUrl!,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+        );
+        break;
     }
   }
 
@@ -140,16 +209,25 @@ class FlVideoController extends _FlGesturesController {
   }
 
   ///check video player type
-  void checkPlayerType({String? vimeoVideoId, String? videoUrl}) {
-    if (vimeoVideoId != null) {
+  void checkPlayerType() {
+    if (fromVimeoVideoId != null) {
       _videoPlayerType = FlVideoPlayerType.vimeo;
       return;
-    } else {
-      if (videoUrl == null) {
-        throw Exception('videoUrl is required');
-      }
-      _videoPlayerType = FlVideoPlayerType.general;
     }
+    if (fromNetworkUrl != null) {
+      _videoPlayerType = FlVideoPlayerType.network;
+      return;
+    }
+    if (fromAssets != null) {
+      _videoPlayerType = FlVideoPlayerType.asset;
+      return;
+    }
+    if (fromFile != null) {
+      _videoPlayerType = FlVideoPlayerType.file;
+      return;
+    }
+    //Default
+    _videoPlayerType = FlVideoPlayerType.auto;
   }
 
   ///checkes wether video should be `autoplayed` initially

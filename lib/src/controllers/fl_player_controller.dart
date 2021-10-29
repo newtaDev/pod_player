@@ -9,7 +9,6 @@ class _FlPlayerController extends FlBaseController {
   bool autoPlay = true;
   bool isLooping = false;
   bool isFullScreen = false;
-  bool isMute = false;
   bool isvideoPlaying = false;
 
   List<String> videoPlaybackSpeeds = [

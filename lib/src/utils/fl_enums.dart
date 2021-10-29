@@ -6,6 +6,9 @@ enum FlVideoState {
 }
 
 enum FlVideoPlayerType {
-  general,
+  network,
+  file,
+  asset,
   vimeo,
+  auto,
 }

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -10,7 +12,6 @@ import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:universal_html/html.dart' as _html;
 import 'package:video_player/video_player.dart';
-
 import 'controllers/fl_video_controller.dart';
 import 'utils/fl_enums.dart';
 import 'widgets/custom_overlay.dart';
@@ -18,17 +19,64 @@ import 'widgets/fl_video_progress_bar.dart';
 import 'widgets/material_icon_button.dart';
 
 class FlVideoPlayer extends StatefulWidget {
-  final String? videoUrl;
-  final String? vimeoVideoId;
+  final FlVideoPlayerType playerType;
+  final String? fromNetworkUrl;
+  final String? fromVimeoVideoId;
+  final String? fromAssets;
+  final File? fromFile;
   final bool autoPlay;
   final bool isLooping;
-  const FlVideoPlayer({
+
+  FlVideoPlayer({
     Key? key,
-    this.videoUrl,
-    this.vimeoVideoId,
+    this.playerType = FlVideoPlayerType.auto,
+    this.fromNetworkUrl,
+    this.fromVimeoVideoId,
+    this.fromAssets,
+    this.fromFile,
     this.autoPlay = true,
     this.isLooping = false,
-  }) : super(key: key);
+  }) : super(key: key) {
+    _validate();
+  }
+
+  void _validate() {
+    switch (playerType) {
+      case FlVideoPlayerType.network:
+        assert(
+          fromNetworkUrl != null,
+          '''---------  fromVideoUrl parameter is required  ---------''',
+        );
+        break;
+      case FlVideoPlayerType.asset:
+        assert(
+          fromAssets != null,
+          '''---------  fromAssets parameter is required  ---------''',
+        );
+        break;
+      case FlVideoPlayerType.vimeo:
+        assert(
+          fromVimeoVideoId != null,
+          '''---------  fromVimeoVideoId parameter is required  ---------''',
+        );
+        break;
+      case FlVideoPlayerType.file:
+        assert(
+          fromFile != null,
+          '''---------  fromFile parameter is required  ---------''',
+        );
+        break;
+      case FlVideoPlayerType.auto:
+        assert(
+          fromNetworkUrl != null ||
+              fromAssets != null ||
+              fromVimeoVideoId != null ||
+              fromFile != null,
+          '''---------  any one parameter is required  ---------''',
+        );
+        break;
+    }
+  }
 
   @override
   _FlVideoPlayerState createState() => _FlVideoPlayerState();
@@ -42,11 +90,14 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     super.initState();
     _flCtr = Get.put(FlVideoController(), permanent: true)
       ..videoInit(
-              context: context,
-              videoUrl: widget.videoUrl,
-              vimeoVideoId: widget.vimeoVideoId,
-              isLooping: widget.isLooping)
-          .then((value) {
+        context: context,
+        playerType: widget.playerType,
+        fromNetworkUrl: widget.fromNetworkUrl,
+        fromVimeoVideoId: widget.fromVimeoVideoId,
+        fromAssets: widget.fromAssets,
+        fromFile: widget.fromFile,
+        isLooping: widget.isLooping,
+      ).then((value) {
         _flCtr
           ..playPauseCtr = AnimationController(
             vsync: this,
