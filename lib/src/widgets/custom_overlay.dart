@@ -233,25 +233,45 @@ class CustomOverlay {
               builder: (context, opacity) => AnimatedOpacity(
                 duration: const Duration(milliseconds: 300),
                 opacity: opacity,
-                child: Center(
-                    child: CustomSingleChildLayout(
-                        delegate: _PopupBallonLayoutDelegate(
-                          popupDirection: popupDirection,
-                          targetCenter: _targetCenter,
-                          minWidth: minWidth,
-                          maxWidth: maxWidth,
-                          minHeight: minHeight,
-                          maxHeight: maxHeight,
-                          outSidePadding: minimumOutSidePadding,
-                          top: top,
-                          bottom: bottom,
-                          left: left,
-                          right: right,
+                child: child != null
+                    ? Material(
+                        type: MaterialType.transparency,
+                        child: CustomSingleChildLayout(
+                          delegate: _PopupBallonLayoutDelegate(
+                            popupDirection: popupDirection,
+                            targetCenter: ui.Offset((_targetCenter?.dx??0)-(minWidth??0), _targetCenter?.dy??0),
+                            minWidth: minWidth,
+                            maxWidth: maxWidth,
+                            minHeight: minHeight,
+                            maxHeight: maxHeight,
+                            outSidePadding: minimumOutSidePadding,
+                            top: top,
+                            bottom: bottom,
+                            left: left,
+                            right: right,
+                          ),
+                          child: child,
                         ),
-                        child: Stack(
-                          fit: StackFit.passthrough,
-                          children: [_buildPopUp(), _buildCloseButton()],
-                        ))),
+                      )
+                    : Center(
+                        child: CustomSingleChildLayout(
+                            delegate: _PopupBallonLayoutDelegate(
+                              popupDirection: popupDirection,
+                              targetCenter: _targetCenter,
+                              minWidth: minWidth,
+                              maxWidth: maxWidth,
+                              minHeight: minHeight,
+                              maxHeight: maxHeight,
+                              outSidePadding: minimumOutSidePadding,
+                              top: top,
+                              bottom: bottom,
+                              left: left,
+                              right: right,
+                            ),
+                            child: Stack(
+                              fit: StackFit.passthrough,
+                              children: [_buildPopUp(), _buildCloseButton()],
+                            ))),
               ),
             ));
 
@@ -272,16 +292,16 @@ class CustomOverlay {
           Container(
             key: tooltipContainerKey,
             decoration: BoxDecoration(
-                color: backgroundColor,
-                boxShadow: hasShadow
-                    ? [
-                        BoxShadow(
-                            color: shadowColor,
-                            blurRadius: shadowBlurRadius,
-                            spreadRadius: shadowSpreadRadius)
-                      ]
-                    : null,
-                    ),
+              color: backgroundColor,
+              boxShadow: hasShadow
+                  ? [
+                      BoxShadow(
+                          color: shadowColor,
+                          blurRadius: shadowBlurRadius,
+                          spreadRadius: shadowSpreadRadius)
+                    ]
+                  : null,
+            ),
             margin: _getBallonContainerMargin(),
             child: Material(
               type: MaterialType.transparency,
@@ -619,7 +639,6 @@ class _PopupBallonLayoutDelegate extends SingleChildLayoutDelegate {
     return false;
   }
 }
-
 
 class _ShapeOverlay extends ShapeBorder {
   final Rect? clipRect;

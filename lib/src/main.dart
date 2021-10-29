@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -9,14 +8,13 @@ import 'package:get/get.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
+import 'package:universal_html/html.dart' as _html;
 import 'package:video_player/video_player.dart';
-
-import 'package:fl_video_player/src/widgets/custom_overlay.dart';
 
 import 'controllers/fl_video_controller.dart';
 import 'utils/fl_enums.dart';
+import 'widgets/custom_overlay.dart';
 import 'widgets/fl_video_progress_bar.dart';
-import 'widgets/full_screen_view.dart';
 import 'widgets/material_icon_button.dart';
 
 class FlVideoPlayer extends StatefulWidget {
@@ -44,6 +42,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     super.initState();
     _flCtr = Get.put(FlVideoController(), permanent: true)
       ..videoInit(
+              context: context,
               videoUrl: widget.videoUrl,
               vimeoVideoId: widget.vimeoVideoId,
               isLooping: widget.isLooping)
@@ -128,37 +127,46 @@ class FlPlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        VideoPlayer(videoPlayerCtr),
-        const _VideoOverlays(),
-        GetBuilder<FlVideoController>(
-          id: 'flVideoState',
-          builder: (_flCtr) => _flCtr.flVideoState == FlVideoState.loading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                  backgroundColor: Colors.transparent,
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ))
-              //TODO: web play pause like youtube
-              : const SizedBox(),
-        ),
-        if (!kIsWeb)
+    final flCtr = Get.find<FlVideoController>();
+    return RawKeyboardListener(
+      autofocus: true,
+      focusNode: FocusNode(),
+      onKey: (value) => flCtr.onKeyBoardEvents(
+        event: value,
+        appContext: context,
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          VideoPlayer(videoPlayerCtr),
+          const _VideoOverlays(),
           GetBuilder<FlVideoController>(
-            id: 'full-screen',
-            builder: (_flCtr) => _flCtr.isFullScreen
-                ? const SizedBox()
-                : const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: FlVideoProgressBar(
-                      allowGestures: true,
-                      height: 5,
-                    ),
-                  ),
+            id: 'flVideoState',
+            builder: (_flCtr) => _flCtr.flVideoState == FlVideoState.loading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    backgroundColor: Colors.transparent,
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ))
+                //TODO: web play pause like youtube
+                : const SizedBox(),
           ),
-      ],
+          if (!kIsWeb)
+            GetBuilder<FlVideoController>(
+              id: 'full-screen',
+              builder: (_flCtr) => _flCtr.isFullScreen
+                  ? const SizedBox()
+                  : const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FlVideoProgressBar(
+                        allowGestures: true,
+                        height: 5,
+                      ),
+                    ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -197,44 +205,41 @@ class WebOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final overlayColor = Colors.black38;
-    const itemColor = Colors.white;
     final _flCtr = Get.find<FlVideoController>();
     return Stack(
       children: [
         Positioned.fill(
-          child: Row(
-            children: [
-              Expanded(
-                child: VideoOverlayDetector(
-                  onTap: _flCtr.togglePlayPauseVideo,
-                  child: ColoredBox(
-                    color: overlayColor,
-                    child: const SizedBox.expand(),
-                  ),
-                ),
-              ),
-              // VideoOverlayDetector(
-              //   onTap: _flCtr.togglePlayPauseVideo,
-              //   child: ColoredBox(
-              //     color: overlayColor,
-              //     child: const _PlayPause(),
-              //   ),
-              // ),
-              Expanded(
-                child: VideoOverlayDetector(
-                  onTap: _flCtr.togglePlayPauseVideo,
-                  child: ColoredBox(
-                    color: overlayColor,
-                    child: const SizedBox.expand(),
-                  ),
-                ),
-              ),
-            ],
+          child: VideoOverlayDetector(
+            onTap: _flCtr.togglePlayPauseVideo,
+            child: ColoredBox(
+              color: overlayColor,
+              child: const SizedBox.expand(),
+            ),
           ),
         ),
         const Align(
           alignment: Alignment.bottomLeft,
           child: _WebOverlayBottomControlles(),
+        ),
+        Positioned.fill(
+          child: Row(
+            children: const [
+              Expanded(
+                child: IgnorePointer(
+                  child: _LeftRightDoubleTapBox(
+                    isLeft: true,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: IgnorePointer(
+                  child: _LeftRightDoubleTapBox(
+                    isLeft: false,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -265,13 +270,18 @@ class _WebOverlayBottomControlles extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const FlVideoProgressBar(allowGestures: true),
+            const MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: FlVideoProgressBar(allowGestures: true)),
             Row(
               children: [
                 const _PlayPause(),
                 GetBuilder<FlVideoController>(
                   id: 'volume',
                   builder: (_flCtr) => MaterialIconButton(
+                    toolTipMesg: _flCtr.isMute
+                        ? 'Unmute${kIsWeb ? ' (m)' : ''}'
+                        : 'Mute${kIsWeb ? ' (m)' : ''}',
                     color: itemColor,
                     onPressed: _flCtr.toggleMute,
                     child: Icon(
@@ -300,13 +310,26 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                 const Spacer(),
                 const _WebSettingsDropdown(),
                 MaterialIconButton(
+                  toolTipMesg: _flCtr.isFullScreen
+                      ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                      : 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                   color: itemColor,
                   onPressed: () {
                     if (_flCtr.isOverlayVisible) {
                       if (_flCtr.isFullScreen) {
-                        _exitFullScreen(context);
+                        _flCtr.closeCustomOverlays();
+                        if (kIsWeb) {
+                          _html.document.exitFullscreen();
+                        } else {
+                          _flCtr.exitFullScreenView(context);
+                        }
                       } else {
-                        _fullScreen(context);
+                        _flCtr.closeCustomOverlays();
+                        if (kIsWeb) {
+                          _html.document.documentElement?.requestFullscreen();
+                        } else {
+                          _flCtr.enableFullScreenView(context);
+                        }
                       }
                     } else {
                       _flCtr.toggleVideoOverlay();
@@ -325,29 +348,6 @@ class _WebOverlayBottomControlles extends StatelessWidget {
       ),
     );
   }
-
-  void _exitFullScreen(BuildContext context) {
-    Get.find<FlVideoController>().disableFullScreen().then((value) {
-      Navigator.of(context).pop();
-    });
-  }
-
-  void _fullScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        opaque: true,
-        fullscreenDialog: true,
-        pageBuilder: (BuildContext context, _, __) => const FullScreenView(),
-        reverseTransitionDuration: const Duration(milliseconds: 400),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-      ),
-    );
-  }
 }
 
 class _WebSettingsDropdown extends StatefulWidget {
@@ -360,86 +360,142 @@ class _WebSettingsDropdown extends StatefulWidget {
 }
 
 class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
-  late CustomOverlay playBackOverlay;
-  late CustomOverlay vimeoQualityOverlay;
+  final _flCtr = Get.find<FlVideoController>();
+
   @override
   Widget build(BuildContext context) {
-    playBackOverlay = CustomOverlay(
-      content: Material(
-        child: _VideoPlaybackSelector(
-          onTap: () {
-            playBackOverlay.close();
-          },
+    _flCtr
+      ..playBackOverlay = CustomOverlay(
+        maxWidth: 200,
+        content: Material(
+          child: _VideoPlaybackSelector(
+            onTap: () {
+              _flCtr.playBackOverlay?.close();
+            },
+          ),
         ),
-      ),
-    );
-
-    vimeoQualityOverlay = CustomOverlay(
-      content: Material(child: _VideoQualitySelector(
-        onTap: () {
-          vimeoQualityOverlay.close();
-        },
-      )),
-    );
+      )
+      ..vimeoQualityOverlay = CustomOverlay(
+        maxWidth: 200,
+        content: Material(child: _VideoQualitySelector(
+          onTap: () {
+            _flCtr.vimeoQualityOverlay?.close();
+          },
+        )),
+      );
     return Theme(
       data: Theme.of(context).copyWith(
         focusColor: Colors.white,
         selectedRowColor: Colors.white,
       ),
       child: GetBuilder<FlVideoController>(
-        builder: (_flCtr) => DropdownButton<dynamic>(
-          underline: const ColoredBox(color: Colors.transparent),
-          items: [
-            if (_flCtr.videoPlayerType == FlVideoPlayerType.vimeo)
-              DropdownMenuItem(
-                value: '',
-                child: Builder(builder: (context) {
-                  return _bottomSheetTiles(
-                    title: 'Quality',
-                    icon: Icons.video_settings_rounded,
-                    subText: '${_flCtr.vimeoPlayingVideoQuality}p',
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      vimeoQualityOverlay.show(context);
-                    },
-                  );
-                }),
-              ),
-            DropdownMenuItem(
-              value: '',
-              onTap: () {
-                _flCtr.toggleLooping();
-              },
-              child: _bottomSheetTiles(
-                title: 'Loop video',
-                icon: Icons.loop_rounded,
-                subText: _flCtr.isLooping ? 'On' : 'Off',
+        builder: (_flCtr) {
+          ///
+          _flCtr.settingsOverlay = CustomOverlay(
+            minWidth: 320,
+            maxWidth: 320,
+            child: Material(
+              elevation: 5,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_flCtr.videoPlayerType == FlVideoPlayerType.vimeo)
+                    Builder(builder: (context) {
+                      return _bottomSheetTiles(
+                        title: 'Quality',
+                        icon: Icons.video_settings_rounded,
+                        subText: '${_flCtr.vimeoPlayingVideoQuality}p',
+                        onTap: () {
+                          _flCtr.settingsOverlay?.close();
+                          _flCtr.vimeoQualityOverlay?.show(context);
+                        },
+                      );
+                    }),
+                  _bottomSheetTiles(
+                      title: 'Loop video',
+                      icon: Icons.loop_rounded,
+                      subText: _flCtr.isLooping ? 'On' : 'Off',
+                      onTap: () {
+                        _flCtr.settingsOverlay?.close();
+                        _flCtr.toggleLooping();
+                      }),
+                  Builder(builder: (context) {
+                    return _bottomSheetTiles(
+                        title: 'Playback speed',
+                        icon: Icons.slow_motion_video_rounded,
+                        subText: _flCtr.currentPaybackSpeed,
+                        onTap: () {
+                          _flCtr.settingsOverlay?.close();
+                          _flCtr.playBackOverlay?.show(context);
+                        });
+                  }),
+                ],
               ),
             ),
-            DropdownMenuItem(
-              value: '',
-              onTap: () {},
-              child: Builder(builder: (context) {
-                return _bottomSheetTiles(
-                    title: 'Playback speed',
-                    icon: Icons.slow_motion_video_rounded,
-                    subText: _flCtr.currentPaybackSpeed,
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      playBackOverlay.show(context);
-                    });
-              }),
-            )
-          ],
-          icon: const MaterialIconButton(
+          );
+          return MaterialIconButton(
+            toolTipMesg: 'Settings',
             color: Colors.white,
-            // onPressed: _flCtr.toggleMute,
-            child: Icon(
-              Icons.settings,
-            ),
-          ),
-          onChanged: (_) {},
-        ),
+            onPressed: () {
+              _flCtr.settingsOverlay?.show(context);
+            },
+            child: const Icon(Icons.settings),
+          );
+        },
+        //  DropdownButton<dynamic>(
+        //   underline: const ColoredBox(color: Colors.transparent),
+        //   items: [
+        //     if (_flCtr.videoPlayerType == FlVideoPlayerType.vimeo)
+        //       DropdownMenuItem(
+        //         value: '',
+        //         child: Builder(builder: (context) {
+        //           return _bottomSheetTiles(
+        //             title: 'Quality',
+        //             icon: Icons.video_settings_rounded,
+        //             subText: '${_flCtr.vimeoPlayingVideoQuality}p',
+        //             onTap: () {
+        //               Navigator.of(context).pop();
+        //               _flCtr.vimeoQualityOverlay?.show(context);
+        //             },
+        //           );
+        //         }),
+        //       ),
+        //     DropdownMenuItem(
+        //       value: '',
+        //       onTap: () {
+        //         _flCtr.toggleLooping();
+        //       },
+        //       child: _bottomSheetTiles(
+        //         title: 'Loop video',
+        //         icon: Icons.loop_rounded,
+        //         subText: _flCtr.isLooping ? 'On' : 'Off',
+        //       ),
+        //     ),
+        //     DropdownMenuItem(
+        //       value: '',
+        //       onTap: () {},
+        //       child: Builder(builder: (context) {
+        //         return _bottomSheetTiles(
+        //             title: 'Playback speed',
+        //             icon: Icons.slow_motion_video_rounded,
+        //             subText: _flCtr.currentPaybackSpeed,
+        //             onTap: () {
+        //               Navigator.of(context).pop();
+        //               _flCtr.playBackOverlay?.show(context);
+        //             });
+        //       }),
+        //     )
+        //   ],
+        //   icon: const MaterialIconButton(
+        //     toolTipMesg: 'Settings',
+        //     color: Colors.white,
+        //     // onPressed: _flCtr.toggleMute,
+        //     child: Icon(
+        //       Icons.settings,
+        //     ),
+        //   ),
+        //   onChanged: (_) {},
+        // ),
       ),
     );
   }
@@ -450,35 +506,41 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
     String? subText,
     void Function()? onTap,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Icon(icon),
-            const SizedBox(width: 20),
-            Text(
-              title,
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          width: double.maxFinite,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon),
+                const SizedBox(width: 20),
+                Text(
+                  title,
+                ),
+                if (subText != null) const SizedBox(width: 6),
+                if (subText != null)
+                  const SizedBox(
+                    height: 4,
+                    width: 4,
+                    child: DecoratedBox(
+                        decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    )),
+                  ),
+                if (subText != null) const SizedBox(width: 6),
+                if (subText != null)
+                  Text(
+                    subText,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+              ],
             ),
-            if (subText != null) const SizedBox(width: 6),
-            if (subText != null)
-              const SizedBox(
-                height: 4,
-                width: 4,
-                child: DecoratedBox(
-                    decoration: BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle,
-                )),
-              ),
-            if (subText != null) const SizedBox(width: 6),
-            if (subText != null)
-              Text(
-                subText,
-                style: const TextStyle(color: Colors.grey),
-              ),
-          ],
+          ),
         ),
       ),
     );
@@ -546,6 +608,7 @@ class MobileOverlay extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   MaterialIconButton(
+                    toolTipMesg: 'More',
                     color: itemColor,
                     onPressed: () {
                       if (_flCtr.isOverlayVisible) {
@@ -619,13 +682,20 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                 ),
                 const Spacer(),
                 MaterialIconButton(
+                  toolTipMesg: _flCtr.isFullScreen
+                      ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                      : 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                   color: itemColor,
                   onPressed: () {
                     if (_flCtr.isOverlayVisible) {
                       if (_fl.isFullScreen) {
-                        _exitFullScreen(context);
+                        _flCtr
+                          ..closeCustomOverlays()
+                          ..exitFullScreenView(context);
                       } else {
-                        _fullScreen(context);
+                        _flCtr
+                          ..closeCustomOverlays()
+                          ..enableFullScreenView(context);
                       }
                     } else {
                       _flCtr.toggleVideoOverlay();
@@ -638,29 +708,6 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  void _exitFullScreen(BuildContext context) {
-    Get.find<FlVideoController>().disableFullScreen().then((value) {
-      Navigator.of(context).pop();
-    });
-  }
-
-  void _fullScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        opaque: true,
-        fullscreenDialog: true,
-        pageBuilder: (BuildContext context, _, __) => const FullScreenView(),
-        reverseTransitionDuration: const Duration(milliseconds: 400),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
-          opacity: animation,
-          child: child,
         ),
       ),
     );
@@ -919,11 +966,15 @@ class _PlayPauseState extends State<_PlayPause> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return GetBuilder<FlVideoController>(
       id: 'overlay',
-      builder: (_flctr) => MaterialIconButton(
-        onPressed: _flCtr.isOverlayVisible ? _flCtr.togglePlayPauseVideo : null,
-        child: GetBuilder<FlVideoController>(
-          id: 'flVideoState',
-          builder: (_flCtr) => onStateChange(),
+      builder: (_flctr) => GetBuilder<FlVideoController>(
+        id: 'flVideoState',
+        builder: (_f) => MaterialIconButton(
+          toolTipMesg: _f.isvideoPlaying
+              ? 'Pause${kIsWeb ? ' (space)' : ''}'
+              : 'Play${kIsWeb ? ' (space)' : ''}',
+          onPressed:
+              _flCtr.isOverlayVisible ? _flCtr.togglePlayPauseVideo : null,
+          child: onStateChange(),
         ),
       ),
     );

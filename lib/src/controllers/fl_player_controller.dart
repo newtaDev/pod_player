@@ -10,6 +10,7 @@ class _FlPlayerController extends FlBaseController {
   bool isLooping = false;
   bool isFullScreen = false;
   bool isMute = false;
+  bool isvideoPlaying = false;
 
   List<String> videoPlaybackSpeeds = [
     '0.25x',
@@ -23,7 +24,6 @@ class _FlPlayerController extends FlBaseController {
   ];
 
   ///
-  bool _isvideoPlaying = false;
 
   ///*seek video
   /// Seek video to a duration.
@@ -69,8 +69,8 @@ class _FlPlayerController extends FlBaseController {
 
   ///*controll play pause
   Future<void> playVideo(bool val) async {
-    _isvideoPlaying = val;
-    if (_isvideoPlaying) {
+    isvideoPlaying = val;
+    if (isvideoPlaying) {
       isShowOverlay(true);
       // ignore: unawaited_futures
       _videoCtr?.play();
@@ -86,9 +86,9 @@ class _FlPlayerController extends FlBaseController {
 
   ///toogle play pause
   void togglePlayPauseVideo() {
-    _isvideoPlaying = !_isvideoPlaying;
+    isvideoPlaying = !isvideoPlaying;
     flVideoStateChanger(
-        _isvideoPlaying ? FlVideoState.playing : FlVideoState.paused);
+        isvideoPlaying ? FlVideoState.playing : FlVideoState.paused);
   }
 
   ///toogle video player controls
@@ -166,6 +166,29 @@ class _FlPlayerController extends FlBaseController {
       isFullScreen = false;
       update(['full-screen']);
     }
+  }
+
+  void exitFullScreenView(BuildContext context) {
+    Get.find<FlVideoController>().disableFullScreen().then((value) {
+      Navigator.of(context).pop();
+    });
+  }
+
+  void enableFullScreenView(BuildContext context) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        opaque: true,
+        fullscreenDialog: true,
+        pageBuilder: (BuildContext context, _, __) => const FullScreenView(),
+        reverseTransitionDuration: const Duration(milliseconds: 400),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      ),
+    );
   }
 
   ///claculates video `position` or `duration`

@@ -11,13 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   # ui
-  flutter_svg: ^0.22.0
-  cupertino_icons: ^1.0.2
+  lottie: ^1.2.1
   # 
   video_player: ^2.2.4
   http: ^0.13.3
   get: ^4.3.8
-  lottie: ^1.2.1
+  universal_html: ^2.0.8
 
 dev_dependencies:
   flutter_test:

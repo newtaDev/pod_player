@@ -4,8 +4,13 @@ class FlBaseController extends GetxController {
   ///main video controller
   VideoPlayerController? _videoCtr;
 
-  //
+  ///
   late FlVideoPlayerType _videoPlayerType;
+
+  ///
+  CustomOverlay? playBackOverlay;
+  CustomOverlay? vimeoQualityOverlay;
+  CustomOverlay? settingsOverlay;
 
   ///
   FlVideoState _flVideoState = FlVideoState.loading;
@@ -59,6 +64,19 @@ class FlBaseController extends GetxController {
         _videoPosition = _videoCtr?.value.position ?? Duration.zero;
         update(['video-progress']);
       }
+    }
+  }
+
+  void closeCustomOverlays() {
+    try {
+      vimeoQualityOverlay?.close();
+      playBackOverlay?.close();
+      settingsOverlay?.close();
+      playBackOverlay = null;
+      vimeoQualityOverlay = null;
+      settingsOverlay = null;
+    } catch (e) {
+      log('exception on closing overlay');
     }
   }
 }
