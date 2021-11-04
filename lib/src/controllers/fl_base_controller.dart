@@ -21,7 +21,6 @@ class FlBaseController extends GetxController {
 
   Duration _videoPosition = Duration.zero;
 
-  late String _vimeoVideoUrl;
 
   String _currentPaybackSpeed = 'Normal';
 
@@ -32,8 +31,8 @@ class FlBaseController extends GetxController {
       await _videoCtr!.initialize();
     }
     if (_videoCtr!.value.isInitialized) {
-      _listneVideoState();
-      updateVideoPosition();
+      _listneToVideoState();
+      _listneToVideoPosition();
       // _listneToVolume();
     }
   }
@@ -52,7 +51,7 @@ class FlBaseController extends GetxController {
   //   }
   // }
 
-  void _listneVideoState() {
+  void _listneToVideoState() {
     flVideoStateChanger(
       _videoCtr!.value.isBuffering || !_videoCtr!.value.isInitialized
           ? FlVideoState.loading
@@ -70,7 +69,7 @@ class FlBaseController extends GetxController {
     }
   }
 
-  void updateVideoPosition() {
+  void _listneToVideoPosition() {
     if ((_videoCtr?.value.duration.inSeconds ?? Duration.zero.inSeconds) < 60) {
       _videoPosition = _videoCtr?.value.position ?? Duration.zero;
       update(['video-progress']);

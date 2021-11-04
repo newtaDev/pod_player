@@ -6,6 +6,7 @@ class _FlVimeoVideoController extends _FlPlayerController {
 
   ///vimeo all quality urls
   List<VimeoVideoQalityUrls>? vimeoVideoUrls;
+  late String _vimeoVideoUrl;
 
   ///*vimeo player configs
   ///

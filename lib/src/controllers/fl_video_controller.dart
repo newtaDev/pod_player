@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -9,21 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 import 'package:video_player/video_player.dart';
-import 'package:fl_video_player/src/widgets/custom_overlay.dart';
 
-import '../main.dart';
 import '../utils/fl_enums.dart';
 import '../utils/vimeo_models.dart';
 import '../utils/vimeo_video_api.dart';
+import '../widgets/custom_overlay.dart';
 import '../widgets/full_screen_view.dart';
 
 part './fl_base_controller.dart';
 part './fl_gestures_controller.dart';
 part './fl_player_controller.dart';
 part './fl_vimeo_controller.dart';
-
-String flErrorString(String val) =>
-    '*\n------error------\n\n$val\n\n------end------\n*';
 
 class FlVideoController extends _FlGesturesController {
   ///main videoplayer controller
@@ -45,12 +40,11 @@ class FlVideoController extends _FlGesturesController {
 
   //TODO: convert to getter
 
-  static final player =
-      FlPlayer(videoPlayerCtr: Get.find<FlVideoController>().videoCtr!);
   String? fromNetworkUrl;
   String? fromVimeoVideoId;
   String? fromAssets;
   File? fromFile;
+  int? vimeoVideoQuality;
 
   ///*init
   Future<void> videoInit({
@@ -68,33 +62,19 @@ class FlVideoController extends _FlGesturesController {
     this.fromVimeoVideoId = fromVimeoVideoId;
     this.fromAssets = fromAssets;
     this.fromFile = fromFile;
+    this.vimeoVideoQuality = vimeoVideoQuality;
     _videoPlayerType = playerType;
     checkPlayerType();
     log(_videoPlayerType.toString());
     try {
-      if (_videoPlayerType == FlVideoPlayerType.vimeo) {
-        await vimeoPlayerInit(
-          fromVimeoVideoId!,
-          vimeoVideoQuality,
-        );
-      } else if (_videoPlayerType == FlVideoPlayerType.network) {
-        _vimeoVideoUrl = fromNetworkUrl!;
-      }
-
       ///
       if (kIsWeb) {
         ///this will listne to fullScreen and exitFullScreen state in web
-        _html.document.documentElement?.onFullscreenChange.listen((event) {
-          if (isFullScreen) {
-            closeCustomOverlays();
-            exitFullScreenView(context);
-          } else {
-            closeCustomOverlays();
-            enableFullScreenView(context);
-          }
-        });
+        _html.document.documentElement?.onFullscreenChange.listen(
+          (e) => _webFullScreenListner(context),
+        );
       }
-      _initializePlayer();
+      await _initializePlayer();
 
       await _videoCtr?.initialize();
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
@@ -107,7 +87,7 @@ class FlVideoController extends _FlGesturesController {
     }
   }
 
-  void _initializePlayer() {
+  Future<void> _initializePlayer() async {
     switch (_videoPlayerType) {
       case FlVideoPlayerType.network:
 
@@ -121,6 +101,11 @@ class FlVideoController extends _FlGesturesController {
       case FlVideoPlayerType.vimeo:
 
         ///
+        await vimeoPlayerInit(
+          fromVimeoVideoId!,
+          vimeoVideoQuality,
+        );
+
         _videoCtr = VideoPlayerController.network(
           _vimeoVideoUrl,
           videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
@@ -210,25 +195,38 @@ class FlVideoController extends _FlGesturesController {
 
   ///check video player type
   void checkPlayerType() {
-    if (fromVimeoVideoId != null) {
-      _videoPlayerType = FlVideoPlayerType.vimeo;
-      return;
+    if (_videoPlayerType == FlVideoPlayerType.auto) {
+      if (fromVimeoVideoId != null) {
+        _videoPlayerType = FlVideoPlayerType.vimeo;
+        return;
+      }
+      if (fromNetworkUrl != null) {
+        _videoPlayerType = FlVideoPlayerType.network;
+        return;
+      }
+      if (fromAssets != null) {
+        _videoPlayerType = FlVideoPlayerType.asset;
+        return;
+      }
+      if (fromFile != null) {
+        _videoPlayerType = FlVideoPlayerType.file;
+        return;
+      }
+      //Default
+      _videoPlayerType = FlVideoPlayerType.auto;
     }
-    if (fromNetworkUrl != null) {
-      _videoPlayerType = FlVideoPlayerType.network;
-      return;
-    }
-    if (fromAssets != null) {
-      _videoPlayerType = FlVideoPlayerType.asset;
-      return;
-    }
-    if (fromFile != null) {
-      _videoPlayerType = FlVideoPlayerType.file;
-      return;
-    }
-    //Default
-    _videoPlayerType = FlVideoPlayerType.auto;
   }
+
+  void _webFullScreenListner(BuildContext context) {
+    if (isFullScreen) {
+      closeCustomOverlays();
+      exitFullScreenView(context);
+    } else {
+      closeCustomOverlays();
+      enableFullScreenView(context);
+    }
+  }
+
 
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {

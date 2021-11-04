@@ -34,13 +34,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FlVideoPlayer(
-        playerType: FlVideoPlayerType.auto,
-        // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
+        // playerType: FlVideoPlayerType.asset,
+        fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
         // fromNetworkUrl:
-            // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+        //     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
             // 'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',
             //'http://techslides.com/demos/sample-videos/small.mp4',
-        fromVimeoVideoId: '518228118',
+        // fromVimeoVideoId: '518228118',
         isLooping: true,
         autoPlay: false,
       ),
