@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 import '../utils/fl_enums.dart';
-import '../controllers/fl_video_controller.dart';
+import '../controllers/fl_getx_video_controller.dart';
 
 class FlVideoProgressBar extends StatefulWidget {
   const FlVideoProgressBar({
@@ -41,11 +41,11 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
   double? relativeVal;
   late double relativeWidth;
   bool isHovered = false;
-  final _flCtr = Get.find<FlVideoController>();
+  final _flCtr = Get.find<FlGetXVideoController>();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<FlVideoController>(
+    return GetBuilder<FlGetXVideoController>(
       id: 'video-progress',
       builder: (controller) {
         Widget progressIndicator;
@@ -271,8 +271,7 @@ class _VideoProgressGestureDetector extends StatefulWidget {
   final void Function()? onDragEnd;
 
   @override
-  _VideoProgressGestureDetectorState createState() =>
-      _VideoProgressGestureDetectorState();
+  _VideoProgressGestureDetectorState createState() => _VideoProgressGestureDetectorState();
 }
 
 class _VideoProgressGestureDetectorState
@@ -280,7 +279,7 @@ class _VideoProgressGestureDetectorState
   bool _controllerWasPlaying = false;
 
   VideoPlayerController get controller => widget.controller;
-  final _flCtr = Get.find<FlVideoController>();
+  final _flCtr = Get.find<FlGetXVideoController>();
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +304,7 @@ class _VideoProgressGestureDetectorState
             return;
           }
           _controllerWasPlaying = controller.value.isPlaying;
-          if (widget.onDragStart != null) widget.onDragStart!();
+          widget.onDragStart?.call();
           if (_controllerWasPlaying) {
             controller.pause();
           }
@@ -316,11 +315,11 @@ class _VideoProgressGestureDetectorState
           }
           seekToRelativePosition(details.globalPosition);
           if (widget.onHorizontalDrag != null) {
-            widget.onHorizontalDrag!(relative);
+            widget.onHorizontalDrag?.call(relative);
           }
         },
         onHorizontalDragEnd: (DragEndDetails details) {
-          if (widget.onDragEnd != null) widget.onDragEnd!();
+          widget.onDragEnd?.call();
           if (_controllerWasPlaying) {
             controller.play();
           }
@@ -330,7 +329,7 @@ class _VideoProgressGestureDetectorState
             return;
           }
           if (widget.onHorizontalDrag != null) {
-            widget.onHorizontalDrag!(relative);
+            widget.onHorizontalDrag?.call(relative);
           }
 
           seekToRelativePosition(details.globalPosition);

@@ -1,15 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:fl_video_player/src/controllers/fl_video_controller.dart';
+import 'package:fl_video_player/src/controllers/fl_getx_video_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'vimeo_models.dart';
-String flErrorString(String val) =>
-    '*\n------error------\n\n$val\n\n------end------\n*';
+
+String flErrorString(String val) {
+  return '*\n------error------\n\n$val\n\n------end------\n*';
+}
+
 class VimeoVideoApi {
   static Future<List<VimeoVideoQalityUrls>?> getvideoQualityLink(
-      String videoId) async {
+    String videoId,
+  ) async {
     try {
       final response = await http.get(
         Uri.parse('https://player.vimeo.com/video/$videoId/config'),

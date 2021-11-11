@@ -1,4 +1,4 @@
-part of './fl_video_controller.dart';
+part of 'fl_getx_video_controller.dart';
 
 class _FlPlayerController extends FlBaseController {
   late AnimationController playPauseCtr;
@@ -45,10 +45,19 @@ class _FlPlayerController extends FlBaseController {
   Future<void> toggleMute() async {
     isMute = !isMute;
     if (isMute) {
-      await setVolume(0);
+      await mute();
     } else {
-      await setVolume(1);
+      await unMute();
     }
+  }
+
+  Future<void> mute() async {
+    await setVolume(0);
+    update(['volume']);
+  }
+
+  Future<void> unMute() async {
+    await setVolume(1);
     update(['volume']);
   }
 
@@ -168,7 +177,7 @@ class _FlPlayerController extends FlBaseController {
   }
 
   void exitFullScreenView(BuildContext context) {
-    Get.find<FlVideoController>().disableFullScreen().then((value) {
+    Get.find<FlGetXVideoController>().disableFullScreen().then((value) {
       Navigator.of(context).pop();
     });
   }

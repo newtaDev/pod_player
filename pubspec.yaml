@@ -13,7 +13,7 @@ dependencies:
   # ui
   lottie: ^1.2.1
   # 
-  video_player: ^2.2.6
+  video_player: ^2.2.7
   http: ^0.13.3
   get: ^4.3.8
   universal_html: ^2.0.8

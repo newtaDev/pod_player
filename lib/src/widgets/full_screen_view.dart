@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-import '../controllers/fl_video_controller.dart';
+import '../controllers/fl_getx_video_controller.dart';
 
 class FullScreenView extends StatefulWidget {
   const FullScreenView({
@@ -17,7 +17,7 @@ class FullScreenView extends StatefulWidget {
 }
 
 class _FullScreenViewState extends State<FullScreenView> {
-  final _flCtr = Get.find<FlVideoController>();
+  final _flCtr = Get.find<FlGetXVideoController>();
   @override
   void initState() {
     _flCtr.enableFullScreen();
@@ -38,7 +38,7 @@ class _FullScreenViewState extends State<FullScreenView> {
       },
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: GetBuilder<FlVideoController>(
+        body: GetBuilder<FlGetXVideoController>(
           builder: (_flCtr) => Center(
             child: ColoredBox(
               color: Colors.black,

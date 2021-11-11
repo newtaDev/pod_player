@@ -1,4 +1,4 @@
-part of './fl_video_controller.dart';
+part of 'fl_getx_video_controller.dart';
 
 class FlBaseController extends GetxController {
   ///main video controller
@@ -21,7 +21,6 @@ class FlBaseController extends GetxController {
 
   Duration _videoPosition = Duration.zero;
 
-
   String _currentPaybackSpeed = 'Normal';
 
   ///**listners
@@ -33,23 +32,23 @@ class FlBaseController extends GetxController {
     if (_videoCtr!.value.isInitialized) {
       _listneToVideoState();
       _listneToVideoPosition();
-      // _listneToVolume();
+      _listneToVolume();
     }
   }
-//TODO
-  // void _listneToVolume() {
-  //   if (_videoCtr!.value.volume == 0) {
-  //     if (isMute) {
-  //       isMute = false;
-  //       update(['volume']);
-  //     }
-  //   } else {
-  //     if (!isMute) {
-  //       isMute = true;
-  //       update(['volume']);
-  //     }
-  //   }
-  // }
+
+  void _listneToVolume() {
+    if (_videoCtr!.value.volume == 0) {
+      if (!isMute) {
+        isMute = true;
+        update(['volume']);
+      }
+    } else {
+      if (isMute) {
+        isMute = false;
+        update(['volume']);
+      }
+    }
+  }
 
   void _listneToVideoState() {
     flVideoStateChanger(
@@ -82,14 +81,16 @@ class FlBaseController extends GetxController {
     }
   }
 
-  void closeCustomOverlays() {
+  void closeCustomOverlays({bool makeNull = true}) {
     try {
       vimeoQualityOverlay?.close();
       playBackOverlay?.close();
       settingsOverlay?.close();
-      playBackOverlay = null;
-      vimeoQualityOverlay = null;
-      settingsOverlay = null;
+      if (makeNull) {
+        playBackOverlay = null;
+        vimeoQualityOverlay = null;
+        settingsOverlay = null;
+      }
     } catch (e) {
       log('exception on closing overlay');
     }

@@ -127,9 +127,8 @@ class CustomOverlay {
 
   void close() {
     if (onClose != null) {
-      onClose!();
+      onClose?.call();
     }
-
     _ballonOverlay?.remove();
     _backGroundOverlay?.remove();
     isOpen = false;

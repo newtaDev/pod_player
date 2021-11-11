@@ -1,4 +1,4 @@
-part of './fl_video_controller.dart';
+part of 'fl_getx_video_controller.dart';
 
 class _FlVimeoVideoController extends _FlPlayerController {
   ///
