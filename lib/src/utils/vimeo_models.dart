@@ -9,4 +9,3 @@ class VimeoVideoQalityUrls {
   @override
   String toString() => 'VimeoVideoQalityUrls(quality: $quality, urls: $urls)';
 }
-

@@ -46,12 +46,13 @@ class FlGetXVideoController extends _FlGesturesController {
   String? fromAssets;
   File? fromFile;
   int? vimeoVideoQuality;
-
+  List<VimeoVideoQalityUrls>? fromVimeoUrls;
   bool controllerInitialized = false;
 
   void config({
     final String? fromNetworkUrl,
     final String? fromVimeoVideoId,
+    List<VimeoVideoQalityUrls>? fromVimeoUrls,
     final String? fromAssets,
     final File? fromFile,
     required final FlVideoPlayerType playerType,
@@ -61,6 +62,7 @@ class FlGetXVideoController extends _FlGesturesController {
   }) {
     this.fromNetworkUrl = fromNetworkUrl;
     this.fromVimeoVideoId = fromVimeoVideoId;
+    this.fromVimeoUrls = fromVimeoUrls;
     this.fromAssets = fromAssets;
     this.fromFile = fromFile;
     this.vimeoVideoQuality = vimeoVideoQuality;
@@ -100,10 +102,17 @@ class FlGetXVideoController extends _FlGesturesController {
       case FlVideoPlayerType.vimeo:
 
         ///
-        await vimeoPlayerInit(
-          fromVimeoVideoId!,
-          vimeoVideoQuality,
-        );
+        if (fromVimeoVideoId != null) {
+          await vimeoPlayerInit(
+            quality: vimeoVideoQuality,
+            videoId: fromVimeoVideoId,
+          );
+        } else {
+          await vimeoPlayerInit(
+            quality: vimeoVideoQuality,
+            vimeoUrls: fromVimeoUrls,
+          );
+        }
 
         _videoCtr = VideoPlayerController.network(_vimeoVideoUrl);
 
@@ -121,8 +130,12 @@ class FlGetXVideoController extends _FlGesturesController {
         break;
       case FlVideoPlayerType.auto:
         assert(
-          fromNetworkUrl != null,
-          '''---------  fromVideoUrl parameter is required  ---------''',
+          fromNetworkUrl != null ||
+              fromAssets != null ||
+              fromVimeoVideoId != null ||
+              fromVimeoUrls != null ||
+              fromFile != null,
+          '''---------  any one parameter is required  ---------''',
         );
         _videoCtr = VideoPlayerController.network(fromNetworkUrl!);
         break;
@@ -189,7 +202,7 @@ class FlGetXVideoController extends _FlGesturesController {
   ///check video player type
   void checkPlayerType() {
     if (_videoPlayerType == FlVideoPlayerType.auto) {
-      if (fromVimeoVideoId != null) {
+      if (fromVimeoVideoId != null || fromVimeoUrls != null) {
         _videoPlayerType = FlVideoPlayerType.vimeo;
         return;
       }

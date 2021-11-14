@@ -201,8 +201,10 @@ class _FlPlayerController extends FlBaseController {
 
   ///claculates video `position` or `duration`
   String calculateVideoDuration(Duration _duration) {
+    print(_duration);
+    print(_duration.inMinutes);
     final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
-    final _totalMinute = _duration.inMinutes.toString();
+    final _totalMinute = _duration.toString().split(':')[1];
     final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes))
         .inSeconds
         .toString()

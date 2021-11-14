@@ -1,11 +1,10 @@
-import 'package:fl_video_player/fl_video_player.dart';
-import 'package:fl_video_player/src/utils/fl_enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../../fl_video_player.dart';
 import '../controllers/fl_getx_video_controller.dart';
+import '../utils/fl_enums.dart';
 
 class FullScreenView extends StatefulWidget {
   const FullScreenView({
@@ -16,11 +15,20 @@ class FullScreenView extends StatefulWidget {
   State<FullScreenView> createState() => _FullScreenViewState();
 }
 
-class _FullScreenViewState extends State<FullScreenView> {
+class _FullScreenViewState extends State<FullScreenView>
+    with SingleTickerProviderStateMixin {
   final _flCtr = Get.find<FlGetXVideoController>();
   @override
   void initState() {
-    _flCtr.enableFullScreen();
+    _flCtr
+      ..enableFullScreen()
+      ..playPauseCtr = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 450),
+      );
+    if (_flCtr.isvideoPlaying) {
+      _flCtr.playPauseCtr.forward();
+    }
     super.initState();
   }
 

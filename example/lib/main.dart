@@ -75,15 +75,16 @@ class _MyHomePage2State extends State<MyHomePage2> {
     return Scaffold(
         body: FlVideoPlayer(
           // playerType: FlVideoPlayerType.asset,
-          // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
           controller: controller,
+          // fromAssets: 'assets/Red.Notice.2021.720p.NF.WEBRip.800MB.x264-GalaxyRG.mkv',
           fromNetworkUrl:
           // 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-          // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-          'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
+          'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+          // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
           // 'http://techslides.com/demos/sample-videos/small.mp4',
           // fromVimeoVideoId: '518228118',
           // isLooping: true,
+
           autoPlay: false,
         ),
         floatingActionButton: FloatingActionButton(

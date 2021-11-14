@@ -11,10 +11,14 @@ class _FlVimeoVideoController extends _FlPlayerController {
   ///*vimeo player configs
   ///
   ///get all  `quality urls`
-  Future<void> getVimeoVideoUrls({required String videoId}) async {
+  Future<void> getVimeoVideoUrls({
+    String? videoId,
+    List<VimeoVideoQalityUrls>? vimeoUrls,
+  }) async {
     try {
       flVideoStateChanger(FlVideoState.loading);
-      final _vimeoVideoUrls = await VimeoVideoApi.getvideoQualityLink(videoId);
+      final _vimeoVideoUrls =
+          vimeoUrls ?? await VimeoVideoApi.getvideoQualityLink(videoId!);
 
       ///has issues with 240p
       _vimeoVideoUrls?.removeWhere((element) => element.quality == 240);
@@ -39,8 +43,18 @@ class _FlVimeoVideoController extends _FlPlayerController {
   }
 
   ///config vimeo player
-  Future<void> vimeoPlayerInit(String videoId, int? quality) async {
-    await getVimeoVideoUrls(videoId: videoId);
+  Future<void> vimeoPlayerInit({
+    String? videoId,
+    int? quality,
+    List<VimeoVideoQalityUrls>? vimeoUrls,
+  }) async {
+
+    if (vimeoUrls != null) {
+      await getVimeoVideoUrls(vimeoUrls: vimeoUrls);
+    } else {
+      await getVimeoVideoUrls(videoId: videoId);
+    }
+    
     final q = quality ?? vimeoVideoUrls?[0].quality ?? 720;
     _vimeoVideoUrl = getQualityUrl(q).toString();
     vimeoPlayingVideoQuality = q;

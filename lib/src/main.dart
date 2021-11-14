@@ -16,6 +16,7 @@ import 'package:fl_video_player/fl_video_player.dart';
 
 import 'controllers/fl_getx_video_controller.dart';
 import 'utils/fl_enums.dart';
+import 'utils/vimeo_models.dart';
 import 'widgets/custom_overlay.dart';
 import 'widgets/fl_video_progress_bar.dart';
 import 'widgets/material_icon_button.dart';
@@ -25,6 +26,7 @@ class FlVideoPlayer extends StatefulWidget {
   final FlVideoPlayerType playerType;
   final String? fromNetworkUrl;
   final String? fromVimeoVideoId;
+  final List<VimeoVideoQalityUrls>? fromVimeoUrls;
   final String? fromAssets;
   final File? fromFile;
   final bool autoPlay;
@@ -40,6 +42,7 @@ class FlVideoPlayer extends StatefulWidget {
     this.fromFile,
     this.autoPlay = true,
     this.isLooping = false,
+    this.fromVimeoUrls,
   }) : super(key: key) {
     _validate();
   }
@@ -60,7 +63,7 @@ class FlVideoPlayer extends StatefulWidget {
         break;
       case FlVideoPlayerType.vimeo:
         assert(
-          fromVimeoVideoId != null,
+          fromVimeoVideoId != null || fromVimeoUrls != null,
           '''---------  fromVimeoVideoId parameter is required  ---------''',
         );
         break;
@@ -75,6 +78,7 @@ class FlVideoPlayer extends StatefulWidget {
           fromNetworkUrl != null ||
               fromAssets != null ||
               fromVimeoVideoId != null ||
+              fromVimeoUrls != null ||
               fromFile != null,
           '''---------  any one parameter is required  ---------''',
         );
@@ -104,6 +108,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
         playerType: widget.playerType,
         fromNetworkUrl: widget.fromNetworkUrl,
         fromVimeoVideoId: widget.fromVimeoVideoId,
+        fromVimeoUrls: widget.fromVimeoUrls,
         fromAssets: widget.fromAssets,
         fromFile: widget.fromFile,
         isLooping: widget.isLooping,
