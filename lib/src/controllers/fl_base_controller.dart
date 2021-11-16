@@ -7,14 +7,13 @@ class FlBaseController extends GetxController {
   ///
   late FlVideoPlayerType _videoPlayerType;
 
-  ///
-  CustomOverlay? playBackOverlay;
-  CustomOverlay? vimeoQualityOverlay;
-  CustomOverlay? settingsOverlay;
   bool isMute = false;
 
   ///
   FlVideoState _flVideoState = FlVideoState.loading;
+
+  ///
+  bool isWebPopupOverlayOpen = false;
 
   ///
   Duration _videoDuration = Duration.zero;
@@ -78,21 +77,6 @@ class FlBaseController extends GetxController {
         _videoPosition = _videoCtr?.value.position ?? Duration.zero;
         update(['video-progress']);
       }
-    }
-  }
-
-  void closeCustomOverlays({bool makeNull = true}) {
-    try {
-      vimeoQualityOverlay?.close();
-      playBackOverlay?.close();
-      settingsOverlay?.close();
-      if (makeNull) {
-        playBackOverlay = null;
-        vimeoQualityOverlay = null;
-        settingsOverlay = null;
-      }
-    } catch (e) {
-      log('exception on closing overlay');
     }
   }
 }

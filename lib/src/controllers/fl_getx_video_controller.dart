@@ -164,10 +164,7 @@ class FlGetXVideoController extends _FlGesturesController {
         onRightDoubleTap();
         return;
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
-        closeCustomOverlays(makeNull: false);
-        return;
-      }
+     
 
       if (event.isKeyPressed(LogicalKeyboardKey.keyF)) {
         if (isFullScreen) {
@@ -230,10 +227,8 @@ class FlGetXVideoController extends _FlGesturesController {
       _html.document.documentElement?.onFullscreenChange.listen(
         (e) {
           if (isFullScreen) {
-            closeCustomOverlays();
             exitFullScreenView(context);
           } else {
-            closeCustomOverlays();
             enableFullScreenView(context);
           }
         },

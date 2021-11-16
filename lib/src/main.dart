@@ -430,14 +430,12 @@ class _WebOverlayBottomControlles extends StatelessWidget {
   void _onFullScreenToggle(FlGetXVideoController _flCtr, BuildContext context) {
     if (_flCtr.isOverlayVisible) {
       if (_flCtr.isFullScreen) {
-        _flCtr.closeCustomOverlays();
         if (kIsWeb) {
           _html.document.exitFullscreen();
         } else {
           _flCtr.exitFullScreenView(context);
         }
       } else {
-        _flCtr.closeCustomOverlays();
         if (kIsWeb) {
           _html.document.documentElement?.requestFullscreen();
         } else {
@@ -460,29 +458,8 @@ class _WebSettingsDropdown extends StatefulWidget {
 }
 
 class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
-  final _flCtr = Get.find<FlGetXVideoController>();
-
   @override
   Widget build(BuildContext context) {
-    _flCtr
-      ..playBackOverlay = CustomOverlay(
-        maxWidth: 200,
-        content: Material(
-          child: _VideoPlaybackSelector(
-            onTap: () {
-              _flCtr.playBackOverlay?.close();
-            },
-          ),
-        ),
-      )
-      ..vimeoQualityOverlay = CustomOverlay(
-        maxWidth: 200,
-        content: Material(child: _VideoQualitySelector(
-          onTap: () {
-            _flCtr.vimeoQualityOverlay?.close();
-          },
-        )),
-      );
     return Theme(
       data: Theme.of(context).copyWith(
         focusColor: Colors.white,
@@ -490,157 +467,167 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
       ),
       child: GetBuilder<FlGetXVideoController>(
         builder: (_flCtr) {
-          ///
-          _flCtr.settingsOverlay = CustomOverlay(
-            minWidth: 320,
-            maxWidth: 320,
-            child: Material(
-              elevation: 5,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_flCtr.videoPlayerType == FlVideoPlayerType.vimeo)
-                    Builder(builder: (context) {
-                      return _bottomSheetTiles(
-                        title: 'Quality',
-                        icon: Icons.video_settings_rounded,
-                        subText: '${_flCtr.vimeoPlayingVideoQuality}p',
-                        onTap: () {
-                          _flCtr.settingsOverlay?.close();
-                          _flCtr.vimeoQualityOverlay?.show(context);
-                        },
-                      );
-                    }),
-                  _bottomSheetTiles(
-                      title: 'Loop video',
-                      icon: Icons.loop_rounded,
-                      subText: _flCtr.isLooping ? 'On' : 'Off',
-                      onTap: () {
-                        _flCtr.settingsOverlay?.close();
-                        _flCtr.toggleLooping();
-                      }),
-                  Builder(builder: (context) {
-                    return _bottomSheetTiles(
-                        title: 'Playback speed',
-                        icon: Icons.slow_motion_video_rounded,
-                        subText: _flCtr.currentPaybackSpeed,
-                        onTap: () {
-                          _flCtr.settingsOverlay?.close();
-                          _flCtr.playBackOverlay?.show(context);
-                        });
-                  }),
-                ],
-              ),
-            ),
-          );
           return MaterialIconButton(
             toolTipMesg: 'Settings',
             color: Colors.white,
-            onPressed: () {
-              _flCtr.settingsOverlay?.show(context);
-            },
             child: const Icon(Icons.settings),
+            onPressed: () => _flCtr.isWebPopupOverlayOpen = true,
+            onTapDown: (details) async {
+              final _settingsMenu = await showMenu<String>(
+                context: context,
+                items: [
+                  if (_flCtr.vimeoVideoUrls != null ||
+                      (_flCtr.vimeoVideoUrls?.isNotEmpty ?? false))
+                    PopupMenuItem(
+                      value: 'OUALITY',
+                      child: _bottomSheetTiles(
+                        title: 'Quality',
+                        icon: Icons.video_settings_rounded,
+                        subText: '${_flCtr.vimeoPlayingVideoQuality}p',
+                      ),
+                    ),
+                  PopupMenuItem(
+                    value: 'LOOP',
+                    child: _bottomSheetTiles(
+                      title: 'Loop video',
+                      icon: Icons.loop_rounded,
+                      subText: _flCtr.isLooping ? 'On' : 'Off',
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'SPEED',
+                    child: _bottomSheetTiles(
+                      title: 'Playback speed',
+                      icon: Icons.slow_motion_video_rounded,
+                      subText: _flCtr.currentPaybackSpeed,
+                    ),
+                  ),
+                ],
+                position: RelativeRect.fromSize(
+                  details.globalPosition & Size.zero,
+                  MediaQuery.of(context).size,
+                ),
+              );
+              switch (_settingsMenu) {
+                case 'OUALITY':
+                  await _onVimeoQualitySelect(details, _flCtr);
+                  break;
+                case 'SPEED':
+                  await _onPlaybackSpeedSelect(details, _flCtr);
+                  break;
+                case 'LOOP':
+                  _flCtr.isWebPopupOverlayOpen = false;
+                  await _flCtr.toggleLooping();
+                  break;
+                default:
+                  _flCtr.isWebPopupOverlayOpen = false;
+              }
+            },
           );
         },
-        //  DropdownButton<dynamic>(
-        //   underline: const ColoredBox(color: Colors.transparent),
-        //   items: [
-        //     if (_flCtr.videoPlayerType == FlVideoPlayerType.vimeo)
-        //       DropdownMenuItem(
-        //         value: '',
-        //         child: Builder(builder: (context) {
-        //           return _bottomSheetTiles(
-        //             title: 'Quality',
-        //             icon: Icons.video_settings_rounded,
-        //             subText: '${_flCtr.vimeoPlayingVideoQuality}p',
-        //             onTap: () {
-        //               Navigator.of(context).pop();
-        //               _flCtr.vimeoQualityOverlay?.show(context);
-        //             },
-        //           );
-        //         }),
-        //       ),
-        //     DropdownMenuItem(
-        //       value: '',
-        //       onTap: () {
-        //         _flCtr.toggleLooping();
-        //       },
-        //       child: _bottomSheetTiles(
-        //         title: 'Loop video',
-        //         icon: Icons.loop_rounded,
-        //         subText: _flCtr.isLooping ? 'On' : 'Off',
-        //       ),
-        //     ),
-        //     DropdownMenuItem(
-        //       value: '',
-        //       onTap: () {},
-        //       child: Builder(builder: (context) {
-        //         return _bottomSheetTiles(
-        //             title: 'Playback speed',
-        //             icon: Icons.slow_motion_video_rounded,
-        //             subText: _flCtr.currentPaybackSpeed,
-        //             onTap: () {
-        //               Navigator.of(context).pop();
-        //               _flCtr.playBackOverlay?.show(context);
-        //             });
-        //       }),
-        //     )
-        //   ],
-        //   icon: const MaterialIconButton(
-        //     toolTipMesg: 'Settings',
-        //     color: Colors.white,
-        //     // onPressed: _flCtr.toggleMute,
-        //     child: Icon(
-        //       Icons.settings,
-        //     ),
-        //   ),
-        //   onChanged: (_) {},
-        // ),
       ),
     );
+  }
+
+  Future<void> _onPlaybackSpeedSelect(
+    TapDownDetails details,
+    FlGetXVideoController _flCtr,
+  ) async {
+    await Future.delayed(
+      const Duration(milliseconds: 400),
+    );
+    await showMenu(
+      context: context,
+      items: _flCtr.videoPlaybackSpeeds
+          .map(
+            (e) => PopupMenuItem(
+              child: ListTile(
+                title: Text(e),
+              ),
+              onTap: () {
+                _flCtr.setVideoPlayBack(e);
+              },
+            ),
+          )
+          .toList(),
+      position: RelativeRect.fromSize(
+        details.globalPosition & Size.zero,
+        // ignore: use_build_context_synchronously
+        MediaQuery.of(context).size,
+      ),
+    );
+    _flCtr.isWebPopupOverlayOpen = false;
+  }
+
+  Future<void> _onVimeoQualitySelect(
+    TapDownDetails details,
+    FlGetXVideoController _flCtr,
+  ) async {
+    await Future.delayed(
+      const Duration(milliseconds: 400),
+    );
+    await showMenu(
+      context: context,
+      items: _flCtr.vimeoVideoUrls
+              ?.map(
+                (e) => PopupMenuItem(
+                  child: ListTile(
+                    title: Text('${e.quality}p'),
+                    onTap: () {
+                      _flCtr.changeVimeoVideoQuality(
+                        e.quality,
+                      );
+                    },
+                  ),
+                ),
+              )
+              .toList() ??
+          [],
+      position: RelativeRect.fromSize(
+        details.globalPosition & Size.zero,
+        // ignore: use_build_context_synchronously
+        MediaQuery.of(context).size,
+      ),
+    );
+    _flCtr.isWebPopupOverlayOpen = false;
   }
 
   Widget _bottomSheetTiles({
     required String title,
     required IconData icon,
     String? subText,
-    void Function()? onTap,
   }) {
-    return Material(
-      child: InkWell(
-        onTap: onTap,
-        child: SizedBox(
-          width: double.maxFinite,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(icon),
-                const SizedBox(width: 20),
-                Text(
-                  title,
-                ),
-                if (subText != null) const SizedBox(width: 6),
-                if (subText != null)
-                  const SizedBox(
-                    height: 4,
-                    width: 4,
-                    child: DecoratedBox(
-                        decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                    )),
-                  ),
-                if (subText != null) const SizedBox(width: 6),
-                if (subText != null)
-                  Text(
-                    subText,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-              ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon),
+            const SizedBox(width: 20),
+            Text(
+              title,
             ),
-          ),
+            if (subText != null) const SizedBox(width: 10),
+            if (subText != null)
+              const SizedBox(
+                height: 4,
+                width: 4,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            if (subText != null) const SizedBox(width: 6),
+            if (subText != null)
+              Text(
+                subText,
+                style: const TextStyle(color: Colors.grey),
+              ),
+          ],
         ),
       ),
     );
@@ -789,13 +776,9 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   onPressed: () {
                     if (_flCtr.isOverlayVisible) {
                       if (_fl.isFullScreen) {
-                        _flCtr
-                          ..closeCustomOverlays()
-                          ..exitFullScreenView(context);
+                        _flCtr.exitFullScreenView(context);
                       } else {
-                        _flCtr
-                          ..closeCustomOverlays()
-                          ..enableFullScreenView(context);
+                        _flCtr.enableFullScreenView(context);
                       }
                     } else {
                       _flCtr.toggleVideoOverlay();
@@ -835,7 +818,7 @@ class _MobileBottomSheet extends StatelessWidget {
                 Timer(const Duration(milliseconds: 100), () {
                   showModalBottomSheet(
                       context: context,
-                      builder: (context) => const _VideoQualitySelector());
+                      builder: (context) => const _VideoQualitySelectorMob());
                 });
                 // await Future.delayed(
                 //   const Duration(milliseconds: 100),
@@ -910,9 +893,9 @@ class _MobileBottomSheet extends StatelessWidget {
   }
 }
 
-class _VideoQualitySelector extends StatelessWidget {
+class _VideoQualitySelectorMob extends StatelessWidget {
   final void Function()? onTap;
-  const _VideoQualitySelector({
+  const _VideoQualitySelectorMob({
     Key? key,
     this.onTap,
   }) : super(key: key);
@@ -953,13 +936,15 @@ class _VideoPlaybackSelector extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: _flctr.videoPlaybackSpeeds
-            .map((e) => ListTile(
-                  title: Text(e),
-                  onTap: () {
-                    onTap != null ? onTap!() : Navigator.of(context).pop();
-                    _flctr.setVideoPlayBack(e);
-                  },
-                ))
+            .map(
+              (e) => ListTile(
+                title: Text(e),
+                onTap: () {
+                  onTap != null ? onTap!() : Navigator.of(context).pop();
+                  _flctr.setVideoPlayBack(e);
+                },
+              ),
+            )
             .toList(),
       ),
     );

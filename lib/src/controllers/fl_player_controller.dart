@@ -178,6 +178,7 @@ class _FlPlayerController extends FlBaseController {
 
   void exitFullScreenView(BuildContext context) {
     Get.find<FlGetXVideoController>().disableFullScreen().then((value) {
+      if (isWebPopupOverlayOpen) Navigator.of(context).pop();
       Navigator.of(context).pop();
     });
   }

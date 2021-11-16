@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class MaterialIconButton extends StatelessWidget {
@@ -10,6 +9,7 @@ class MaterialIconButton extends StatelessWidget {
     required this.toolTipMesg,
     this.onPressed,
     this.onHover,
+    this.onTapDown,
   }) : super(key: key);
 
   final Color? color;
@@ -18,19 +18,20 @@ class MaterialIconButton extends StatelessWidget {
   final String toolTipMesg;
   final void Function()? onPressed;
   final void Function(bool)? onHover;
-
+  final void Function(TapDownDetails details)? onTapDown;
   @override
   Widget build(BuildContext context) {
     return Material(
       type: MaterialType.transparency,
       shape: const CircleBorder(),
       child: Tooltip(
-        message:toolTipMesg,
+        message: toolTipMesg,
         // textStyle: TextStyle(fontSize: 0.01),
         child: InkWell(
           borderRadius: BorderRadius.circular(radius * 4),
           onHover: onHover,
           onTap: onPressed,
+          onTapDown: onTapDown,
           child: Padding(
             padding: EdgeInsets.all(radius),
             child: IconTheme(
