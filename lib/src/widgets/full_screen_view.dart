@@ -57,7 +57,11 @@ class _FullScreenViewState extends State<FullScreenView>
                   child: _flCtr.videoCtr == null
                       ? circularProgressIndicator
                       : _flCtr.videoCtr!.value.isInitialized
-                          ? FlPlayer(videoPlayerCtr: _flCtr.videoCtr!)
+                          ? FlPlayer(
+                              videoPlayerCtr: _flCtr.videoCtr!,
+                              aspectRatio:
+                                  _flCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                            )
                           : circularProgressIndicator,
                 ),
               ),

@@ -76,7 +76,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
         body: FlVideoPlayer(
           // playerType: FlVideoPlayerType.asset,
           controller: controller,
-          // fromAssets: 'assets/Red.Notice.2021.720p.NF.WEBRip.800MB.x264-GalaxyRG.mkv',
+          // fromAssets: 'assets/long_video.mkv',
           fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
           // fromNetworkUrl:
           // 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
@@ -85,8 +85,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
           // 'http://techslides.com/demos/sample-videos/small.mp4',
           // fromVimeoVideoId: '518228118',
           // isLooping: true,
-
-          autoPlay: false,
+          autoPlay: true,
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {

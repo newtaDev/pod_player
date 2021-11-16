@@ -30,6 +30,7 @@ class FlVideoPlayer extends StatefulWidget {
   final File? fromFile;
   final bool autoPlay;
   final bool isLooping;
+  final double aspectRatio;
 
   FlVideoPlayer({
     Key? key,
@@ -42,6 +43,7 @@ class FlVideoPlayer extends StatefulWidget {
     this.autoPlay = true,
     this.isLooping = false,
     this.fromVimeoUrls,
+    this.aspectRatio = 16 / 9,
   }) : super(key: key) {
     _validate();
   }
@@ -148,7 +150,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
           child: ColoredBox(
             color: Colors.black,
             child: AspectRatio(
-              aspectRatio: _flCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+              aspectRatio: widget.aspectRatio,
               child: Center(
                 child: _flCtr.videoCtr == null
                     ? circularProgressIndicator
@@ -171,12 +173,14 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
           if (_flCtr.isFullScreen) return circularProgressIndicator;
           return FlPlayer(
             videoPlayerCtr: _flCtr.videoCtr!,
+            aspectRatio: widget.aspectRatio,
           );
         },
       );
     } else {
       return FlPlayer(
         videoPlayerCtr: _flCtr.videoCtr!,
+        aspectRatio: widget.aspectRatio,
       );
     }
   }
@@ -184,9 +188,12 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
 
 class FlPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
+  final double aspectRatio;
+
   const FlPlayer({
     Key? key,
     required this.videoPlayerCtr,
+    required this.aspectRatio,
   }) : super(key: key);
 
   @override
@@ -204,7 +211,7 @@ class FlPlayer extends StatelessWidget {
         children: [
           Center(
             child: AspectRatio(
-              aspectRatio: flCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+              aspectRatio: aspectRatio,
               child: VideoPlayer(videoPlayerCtr),
             ),
           ),

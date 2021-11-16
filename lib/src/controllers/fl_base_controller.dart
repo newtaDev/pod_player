@@ -9,6 +9,9 @@ class FlBaseController extends GetxController {
 
   bool isMute = false;
 
+  bool autoPlay = true;
+  bool _isWebAutoPlayDone = false;
+
   ///
   FlVideoState _flVideoState = FlVideoState.loading;
 
@@ -32,8 +35,11 @@ class FlBaseController extends GetxController {
       _listneToVideoState();
       _listneToVideoPosition();
       _listneToVolume();
+      if (kIsWeb && autoPlay && isMute && !_isWebAutoPlayDone) _webAutoPlay();
     }
   }
+
+  void _webAutoPlay() => _videoCtr!.setVolume(1);
 
   void _listneToVolume() {
     if (_videoCtr!.value.volume == 0) {

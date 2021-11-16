@@ -82,8 +82,11 @@ class FlGetXVideoController extends _FlGesturesController {
       _videoCtr?.addListener(videoListner);
       checkAutoPlayVideo();
       controllerInitialized = true;
-
       update();
+
+      // ignore: unawaited_futures
+      Future.delayed(const Duration(milliseconds: 600))
+          .then((value) => _isWebAutoPlayDone = true);
     } catch (e) {
       log('ERROR ON FLVIDEOPLAYER:  $e');
       rethrow;
@@ -163,7 +166,6 @@ class FlGetXVideoController extends _FlGesturesController {
         onRightDoubleTap();
         return;
       }
-     
 
       if (event.isKeyPressed(LogicalKeyboardKey.keyF)) {
         if (isFullScreen) {

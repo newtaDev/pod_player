@@ -6,7 +6,6 @@ class _FlPlayerController extends FlBaseController {
   Timer? showOverlayTimer1;
 
   bool isOverlayVisible = true;
-  bool autoPlay = true;
   bool isLooping = false;
   bool isFullScreen = false;
   bool isvideoPlaying = false;
