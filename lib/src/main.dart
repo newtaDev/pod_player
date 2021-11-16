@@ -17,7 +17,6 @@ import 'package:fl_video_player/fl_video_player.dart';
 import 'controllers/fl_getx_video_controller.dart';
 import 'utils/fl_enums.dart';
 import 'utils/vimeo_models.dart';
-import 'widgets/custom_overlay.dart';
 import 'widgets/fl_video_progress_bar.dart';
 import 'widgets/material_icon_button.dart';
 
