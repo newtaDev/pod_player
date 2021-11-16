@@ -114,6 +114,10 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
         isLooping: widget.isLooping,
         autoPlay: widget.autoPlay,
       );
+    if (kIsWeb) {
+      //to disable mouse right click
+      _html.document.onContextMenu.listen((event) => event.preventDefault());
+    }
     if (widget.controller == null) _flCtr.videoInit();
     _flCtr.addListenerId('flVideoState', _flCtr.flStateListner);
   }
