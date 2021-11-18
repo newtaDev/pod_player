@@ -21,7 +21,7 @@ import 'widgets/fl_video_progress_bar.dart';
 import 'widgets/material_icon_button.dart';
 
 class FlVideoPlayer extends StatefulWidget {
-  final FlVideoController? controller;
+  final FlVideoController controller;
   final FlVideoPlayerType playerType;
   final String? fromNetworkUrl;
   final String? fromVimeoVideoId;
@@ -34,15 +34,15 @@ class FlVideoPlayer extends StatefulWidget {
 
   FlVideoPlayer({
     Key? key,
+    required this.controller,
     this.playerType = FlVideoPlayerType.auto,
-    this.controller,
-    this.fromNetworkUrl,
+    this.fromNetworkUrl,  
     this.fromVimeoVideoId,
+    this.fromVimeoUrls,
     this.fromAssets,
     this.fromFile,
     this.autoPlay = true,
     this.isLooping = false,
-    this.fromVimeoUrls,
     this.aspectRatio = 16 / 9,
   }) : super(key: key) {
     _validate();
@@ -99,12 +99,16 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   void initState() {
     super.initState();
     // tag = widget.controller?.tag ?? UniqueKey().toString();
-    _flCtr = Get.put(FlGetXVideoController(), permanent: true)
+    _flCtr = Get.put(
+      FlGetXVideoController(),
+      permanent: true,
+      tag: widget.controller.getTag,
+    )
       ..playPauseCtr = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 450),
       )
-      ..webFullScreenListner(context)
+      ..webFullScreenListner(context, widget.controller.getTag)
       ..config(
         playerType: widget.playerType,
         fromNetworkUrl: widget.fromNetworkUrl,
@@ -119,7 +123,6 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       //to disable mouse right click
       _html.document.onContextMenu.listen((event) => event.preventDefault());
     }
-    if (widget.controller == null) _flCtr.videoInit();
     _flCtr.addListenerId('flVideoState', _flCtr.flStateListner);
   }
 
@@ -132,7 +135,10 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     _flCtr.hoverOverlayTimer?.cancel();
     _flCtr.leftDoubleTapTimer?.cancel();
     _flCtr.rightDoubleTapTimer?.cancel();
-    Get.delete<FlGetXVideoController>(force: true);
+    Get.delete<FlGetXVideoController>(
+      force: true,
+      tag: widget.controller.getTag,
+    );
     super.dispose();
   }
 
@@ -145,6 +151,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FlGetXVideoController>(
+      tag: widget.controller.getTag,
       builder: (_) {
         return Center(
           child: ColoredBox(
@@ -168,12 +175,14 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   Widget _buildPlayer() {
     if (kIsWeb) {
       return GetBuilder<FlGetXVideoController>(
+        tag: widget.controller.getTag,
         id: 'full-screen',
         builder: (_flCtr) {
           if (_flCtr.isFullScreen) return circularProgressIndicator;
           return FlPlayer(
             videoPlayerCtr: _flCtr.videoCtr!,
             aspectRatio: widget.aspectRatio,
+            tag: widget.controller.getTag,
           );
         },
       );
@@ -181,6 +190,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       return FlPlayer(
         videoPlayerCtr: _flCtr.videoCtr!,
         aspectRatio: widget.aspectRatio,
+        tag: widget.controller.getTag,
       );
     }
   }
@@ -189,16 +199,17 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
 class FlPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
   final double aspectRatio;
-
+  final String tag;
   const FlPlayer({
     Key? key,
     required this.videoPlayerCtr,
     required this.aspectRatio,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final flCtr = Get.find<FlGetXVideoController>();
+    final flCtr = Get.find<FlGetXVideoController>(tag: tag);
     return RawKeyboardListener(
       autofocus: true,
       focusNode: FocusNode(),
@@ -215,8 +226,9 @@ class FlPlayer extends StatelessWidget {
               child: VideoPlayer(videoPlayerCtr),
             ),
           ),
-          const _VideoOverlays(),
+          _VideoOverlays(tag: tag),
           GetBuilder<FlGetXVideoController>(
+            tag: tag,
             id: 'flVideoState',
             builder: (_flCtr) => _flCtr.flVideoState == FlVideoState.loading
                 ? const Center(
@@ -231,13 +243,15 @@ class FlPlayer extends StatelessWidget {
           ),
           if (!kIsWeb)
             GetBuilder<FlGetXVideoController>(
+              tag: tag,
               id: 'full-screen',
               builder: (_flCtr) => _flCtr.isFullScreen
                   ? const SizedBox()
-                  : const Align(
+                  : Align(
                       alignment: Alignment.bottomCenter,
                       child: FlVideoProgressBar(
                         allowGestures: true,
+                        tag: tag,
                         height: 5,
                       ),
                     ),
@@ -249,13 +263,16 @@ class FlPlayer extends StatelessWidget {
 }
 
 class _VideoOverlays extends StatelessWidget {
+  final String tag;
   const _VideoOverlays({
     Key? key,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FlGetXVideoController>(
+      tag: tag,
       id: 'overlay',
       builder: (_flCtr) {
         return AnimatedOpacity(
@@ -263,9 +280,9 @@ class _VideoOverlays extends StatelessWidget {
           opacity: _flCtr.isOverlayVisible ? 1 : 0,
           child: Stack(
             fit: StackFit.expand,
-            children: const [
-              if (!kIsWeb) MobileOverlay(),
-              if (kIsWeb) WebOverlay(),
+            children: [
+              if (!kIsWeb) MobileOverlay(tag: tag),
+              if (kIsWeb) WebOverlay(tag: tag),
             ],
           ),
         );
@@ -275,18 +292,21 @@ class _VideoOverlays extends StatelessWidget {
 }
 
 class WebOverlay extends StatelessWidget {
+  final String tag;
   const WebOverlay({
     Key? key,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final overlayColor = Colors.black38;
-    final _flCtr = Get.find<FlGetXVideoController>();
+    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
     return Stack(
       children: [
         Positioned.fill(
           child: VideoOverlayDetector(
+            tag: tag,
             onTap: _flCtr.togglePlayPauseVideo,
             child: ColoredBox(
               color: overlayColor,
@@ -294,16 +314,19 @@ class WebOverlay extends StatelessWidget {
             ),
           ),
         ),
-        const Align(
+        Align(
           alignment: Alignment.bottomLeft,
-          child: _WebOverlayBottomControlles(),
+          child: _WebOverlayBottomControlles(
+            tag: tag,
+          ),
         ),
         Positioned.fill(
           child: Row(
-            children: const [
+            children: [
               Expanded(
                 child: IgnorePointer(
                   child: _LeftRightDoubleTapBox(
+                    tag: tag,
                     isLeft: true,
                   ),
                 ),
@@ -311,6 +334,7 @@ class WebOverlay extends StatelessWidget {
               Expanded(
                 child: IgnorePointer(
                   child: _LeftRightDoubleTapBox(
+                    tag: tag,
                     isLeft: false,
                   ),
                 ),
@@ -331,11 +355,16 @@ class WebOverlay extends StatelessWidget {
 }
 
 class _WebOverlayBottomControlles extends StatelessWidget {
-  const _WebOverlayBottomControlles({Key? key}) : super(key: key);
+  final String tag;
+
+  const _WebOverlayBottomControlles({
+    Key? key,
+    required this.tag,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _flCtr = Get.find<FlGetXVideoController>();
+    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
     const durationTextStyle = TextStyle(color: Colors.white70);
     const itemColor = Colors.white;
 
@@ -347,9 +376,10 @@ class _WebOverlayBottomControlles extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const MouseRegion(
+            MouseRegion(
               cursor: SystemMouseCursors.click,
               child: FlVideoProgressBar(
+                tag: tag,
                 allowGestures: true,
               ),
             ),
@@ -362,8 +392,9 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
-                        const _PlayPause(),
+                        _PlayPause(tag: tag),
                         GetBuilder<FlGetXVideoController>(
+                          tag: tag,
                           id: 'volume',
                           builder: (_flCtr) => MaterialIconButton(
                             toolTipMesg: _flCtr.isMute
@@ -379,6 +410,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           ),
                         ),
                         GetBuilder<FlGetXVideoController>(
+                          tag: tag,
                           id: 'video-progress',
                           builder: (_flCtr) {
                             return Text(
@@ -408,7 +440,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: Row(
                       children: [
-                        const _WebSettingsDropdown(),
+                        _WebSettingsDropdown(tag: tag),
                         MaterialIconButton(
                           toolTipMesg: _flCtr.isFullScreen
                               ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
@@ -439,13 +471,13 @@ class _WebOverlayBottomControlles extends StatelessWidget {
         if (kIsWeb) {
           _html.document.exitFullscreen();
         } else {
-          _flCtr.exitFullScreenView(context);
+          _flCtr.exitFullScreenView(context,tag);
         }
       } else {
         if (kIsWeb) {
           _html.document.documentElement?.requestFullscreen();
         } else {
-          _flCtr.enableFullScreenView(context);
+          _flCtr.enableFullScreenView(context, tag);
         }
       }
     } else {
@@ -455,8 +487,11 @@ class _WebOverlayBottomControlles extends StatelessWidget {
 }
 
 class _WebSettingsDropdown extends StatefulWidget {
+  final String tag;
+
   const _WebSettingsDropdown({
     Key? key,
+    required this.tag,
   }) : super(key: key);
 
   @override
@@ -472,6 +507,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
         selectedRowColor: Colors.white,
       ),
       child: GetBuilder<FlGetXVideoController>(
+        tag: widget.tag,
         builder: (_flCtr) {
           return MaterialIconButton(
             toolTipMesg: 'Settings',
@@ -641,15 +677,18 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
 }
 
 class MobileOverlay extends StatelessWidget {
+  final String tag;
+
   const MobileOverlay({
     Key? key,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final overlayColor = Colors.black38;
     const itemColor = Colors.white;
-    final _flCtr = Get.find<FlGetXVideoController>();
+    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -657,34 +696,37 @@ class MobileOverlay extends StatelessWidget {
           children: [
             Expanded(
               child: VideoOverlayDetector(
+                tag: tag,
                 onDoubleTap: _flCtr.onLeftDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
-                  child: const _LeftRightDoubleTapBox(
+                  child: _LeftRightDoubleTapBox(
+                    tag: tag,
                     isLeft: true,
                   ),
                 ),
               ),
             ),
             VideoOverlayDetector(
+              tag: tag,
               child: ColoredBox(
                 color: overlayColor,
-                child: const SizedBox(
+                child: SizedBox(
                   height: double.infinity,
                   child: Center(
-                    child: _PlayPause(
-                      size: 42,
-                    ),
+                    child: _PlayPause(tag: tag, size: 42),
                   ),
                 ),
               ),
             ),
             Expanded(
               child: VideoOverlayDetector(
+                tag: tag,
                 onDoubleTap: _flCtr.onRightDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
-                  child: const _LeftRightDoubleTapBox(
+                  child: _LeftRightDoubleTapBox(
+                    tag: tag,
                     isLeft: false,
                   ),
                 ),
@@ -716,7 +758,7 @@ class MobileOverlay extends StatelessWidget {
                   ),
                 ],
               ),
-              const _MobileOverlayBottomControlles()
+              _MobileOverlayBottomControlles(tag: tag)
             ],
           ),
         ),
@@ -727,21 +769,27 @@ class MobileOverlay extends StatelessWidget {
   void _bottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => const _MobileBottomSheet(),
+      builder: (context) => _MobileBottomSheet(tag: tag),
     );
   }
 }
 
 class _MobileOverlayBottomControlles extends StatelessWidget {
-  const _MobileOverlayBottomControlles({Key? key}) : super(key: key);
+  final String tag;
+
+  const _MobileOverlayBottomControlles({
+    Key? key,
+    required this.tag,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _flCtr = Get.find<FlGetXVideoController>();
+    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
     const durationTextStyle = TextStyle(color: Colors.white70);
     const itemColor = Colors.white;
 
     return GetBuilder<FlGetXVideoController>(
+      tag: tag,
       id: 'full-screen',
       builder: (_fl) => Padding(
         padding: _fl.isFullScreen ? const EdgeInsets.all(10) : EdgeInsets.zero,
@@ -750,15 +798,17 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
           children: [
             if (_fl.isFullScreen)
               GetBuilder<FlGetXVideoController>(
+                tag: tag,
                 id: 'overlay',
                 builder: (_flCtr) => Visibility(
                   visible: _flCtr.isOverlayVisible,
-                  child: const FlVideoProgressBar(allowGestures: true),
+                  child: FlVideoProgressBar(allowGestures: true, tag: tag),
                 ),
               ),
             Row(
               children: [
                 GetBuilder<FlGetXVideoController>(
+                    tag: tag,
                     id: 'video-progress',
                     builder: (_flCtr) {
                       return Text(
@@ -782,9 +832,9 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   onPressed: () {
                     if (_flCtr.isOverlayVisible) {
                       if (_fl.isFullScreen) {
-                        _flCtr.exitFullScreenView(context);
+                        _flCtr.exitFullScreenView(context,tag);
                       } else {
-                        _flCtr.enableFullScreenView(context);
+                        _flCtr.enableFullScreenView(context, tag);
                       }
                     } else {
                       _flCtr.toggleVideoOverlay();
@@ -804,13 +854,17 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
 }
 
 class _MobileBottomSheet extends StatelessWidget {
+  final String tag;
+
   const _MobileBottomSheet({
     Key? key,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FlGetXVideoController>(
+      tag: tag,
       builder: (_flCtr) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -824,7 +878,7 @@ class _MobileBottomSheet extends StatelessWidget {
                 Timer(const Duration(milliseconds: 100), () {
                   showModalBottomSheet(
                       context: context,
-                      builder: (context) => const _VideoQualitySelectorMob());
+                      builder: (context) => _VideoQualitySelectorMob(tag: tag));
                 });
                 // await Future.delayed(
                 //   const Duration(milliseconds: 100),
@@ -850,7 +904,7 @@ class _MobileBottomSheet extends StatelessWidget {
                   showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      builder: (context) => const _VideoPlaybackSelector());
+                      builder: (context) => _VideoPlaybackSelector(tag: tag));
                 });
               }),
         ],
@@ -901,14 +955,17 @@ class _MobileBottomSheet extends StatelessWidget {
 
 class _VideoQualitySelectorMob extends StatelessWidget {
   final void Function()? onTap;
+  final String tag;
+
   const _VideoQualitySelectorMob({
     Key? key,
     this.onTap,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _flctr = Get.find<FlGetXVideoController>();
+    final _flctr = Get.find<FlGetXVideoController>(tag: tag);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -930,14 +987,17 @@ class _VideoQualitySelectorMob extends StatelessWidget {
 
 class _VideoPlaybackSelector extends StatelessWidget {
   final void Function()? onTap;
+  final String tag;
+
   const _VideoPlaybackSelector({
     Key? key,
     this.onTap,
+    required this.tag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _flctr = Get.find<FlGetXVideoController>();
+    final _flctr = Get.find<FlGetXVideoController>(tag: tag);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -958,15 +1018,18 @@ class _VideoPlaybackSelector extends StatelessWidget {
 }
 
 class _LeftRightDoubleTapBox extends StatelessWidget {
+  final String tag;
   final bool isLeft;
   const _LeftRightDoubleTapBox({
     Key? key,
+    required this.tag,
     required this.isLeft,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<FlGetXVideoController>(
+      tag: tag,
       id: 'double-tap',
       builder: (_flctr) {
         return SizedBox(
@@ -983,9 +1046,11 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Lottie.asset(isLeft
-                      ? 'packages/fl_video_player/assets/forward_left.json'
-                      : 'packages/fl_video_player/assets/forward_right.json'),
+                  Lottie.asset(
+                    isLeft
+                        ? 'packages/fl_video_player/assets/forward_left.json'
+                        : 'packages/fl_video_player/assets/forward_right.json',
+                  ),
                   if (isLeft
                       ? _flctr.isLeftDbTapIconVisible
                       : _flctr.isRightDbTapIconVisible)
@@ -1009,83 +1074,83 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
   }
 }
 
-class VideoOverlayDetector extends StatefulWidget {
+class VideoOverlayDetector extends StatelessWidget {
   final Widget? child;
   final void Function()? onDoubleTap;
   final void Function()? onTap;
+  final String tag;
 
   const VideoOverlayDetector({
     Key? key,
     this.child,
     this.onDoubleTap,
     this.onTap,
+    required this.tag,
   }) : super(key: key);
 
   @override
-  State<VideoOverlayDetector> createState() => _VideoOverlayDetectorState();
-}
-
-class _VideoOverlayDetectorState extends State<VideoOverlayDetector> {
-  final _flCtr = Get.find<FlGetXVideoController>();
-
-  @override
   Widget build(BuildContext context) {
+    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
     return MouseRegion(
-        onHover: (event) => _flCtr.onOverlayHover(),
-        onExit: (event) => _flCtr.onOverlayHoverExit(),
-        child: GestureDetector(
-            onTap: widget.onTap ?? _flCtr.toggleVideoOverlay,
-            onDoubleTap: widget.onDoubleTap,
-            child: widget.child));
-  }
-}
-
-class _PlayPause extends StatefulWidget {
-  final double? size;
-  const _PlayPause({
-    Key? key,
-    this.size,
-  }) : super(key: key);
-
-  @override
-  State<_PlayPause> createState() => _PlayPauseState();
-}
-
-class _PlayPauseState extends State<_PlayPause> with TickerProviderStateMixin {
-  final _flCtr = Get.find<FlGetXVideoController>();
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<FlGetXVideoController>(
-      id: 'overlay',
-      builder: (_flctr) => GetBuilder<FlGetXVideoController>(
-        id: 'flVideoState',
-        builder: (_f) => MaterialIconButton(
-          toolTipMesg: _f.isvideoPlaying
-              ? 'Pause${kIsWeb ? ' (space)' : ''}'
-              : 'Play${kIsWeb ? ' (space)' : ''}',
-          onPressed:
-              _flCtr.isOverlayVisible ? _flCtr.togglePlayPauseVideo : null,
-          child: onStateChange(),
-        ),
+      onHover: (event) => _flCtr.onOverlayHover(),
+      onExit: (event) => _flCtr.onOverlayHoverExit(),
+      child: GestureDetector(
+        onTap: onTap ?? _flCtr.toggleVideoOverlay,
+        onDoubleTap: onDoubleTap,
+        child: child,
       ),
     );
   }
+}
 
-  Widget onStateChange() {
-    if (kIsWeb) return _playPause();
+class _PlayPause extends StatelessWidget {
+  final double? size;
+  final String tag;
+
+  const _PlayPause({
+    Key? key,
+    this.size,
+    required this.tag,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
+    return GetBuilder<FlGetXVideoController>(
+      tag: tag,
+      id: 'overlay',
+      builder: (_flctr) {
+        return GetBuilder<FlGetXVideoController>(
+          tag: tag,
+          id: 'flVideoState',
+          builder: (_f) => MaterialIconButton(
+            toolTipMesg: _f.isvideoPlaying
+                ? 'Pause${kIsWeb ? ' (space)' : ''}'
+                : 'Play${kIsWeb ? ' (space)' : ''}',
+            onPressed:
+                _flCtr.isOverlayVisible ? _flCtr.togglePlayPauseVideo : null,
+            child: onStateChange(_flCtr),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget onStateChange(FlGetXVideoController _flCtr) {
+    if (kIsWeb) return _playPause(_flCtr);
     if (_flCtr.flVideoState == FlVideoState.loading) {
       return const SizedBox();
     } else {
-      return _playPause();
+      return _playPause(_flCtr);
     }
   }
 
-  Widget _playPause() {
+  Widget _playPause(FlGetXVideoController _flCtr) {
     return AnimatedIcon(
       icon: AnimatedIcons.play_pause,
       progress: _flCtr.playPauseCtr,
       color: Colors.white,
-      size: widget.size,
+      size: size,
     );
   }
 }

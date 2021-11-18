@@ -6,16 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-import '../utils/fl_enums.dart';
 import '../controllers/fl_getx_video_controller.dart';
+import '../utils/fl_enums.dart';
 
 class FlVideoProgressBar extends StatefulWidget {
   const FlVideoProgressBar({
     Key? key,
     this.colors,
     required this.allowGestures,
-    this.padding = EdgeInsets.zero,
     this.height = 20,
+    this.padding = EdgeInsets.zero,
+    required this.tag,
   }) : super(key: key);
 
   final VideoProgressColors? colors;
@@ -25,6 +26,7 @@ class FlVideoProgressBar extends StatefulWidget {
   final double height;
 
   final EdgeInsets padding;
+  final String tag;
 
   @override
   _FlVideoProgressBarState createState() => _FlVideoProgressBarState();
@@ -41,13 +43,14 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
   double? relativeVal;
   late double relativeWidth;
   bool isHovered = false;
-  final _flCtr = Get.find<FlGetXVideoController>();
 
   @override
   Widget build(BuildContext context) {
+    print(widget.tag);
     return GetBuilder<FlGetXVideoController>(
+      tag: widget.tag,
       id: 'video-progress',
-      builder: (controller) {
+      builder: (_flCtr) {
         Widget progressIndicator;
         if (_flCtr.videoCtr!.value.isInitialized) {
           final int duration = _flCtr.videoCtr!.value.duration.inMilliseconds;
@@ -84,6 +87,7 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
           return Padding(
             padding: widget.padding,
             child: _VideoProgressGestureDetector(
+              tag: widget.tag,
               controller: _flCtr.videoCtr!,
               onHoverStart: _onHoverStart,
               onExit: _onExit,
@@ -101,6 +105,8 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
   }
 
   void onHrDrag(double val) {
+    final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+
     relativeVal = val;
     if (kIsWeb) _flCtr.isShowOverlay(true);
   }
@@ -112,6 +118,8 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
     int duration,
     int position,
   ) {
+    final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+
     return Stack(
       alignment: alignmentLoc,
       fit: StackFit.passthrough,
@@ -253,6 +261,7 @@ class _VideoProgressBar extends StatelessWidget {
 class _VideoProgressGestureDetector extends StatefulWidget {
   const _VideoProgressGestureDetector({
     Key? key,
+    required this.tag,
     required this.child,
     required this.controller,
     this.onHoverStart,
@@ -261,7 +270,7 @@ class _VideoProgressGestureDetector extends StatefulWidget {
     this.onDragStart,
     this.onDragEnd,
   }) : super(key: key);
-
+  final String tag;
   final Widget child;
   final VideoPlayerController controller;
   final void Function(PointerEnterEvent event)? onHoverStart;
@@ -271,7 +280,8 @@ class _VideoProgressGestureDetector extends StatefulWidget {
   final void Function()? onDragEnd;
 
   @override
-  _VideoProgressGestureDetectorState createState() => _VideoProgressGestureDetectorState();
+  _VideoProgressGestureDetectorState createState() =>
+      _VideoProgressGestureDetectorState();
 }
 
 class _VideoProgressGestureDetectorState
@@ -279,10 +289,10 @@ class _VideoProgressGestureDetectorState
   bool _controllerWasPlaying = false;
 
   VideoPlayerController get controller => widget.controller;
-  final _flCtr = Get.find<FlGetXVideoController>();
 
   @override
   Widget build(BuildContext context) {
+    final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
     double relative = 0;
     void seekToRelativePosition(Offset globalPosition) {
       final RenderBox? box = context.findRenderObject() as RenderBox?;

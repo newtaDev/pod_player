@@ -49,12 +49,12 @@ class FlGetXVideoController extends _FlGesturesController {
   bool controllerInitialized = false;
 
   void config({
-    final String? fromNetworkUrl,
-    final String? fromVimeoVideoId,
+     String? fromNetworkUrl,
+     String? fromVimeoVideoId,
     List<VimeoVideoQalityUrls>? fromVimeoUrls,
-    final String? fromAssets,
-    final File? fromFile,
-    required final FlVideoPlayerType playerType,
+     String? fromAssets,
+     File? fromFile,
+    required  FlVideoPlayerType playerType,
     bool isLooping = false,
     bool autoPlay = true,
     int? vimeoVideoQuality,
@@ -221,16 +221,16 @@ class FlGetXVideoController extends _FlGesturesController {
     }
   }
 
-  void webFullScreenListner(BuildContext context) {
+  void webFullScreenListner(BuildContext context, String tag) {
     ///
     if (kIsWeb) {
       ///this will listne to fullScreen and exitFullScreen state in web
       _html.document.documentElement?.onFullscreenChange.listen(
         (e) {
           if (isFullScreen) {
-            exitFullScreenView(context);
+            exitFullScreenView(context,tag);
           } else {
-            enableFullScreenView(context);
+            enableFullScreenView(context, tag);
           }
         },
       );

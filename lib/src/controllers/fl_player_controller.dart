@@ -175,20 +175,22 @@ class _FlPlayerController extends FlBaseController {
     }
   }
 
-  void exitFullScreenView(BuildContext context) {
-    Get.find<FlGetXVideoController>().disableFullScreen().then((value) {
+  void exitFullScreenView(BuildContext context,String tag) {
+    Get.find<FlGetXVideoController>(tag: tag).disableFullScreen().then((value) {
       if (isWebPopupOverlayOpen) Navigator.of(context).pop();
       Navigator.of(context).pop();
     });
   }
 
-  void enableFullScreenView(BuildContext context) {
+  void enableFullScreenView(BuildContext context, String tag) {
     Navigator.push(
       context,
       PageRouteBuilder(
         opaque: true,
         fullscreenDialog: true,
-        pageBuilder: (BuildContext context, _, __) => const FullScreenView(),
+        pageBuilder: (BuildContext context, _, __) => FullScreenView(
+          tag: tag,
+        ),
         reverseTransitionDuration: const Duration(milliseconds: 400),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,8 +9,10 @@ import '../controllers/fl_getx_video_controller.dart';
 import '../utils/fl_enums.dart';
 
 class FullScreenView extends StatefulWidget {
+  final String tag;
   const FullScreenView({
     Key? key,
+    required this.tag,
   }) : super(key: key);
 
   @override
@@ -17,9 +21,10 @@ class FullScreenView extends StatefulWidget {
 
 class _FullScreenViewState extends State<FullScreenView>
     with SingleTickerProviderStateMixin {
-  final _flCtr = Get.find<FlGetXVideoController>();
+  late FlGetXVideoController _flCtr;
   @override
   void initState() {
+    _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
     _flCtr
       ..enableFullScreen()
       ..playPauseCtr = AnimationController(
@@ -47,6 +52,7 @@ class _FullScreenViewState extends State<FullScreenView>
       child: Scaffold(
         backgroundColor: Colors.black,
         body: GetBuilder<FlGetXVideoController>(
+          tag: widget.tag,
           builder: (_flCtr) => Center(
             child: ColoredBox(
               color: Colors.black,
@@ -58,6 +64,7 @@ class _FullScreenViewState extends State<FullScreenView>
                       ? circularProgressIndicator
                       : _flCtr.videoCtr!.value.isInitialized
                           ? FlPlayer(
+                              tag: widget.tag,
                               videoPlayerCtr: _flCtr.videoCtr!,
                               aspectRatio:
                                   _flCtr.videoCtr?.value.aspectRatio ?? 16 / 9,

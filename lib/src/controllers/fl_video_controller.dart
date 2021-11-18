@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
@@ -9,11 +10,13 @@ import 'fl_getx_video_controller.dart';
 
 class FlVideoController {
   late FlGetXVideoController _ctr;
+  late String getTag;
   FlVideoController() {
-    _ctr = Get.put(FlGetXVideoController(), permanent: true);
+    getTag = UniqueKey().toString();
+    log(getTag);  
+    _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag);
   }
   //!init
-  Timer? initTimer;
   Future<void> initialize() async {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await _ctr.videoInit();
