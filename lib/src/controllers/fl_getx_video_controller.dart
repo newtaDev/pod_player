@@ -13,7 +13,6 @@ import '../../fl_video_player.dart';
 import '../utils/fl_enums.dart';
 import '../utils/vimeo_models.dart';
 import '../utils/vimeo_video_api.dart';
-import '../widgets/full_screen_view.dart';
 
 part './fl_base_controller.dart';
 part './fl_gestures_controller.dart';

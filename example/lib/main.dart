@@ -68,7 +68,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
   void initState() {
     super.initState();
     controller = FlVideoController(
-      playerType: FlVideoPlayerType.asset,
+      // playerType: FlVideoPlayerType.asset,
       // fromAssets: 'assets/long_video.mkv',
       // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
       fromNetworkUrl:
@@ -91,17 +91,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
-          children: [
-            FlVideoPlayer(controller: controller),
-            AspectRatio(
-              aspectRatio: 9 / 16,
-              child: ColoredBox(
-                color: Colors.red,
-              ),
-            )
-          ],
-        ),
+        body: FlVideoPlayer(controller: controller),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             print(controller.currentVideoPosition);

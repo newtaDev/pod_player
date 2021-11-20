@@ -1,12 +1,4 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../fl_video_player.dart';
-import '../controllers/fl_getx_video_controller.dart';
-import '../utils/fl_enums.dart';
+part of 'package:fl_video_player/src/main.dart';
 
 class FullScreenView extends StatefulWidget {
   final String tag;
@@ -63,7 +55,7 @@ class _FullScreenViewState extends State<FullScreenView>
                   child: _flCtr.videoCtr == null
                       ? circularProgressIndicator
                       : _flCtr.videoCtr!.value.isInitialized
-                          ? FlPlayer(
+                          ? FlCorePlayer(
                               tag: widget.tag,
                               videoPlayerCtr: _flCtr.videoCtr!,
                               videoAspectRatio:
