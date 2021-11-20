@@ -1,20 +1,52 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
+import 'package:fl_video_player/src/utils/vimeo_models.dart';
+
 import '../../fl_video_player.dart';
 import 'fl_getx_video_controller.dart';
 
 class FlVideoController {
+  ///
   late FlGetXVideoController _ctr;
   late String getTag;
-  FlVideoController() {
+
+  ///
+  final FlVideoPlayerType playerType;
+  final String? fromNetworkUrl;
+  final String? fromVimeoVideoId;
+  final List<VimeoVideoQalityUrls>? fromVimeoUrls;
+  final String? fromAssets;
+  final File? fromFile;
+  final bool autoPlay;
+  final bool isLooping;
+  FlVideoController({
+    this.playerType = FlVideoPlayerType.auto,
+    this.fromNetworkUrl,
+    this.fromVimeoVideoId,
+    this.fromVimeoUrls,
+    this.fromAssets,
+    this.fromFile,
+    this.autoPlay = true,
+    this.isLooping = false,
+  }) {
     getTag = UniqueKey().toString();
-    log(getTag);  
-    _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag);
+    _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag)
+      ..config(
+        playerType: playerType,
+        fromNetworkUrl: fromNetworkUrl,
+        fromVimeoVideoId: fromVimeoVideoId,
+        fromVimeoUrls: fromVimeoUrls,
+        fromAssets: fromAssets,
+        fromFile: fromFile,
+        isLooping: isLooping,
+        autoPlay: autoPlay,
+      );
   }
   //!init
   Future<void> initialize() async {
@@ -56,4 +88,15 @@ class FlVideoController {
   Future<void> mute() async => _ctr.mute;
 
   Future<void> unMute() async => _ctr.mute;
+
+  void dispose() {
+    _ctr.videoCtr?.removeListener(_ctr.videoListner);
+    _ctr.videoCtr?.dispose();
+    _ctr.removeListenerId('flVideoState', _ctr.flStateListner);
+    _ctr.playPauseCtr.dispose();
+    Get.delete<FlGetXVideoController>(
+      force: true,
+      tag: getTag,
+    );
+  }
 }

@@ -22,66 +22,57 @@ import 'widgets/material_icon_button.dart';
 
 class FlVideoPlayer extends StatefulWidget {
   final FlVideoController controller;
-  final FlVideoPlayerType playerType;
-  final String? fromNetworkUrl;
-  final String? fromVimeoVideoId;
-  final List<VimeoVideoQalityUrls>? fromVimeoUrls;
-  final String? fromAssets;
-  final File? fromFile;
-  final bool autoPlay;
-  final bool isLooping;
-  final double aspectRatio;
+  final double frameAspectRatio;
+  final double videoAspectRatio;
 
   FlVideoPlayer({
     Key? key,
     required this.controller,
-    this.playerType = FlVideoPlayerType.auto,
-    this.fromNetworkUrl,  
-    this.fromVimeoVideoId,
-    this.fromVimeoUrls,
-    this.fromAssets,
-    this.fromFile,
-    this.autoPlay = true,
-    this.isLooping = false,
-    this.aspectRatio = 16 / 9,
+    this.frameAspectRatio = 16 / 9,
+    this.videoAspectRatio = 16 / 9,
   }) : super(key: key) {
     _validate();
   }
 
   void _validate() {
-    switch (playerType) {
+    final flVideoController =
+        Get.find<FlGetXVideoController>(tag: controller.getTag);
+
+    switch (flVideoController.videoPlayerType) {
       case FlVideoPlayerType.network:
         assert(
-          fromNetworkUrl != null,
-          '''---------  fromVideoUrl parameter is required  ---------''',
+          flVideoController.fromNetworkUrl != null,
+          '''---------  FlVideoController( fromVideoUrl: )-------- parameter is required  ---------''',
         );
         break;
       case FlVideoPlayerType.asset:
         assert(
-          fromAssets != null,
-          '''---------  fromAssets parameter is required  ---------''',
+          flVideoController.fromAssets != null,
+          '''---------  FlVideoController( fromAssets: )-------- parameter is required  ---------''',
         );
         break;
       case FlVideoPlayerType.vimeo:
+
         assert(
-          fromVimeoVideoId != null || fromVimeoUrls != null,
-          '''---------  fromVimeoVideoId parameter is required  ---------''',
+          flVideoController.fromVimeoVideoId != null ||
+              flVideoController.fromVimeoUrls != null,
+          '''---------  FlVideoController( fromVimeoVideoId: )-------- parameter is required  --------- OR  ---------  FlVideoController( fromVimeoUrls: )-------- parameter is required  ---------''',
         );
         break;
       case FlVideoPlayerType.file:
         assert(
-          fromFile != null,
-          '''---------  fromFile parameter is required  ---------''',
+          flVideoController.fromFile != null,
+          '''---------  FlVideoController( fromFile: )--------  parameter is required  ---------''',
         );
         break;
       case FlVideoPlayerType.auto:
         assert(
-          fromNetworkUrl != null ||
-              fromAssets != null ||
-              fromVimeoVideoId != null ||
-              fromVimeoUrls != null ||
-              fromFile != null,
-          '''---------  any one parameter is required  ---------''',
+          flVideoController.fromNetworkUrl != null ||
+              flVideoController.fromAssets != null ||
+              flVideoController.fromVimeoVideoId != null ||
+              flVideoController.fromVimeoUrls != null ||
+              flVideoController.fromFile != null,
+          '''--------- add required parameters to FlVideoController  ---------''',
         );
         break;
     }
@@ -108,38 +99,21 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
         vsync: this,
         duration: const Duration(milliseconds: 450),
       )
-      ..webFullScreenListner(context, widget.controller.getTag)
-      ..config(
-        playerType: widget.playerType,
-        fromNetworkUrl: widget.fromNetworkUrl,
-        fromVimeoVideoId: widget.fromVimeoVideoId,
-        fromVimeoUrls: widget.fromVimeoUrls,
-        fromAssets: widget.fromAssets,
-        fromFile: widget.fromFile,
-        isLooping: widget.isLooping,
-        autoPlay: widget.autoPlay,
-      );
+      ..webFullScreenListner(context, widget.controller.getTag);
+
     if (kIsWeb) {
       //to disable mouse right click
       _html.document.onContextMenu.listen((event) => event.preventDefault());
     }
-    _flCtr.addListenerId('flVideoState', _flCtr.flStateListner);
   }
 
   @override
   void dispose() {
-    _flCtr.videoCtr?.removeListener(_flCtr.videoListner);
-    _flCtr.removeListenerId('flVideoState', _flCtr.flStateListner);
-    _flCtr.videoCtr?.dispose();
-    _flCtr.playPauseCtr.dispose();
+    super.dispose();
+    _flCtr.flVideoStateChanger(FlVideoState.paused);
     _flCtr.hoverOverlayTimer?.cancel();
     _flCtr.leftDoubleTapTimer?.cancel();
     _flCtr.rightDoubleTapTimer?.cancel();
-    Get.delete<FlGetXVideoController>(
-      force: true,
-      tag: widget.controller.getTag,
-    );
-    super.dispose();
   }
 
   ///
@@ -157,7 +131,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
           child: ColoredBox(
             color: Colors.black,
             child: AspectRatio(
-              aspectRatio: widget.aspectRatio,
+              aspectRatio: widget.frameAspectRatio,
               child: Center(
                 child: _flCtr.videoCtr == null
                     ? circularProgressIndicator
@@ -181,7 +155,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
           if (_flCtr.isFullScreen) return circularProgressIndicator;
           return FlPlayer(
             videoPlayerCtr: _flCtr.videoCtr!,
-            aspectRatio: widget.aspectRatio,
+            videoAspectRatio: widget.videoAspectRatio,
             tag: widget.controller.getTag,
           );
         },
@@ -189,7 +163,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     } else {
       return FlPlayer(
         videoPlayerCtr: _flCtr.videoCtr!,
-        aspectRatio: widget.aspectRatio,
+        videoAspectRatio: widget.videoAspectRatio,
         tag: widget.controller.getTag,
       );
     }
@@ -198,12 +172,12 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
 
 class FlPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
-  final double aspectRatio;
+  final double videoAspectRatio;
   final String tag;
   const FlPlayer({
     Key? key,
     required this.videoPlayerCtr,
-    required this.aspectRatio,
+    required this.videoAspectRatio,
     required this.tag,
   }) : super(key: key);
 
@@ -222,7 +196,7 @@ class FlPlayer extends StatelessWidget {
         children: [
           Center(
             child: AspectRatio(
-              aspectRatio: aspectRatio,
+              aspectRatio: videoAspectRatio,
               child: VideoPlayer(videoPlayerCtr),
             ),
           ),
@@ -471,7 +445,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
         if (kIsWeb) {
           _html.document.exitFullscreen();
         } else {
-          _flCtr.exitFullScreenView(context,tag);
+          _flCtr.exitFullScreenView(context, tag);
         }
       } else {
         if (kIsWeb) {
@@ -832,7 +806,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   onPressed: () {
                     if (_flCtr.isOverlayVisible) {
                       if (_fl.isFullScreen) {
-                        _flCtr.exitFullScreenView(context,tag);
+                        _flCtr.exitFullScreenView(context, tag);
                       } else {
                         _flCtr.enableFullScreenView(context, tag);
                       }

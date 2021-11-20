@@ -66,7 +66,7 @@ class _FullScreenViewState extends State<FullScreenView>
                           ? FlPlayer(
                               tag: widget.tag,
                               videoPlayerCtr: _flCtr.videoCtr!,
-                              aspectRatio:
+                              videoAspectRatio:
                                   _flCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
                             )
                           : circularProgressIndicator,

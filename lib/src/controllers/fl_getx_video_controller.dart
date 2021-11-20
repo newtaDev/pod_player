@@ -49,12 +49,12 @@ class FlGetXVideoController extends _FlGesturesController {
   bool controllerInitialized = false;
 
   void config({
-     String? fromNetworkUrl,
-     String? fromVimeoVideoId,
+    String? fromNetworkUrl,
+    String? fromVimeoVideoId,
     List<VimeoVideoQalityUrls>? fromVimeoUrls,
-     String? fromAssets,
-     File? fromFile,
-    required  FlVideoPlayerType playerType,
+    String? fromAssets,
+    File? fromFile,
+    required FlVideoPlayerType playerType,
     bool isLooping = false,
     bool autoPlay = true,
     int? vimeoVideoQuality,
@@ -80,6 +80,8 @@ class FlGetXVideoController extends _FlGesturesController {
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
       await setLooping(isLooping);
       _videoCtr?.addListener(videoListner);
+      addListenerId('flVideoState', flStateListner);
+
       checkAutoPlayVideo();
       controllerInitialized = true;
       update();
@@ -228,7 +230,7 @@ class FlGetXVideoController extends _FlGesturesController {
       _html.document.documentElement?.onFullscreenChange.listen(
         (e) {
           if (isFullScreen) {
-            exitFullScreenView(context,tag);
+            exitFullScreenView(context, tag);
           } else {
             enableFullScreenView(context, tag);
           }

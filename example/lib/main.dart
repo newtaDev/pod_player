@@ -64,47 +64,42 @@ class MyHomePage2 extends StatefulWidget {
 
 class _MyHomePage2State extends State<MyHomePage2> {
   late FlVideoController controller;
-  late FlVideoController controller2;
   @override
   void initState() {
     super.initState();
-    controller = FlVideoController()..initialize();
-    controller2 = FlVideoController()..initialize();
+    controller = FlVideoController(
+      playerType: FlVideoPlayerType.asset,
+      // fromAssets: 'assets/long_video.mkv',
+      // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
+      fromNetworkUrl:
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+      // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+      // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
+      // 'http://techslides.com/demos/sample-videos/small.mp4',
+      // fromVimeoVideoId: '518228118',
+      // isLooping: true,
+      // autoPlay: false,
+    )..initialize();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
+        body: ListView(
           children: [
-            FlVideoPlayer(
-              // playerType: FlVideoPlayerType.asset,
-              controller: controller,
-              // fromAssets: 'assets/long_video.mkv',
-              fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
-              // fromNetworkUrl:
-              // 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-              // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-              // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
-              // 'http://techslides.com/demos/sample-videos/small.mp4',
-              // fromVimeoVideoId: '518228118',
-              // isLooping: true,
-              autoPlay: false,
-            ),
-            FlVideoPlayer(
-              // playerType: FlVideoPlayerType.asset,
-              controller: controller2,
-              // fromAssets: 'assets/long_video.mkv',
-              fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
-              // fromNetworkUrl:
-              // 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-              // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-              // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
-              // 'http://techslides.com/demos/sample-videos/small.mp4',
-              // fromVimeoVideoId: '518228118',
-              // isLooping: true,
-              autoPlay: false,
-            ),
+            FlVideoPlayer(controller: controller),
+            AspectRatio(
+              aspectRatio: 9 / 16,
+              child: ColoredBox(
+                color: Colors.red,
+              ),
+            )
           ],
         ),
         floatingActionButton: FloatingActionButton(

@@ -46,7 +46,6 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.tag);
     return GetBuilder<FlGetXVideoController>(
       tag: widget.tag,
       id: 'video-progress',
