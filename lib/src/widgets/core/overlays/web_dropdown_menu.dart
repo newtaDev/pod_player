@@ -1,6 +1,5 @@
 part of 'package:fl_video_player/src/main.dart';
 
-
 class _WebSettingsDropdown extends StatefulWidget {
   final String tag;
 
@@ -130,12 +129,12 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
                 (e) => PopupMenuItem(
                   child: ListTile(
                     title: Text('${e.quality}p'),
-                    onTap: () {
-                      _flCtr.changeVimeoVideoQuality(
-                        e.quality,
-                      );
-                    },
                   ),
+                  onTap: () {
+                    _flCtr.changeVimeoVideoQuality(
+                      e.quality,
+                    );
+                  },
                 ),
               )
               .toList() ??
@@ -190,4 +189,3 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
     );
   }
 }
-
