@@ -93,7 +93,6 @@ class FlVideoController {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
     _ctr.removeListenerId('flVideoState', _ctr.flStateListner);
-    _ctr.playPauseCtr.dispose();
     Get.delete<FlGetXVideoController>(
       force: true,
       tag: getTag,

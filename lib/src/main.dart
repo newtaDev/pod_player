@@ -118,6 +118,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   void dispose() {
     super.dispose();
     _flCtr.flVideoStateChanger(FlVideoState.paused);
+    _flCtr.playPauseCtr.dispose();
     _flCtr.hoverOverlayTimer?.cancel();
     _flCtr.leftDoubleTapTimer?.cancel();
     _flCtr.rightDoubleTapTimer?.cancel();
