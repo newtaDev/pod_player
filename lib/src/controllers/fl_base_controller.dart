@@ -8,6 +8,8 @@ class FlBaseController extends GetxController {
   late FlVideoPlayerType _videoPlayerType;
 
   bool isMute = false;
+  FocusNode? keyboardFocus;
+  FocusNode? keyboardFocusOnFullScreen;
 
   bool autoPlay = true;
   bool _isWebAutoPlayDone = false;
@@ -82,6 +84,25 @@ class FlBaseController extends GetxController {
           (_videoCtr?.value.position ?? Duration.zero).inSeconds) {
         _videoPosition = _videoCtr?.value.position ?? Duration.zero;
         update(['video-progress']);
+      }
+    }
+  }
+
+  void keyboadListner() {
+    print(keyboardFocus?.hasFocus);
+    if (keyboardFocus != null && !keyboardFocus!.hasFocus) {
+      if (keyboardFocus!.canRequestFocus) {
+        keyboardFocus!.requestFocus();
+      }
+    }
+  }
+
+  void keyboadFullScreenListner() {
+    print(keyboardFocusOnFullScreen?.hasFocus);
+    if (keyboardFocusOnFullScreen != null &&
+        !keyboardFocusOnFullScreen!.hasFocus) {
+      if (keyboardFocusOnFullScreen!.canRequestFocus) {
+        keyboardFocusOnFullScreen!.requestFocus();
       }
     }
   }

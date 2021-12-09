@@ -167,8 +167,7 @@ class FlGetXVideoController extends _FlGesturesController {
         onRightDoubleTap();
         return;
       }
-
-      if (event.isKeyPressed(LogicalKeyboardKey.keyF)) {
+      if (event.logicalKey.debugName =='Key F') {
         if (isFullScreen) {
           _html.document.exitFullscreen();
         } else {

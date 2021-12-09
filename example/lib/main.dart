@@ -91,7 +91,12 @@ class _MyHomePage2State extends State<MyHomePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FlVideoPlayer(controller: controller),
+        body: Column(
+          children: [
+            FlVideoPlayer(controller: controller),
+            TextButton(onPressed: (){}, child: Text('has focus'))
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             print(controller.currentVideoPosition);
