@@ -118,7 +118,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   void dispose() {
     super.dispose();
     _flCtr.flVideoStateChanger(FlVideoState.paused);
-    _flCtr.playPauseCtr.dispose();
+    _flCtr.playPauseCtr?.dispose();
     _flCtr.hoverOverlayTimer?.cancel();
     _flCtr.leftDoubleTapTimer?.cancel();
     _flCtr.rightDoubleTapTimer?.cancel();
@@ -178,7 +178,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   }
 }
 
-class _PlayPause extends StatelessWidget {
+class _PlayPause extends StatefulWidget {
   final double? size;
   final String tag;
 
@@ -189,14 +189,36 @@ class _PlayPause extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<_PlayPause> createState() => _PlayPauseState();
+}
+
+class _PlayPauseState extends State<_PlayPause>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _payCtr;
+  @override
+  void initState() {
+    _payCtr = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 450),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _payCtr.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
     return GetBuilder<FlGetXVideoController>(
-      tag: tag,
+      tag: widget.tag,
       id: 'overlay',
       builder: (_flctr) {
         return GetBuilder<FlGetXVideoController>(
-          tag: tag,
+          tag: widget.tag,
           id: 'flVideoState',
           builder: (_f) => MaterialIconButton(
             toolTipMesg: _f.isvideoPlaying
@@ -223,9 +245,9 @@ class _PlayPause extends StatelessWidget {
   Widget _playPause(FlGetXVideoController _flCtr) {
     return AnimatedIcon(
       icon: AnimatedIcons.play_pause,
-      progress: _flCtr.playPauseCtr,
+      progress: _flCtr.playPauseCtr ?? _payCtr,
       color: Colors.white,
-      size: size,
+      size: widget.size,
     );
   }
 }

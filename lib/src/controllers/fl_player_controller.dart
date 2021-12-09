@@ -1,7 +1,7 @@
 part of 'fl_getx_video_controller.dart';
 
 class _FlPlayerController extends FlBaseController {
-  late AnimationController playPauseCtr;
+  AnimationController? playPauseCtr;
   Timer? showOverlayTimer;
   Timer? showOverlayTimer1;
 
@@ -81,13 +81,13 @@ class _FlPlayerController extends FlBaseController {
       isShowOverlay(true);
       // ignore: unawaited_futures
       _videoCtr?.play();
-      await playPauseCtr.forward();
+      await playPauseCtr?.forward();
       isShowOverlay(false, delay: const Duration(seconds: 1));
     } else {
       isShowOverlay(true);
       // ignore: unawaited_futures
       _videoCtr?.pause();
-      await playPauseCtr.reverse();
+      await playPauseCtr?.reverse();
     }
   }
 
@@ -175,7 +175,7 @@ class _FlPlayerController extends FlBaseController {
     }
   }
 
-  void exitFullScreenView(BuildContext context,String tag) {
+  void exitFullScreenView(BuildContext context, String tag) {
     Get.find<FlGetXVideoController>(tag: tag).disableFullScreen().then((value) {
       if (isWebPopupOverlayOpen) Navigator.of(context).pop();
       Navigator.of(context).pop();

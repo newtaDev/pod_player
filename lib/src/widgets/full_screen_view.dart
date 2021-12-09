@@ -24,7 +24,7 @@ class _FullScreenViewState extends State<FullScreenView>
         duration: const Duration(milliseconds: 450),
       );
     if (_flCtr.isvideoPlaying) {
-      _flCtr.playPauseCtr.forward();
+      _flCtr.playPauseCtr?.forward();
     }
     super.initState();
   }
