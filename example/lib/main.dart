@@ -79,6 +79,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
       // fromVimeoVideoId: '518228118',
       // isLooping: true,
       // autoPlay: false,
+      fourcedVideoFocus: true
     )..initialize();
   }
 

@@ -109,8 +109,10 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       ..webFullScreenListner(context, widget.controller.getTag);
 
     if (kIsWeb) {
-      _flCtr.keyboardFocusWeb = FocusNode();
-      _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
+      if (widget.controller.fourcedVideoFocus) {
+        _flCtr.keyboardFocusWeb = FocusNode();
+        _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
+      }
       //to disable mouse right click
       _html.document.onContextMenu.listen((event) => event.preventDefault());
     }

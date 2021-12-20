@@ -25,6 +25,9 @@ class FlVideoController {
   final File? fromFile;
   final bool autoPlay;
   final bool isLooping;
+
+  ///only for web
+  final bool fourcedVideoFocus;
   FlVideoController({
     this.playerType = FlVideoPlayerType.auto,
     this.fromNetworkUrl,
@@ -34,6 +37,7 @@ class FlVideoController {
     this.fromFile,
     this.autoPlay = true,
     this.isLooping = false,
+    this.fourcedVideoFocus = false,
   }) {
     getTag = UniqueKey().toString();
     _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag)
