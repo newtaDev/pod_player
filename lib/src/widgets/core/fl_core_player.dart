@@ -16,9 +16,8 @@ class FlCorePlayer extends StatelessWidget {
     final flCtr = Get.find<FlGetXVideoController>(tag: tag);
     return RawKeyboardListener(
       autofocus: true,
-      focusNode: flCtr.isFullScreen
-          ? flCtr.keyboardFocusOnFullScreen!
-          : flCtr.keyboardFocus!,
+      focusNode: (flCtr.isFullScreen ? FocusNode() : flCtr.keyboardFocusWeb) ??
+          FocusNode(),
       onKey: (value) => flCtr.onKeyBoardEvents(
         event: value,
         appContext: context,

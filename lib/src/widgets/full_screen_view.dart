@@ -17,7 +17,7 @@ class _FullScreenViewState extends State<FullScreenView>
   @override
   void initState() {
     _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
-    _flCtr.keyboardFocus?.removeListener(_flCtr.keyboadListner);
+    _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
     _flCtr
       ..enableFullScreen()
       ..playPauseCtr = AnimationController(
@@ -27,16 +27,12 @@ class _FullScreenViewState extends State<FullScreenView>
     if (_flCtr.isvideoPlaying) {
       _flCtr.playPauseCtr?.forward();
     }
-    _flCtr.keyboardFocusOnFullScreen
-        ?.addListener(_flCtr.keyboadFullScreenListner);
     super.initState();
   }
 
   @override
   void dispose() {
-    _flCtr.keyboardFocusOnFullScreen
-        ?.removeListener(_flCtr.keyboadFullScreenListner);
-    _flCtr.keyboardFocus?.addListener(_flCtr.keyboadListner);
+    _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
     super.dispose();
   }
 

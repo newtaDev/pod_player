@@ -8,8 +8,7 @@ class FlBaseController extends GetxController {
   late FlVideoPlayerType _videoPlayerType;
 
   bool isMute = false;
-  FocusNode? keyboardFocus;
-  FocusNode? keyboardFocusOnFullScreen;
+  FocusNode? keyboardFocusWeb;
 
   bool autoPlay = true;
   bool _isWebAutoPlayDone = false;
@@ -89,21 +88,21 @@ class FlBaseController extends GetxController {
   }
 
   void keyboadListner() {
-    print(keyboardFocus?.hasFocus);
-    if (keyboardFocus != null && !keyboardFocus!.hasFocus) {
-      if (keyboardFocus!.canRequestFocus) {
-        keyboardFocus!.requestFocus();
+    print(keyboardFocusWeb?.hasFocus);
+    if (keyboardFocusWeb != null && !keyboardFocusWeb!.hasFocus) {
+      if (keyboardFocusWeb!.canRequestFocus) {
+        keyboardFocusWeb!.requestFocus();
       }
     }
   }
 
-  void keyboadFullScreenListner() {
-    print(keyboardFocusOnFullScreen?.hasFocus);
-    if (keyboardFocusOnFullScreen != null &&
-        !keyboardFocusOnFullScreen!.hasFocus) {
-      if (keyboardFocusOnFullScreen!.canRequestFocus) {
-        keyboardFocusOnFullScreen!.requestFocus();
-      }
-    }
-  }
+  // void keyboadFullScreenListner() {
+  //   print(keyboardFocusOnFullScreen?.hasFocus);
+  //   if (keyboardFocusOnFullScreen != null &&
+  //       !keyboardFocusOnFullScreen!.hasFocus) {
+  //     if (keyboardFocusOnFullScreen!.canRequestFocus) {
+  //       keyboardFocusOnFullScreen!.requestFocus();
+  //     }
+  //   }
+  // }
 }

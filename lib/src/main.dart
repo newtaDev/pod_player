@@ -106,12 +106,11 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
         vsync: this,
         duration: const Duration(milliseconds: 450),
       )
-      ..keyboardFocus = FocusNode()
-      ..keyboardFocusOnFullScreen = FocusNode()
       ..webFullScreenListner(context, widget.controller.getTag);
-    _flCtr.keyboardFocus?.addListener(_flCtr.keyboadListner);
-    
+
     if (kIsWeb) {
+      _flCtr.keyboardFocusWeb = FocusNode();
+      _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
       //to disable mouse right click
       _html.document.onContextMenu.listen((event) => event.preventDefault());
     }
@@ -121,13 +120,15 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   void dispose() {
     super.dispose();
     _flCtr.flVideoStateChanger(FlVideoState.paused);
-    _flCtr.keyboardFocus?.removeListener(_flCtr.keyboadListner);
-    _flCtr.keyboardFocusOnFullScreen
-        ?.removeListener(_flCtr.keyboadFullScreenListner);
-    _flCtr.keyboardFocus?.dispose();
-    _flCtr.keyboardFocusOnFullScreen?.dispose();
+    if (kIsWeb) {
+      _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
+    }
+    // _flCtr.keyboardFocus?.unfocus();
+    // _flCtr.keyboardFocusOnFullScreen?.unfocus();
     _flCtr.playPauseCtr?.dispose();
     _flCtr.hoverOverlayTimer?.cancel();
+    _flCtr.showOverlayTimer?.cancel();
+    _flCtr.showOverlayTimer1?.cancel();
     _flCtr.leftDoubleTapTimer?.cancel();
     _flCtr.rightDoubleTapTimer?.cancel();
   }

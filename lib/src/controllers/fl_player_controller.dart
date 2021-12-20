@@ -166,6 +166,7 @@ class _FlPlayerController extends FlBaseController {
   }
 
   Future<void> disableFullScreen() async {
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]);//for ios
     await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
