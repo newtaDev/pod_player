@@ -10,7 +10,7 @@ class _MobileOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final overlayColor = Colors.black38;
+    const overlayColor = Colors.black38;
     const itemColor = Colors.white;
     final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
     return Stack(
@@ -58,33 +58,30 @@ class _MobileOverlay extends StatelessWidget {
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  MaterialIconButton(
-                    toolTipMesg: 'More',
-                    color: itemColor,
-                    onPressed: () {
-                      if (_flCtr.isOverlayVisible) {
-                        _bottomSheet(context);
-                      } else {
-                        _flCtr.toggleVideoOverlay();
-                      }
-                    },
-                    child: const Icon(
-                      Icons.more_vert_rounded,
-                    ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MaterialIconButton(
+                  toolTipMesg: 'More',
+                  color: itemColor,
+                  onPressed: () {
+                    if (_flCtr.isOverlayVisible) {
+                      _bottomSheet(context);
+                    } else {
+                      _flCtr.toggleVideoOverlay();
+                    }
+                  },
+                  child: const Icon(
+                    Icons.more_vert_rounded,
                   ),
-                ],
-              ),
-              _MobileOverlayBottomControlles(tag: tag)
-            ],
-          ),
+                ),
+              ],
+            ),
+            _MobileOverlayBottomControlles(tag: tag)
+          ],
         ),
       ],
     );
@@ -141,7 +138,7 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
                     Transform.translate(
                       offset: const Offset(0, 40),
                       child: Text(
-                        '${_flctr.isLeftDbTapIconVisible ? _flctr.leftDoubleTapduration : _flctr.rightDubleTapduration} seconds',
+                        '${_flctr.isLeftDbTapIconVisible ? _flctr.leftDoubleTapduration : _flctr.rightDubleTapduration} Sec',
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

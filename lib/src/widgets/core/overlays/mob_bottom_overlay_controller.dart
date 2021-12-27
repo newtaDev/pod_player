@@ -17,63 +17,77 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
     return GetBuilder<FlGetXVideoController>(
       tag: tag,
       id: 'full-screen',
-      builder: (_fl) => Padding(
-        padding: _fl.isFullScreen ? const EdgeInsets.all(10) : EdgeInsets.zero,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (_fl.isFullScreen)
+      builder: (_fl) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              const SizedBox(width: 12),
               GetBuilder<FlGetXVideoController>(
                 tag: tag,
-                id: 'overlay',
-                builder: (_flCtr) => Visibility(
-                  visible: _flCtr.isOverlayVisible,
-                  child: FlVideoProgressBar(allowGestures: true, tag: tag),
+                id: 'video-progress',
+                builder: (_flCtr) {
+                  return Text(
+                      _flCtr.calculateVideoDuration(_flCtr.videoPosition),
+                      style: const TextStyle(color: itemColor));
+                },
+              ),
+              const Text(
+                ' / ',
+                style: durationTextStyle,
+              ),
+              Text(
+                _flCtr.calculateVideoDuration(_flCtr.videoDuration),
+                style: durationTextStyle,
+              ),
+              const Spacer(),
+              MaterialIconButton(
+                toolTipMesg: _flCtr.isFullScreen
+                    ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                    : 'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                color: itemColor,
+                onPressed: () {
+                  if (_flCtr.isOverlayVisible) {
+                    if (_fl.isFullScreen) {
+                      _flCtr.exitFullScreenView(context, tag);
+                    } else {
+                      _flCtr.enableFullScreenView(context, tag);
+                    }
+                  } else {
+                    _flCtr.toggleVideoOverlay();
+                  }
+                },
+                child: Icon(
+                  _fl.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
                 ),
               ),
-            Row(
-              children: [
-                GetBuilder<FlGetXVideoController>(
-                    tag: tag,
-                    id: 'video-progress',
-                    builder: (_flCtr) {
-                      return Text(
-                          _flCtr.calculateVideoDuration(_flCtr.videoPosition),
-                          style: const TextStyle(color: itemColor));
-                    }),
-                const Text(
-                  ' / ',
-                  style: durationTextStyle,
-                ),
-                Text(
-                  _flCtr.calculateVideoDuration(_flCtr.videoDuration),
-                  style: durationTextStyle,
-                ),
-                const Spacer(),
-                MaterialIconButton(
-                  toolTipMesg: _flCtr.isFullScreen
-                      ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                      : 'Fullscreen${kIsWeb ? ' (f)' : ''}',
-                  color: itemColor,
-                  onPressed: () {
-                    if (_flCtr.isOverlayVisible) {
-                      if (_fl.isFullScreen) {
-                        _flCtr.exitFullScreenView(context, tag);
-                      } else {
-                        _flCtr.enableFullScreenView(context, tag);
-                      }
-                    } else {
-                      _flCtr.toggleVideoOverlay();
-                    }
-                  },
-                  child: Icon(
-                    _fl.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+            ],
+          ),
+          GetBuilder<FlGetXVideoController>(
+            tag: tag,
+            id: 'overlay',
+            builder: (_flCtr) {
+              if (_fl.isFullScreen) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
+                  child: Visibility(
+                    visible: _flCtr.isOverlayVisible,
+                    child: FlVideoProgressBar(
+                      tag: tag,
+                      alignment: Alignment.topCenter,
+                      flProgressBarConfig: _flCtr.flProgressBarConfig,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
+                );
+              }
+              return FlVideoProgressBar(
+                tag: tag,
+                alignment: Alignment.bottomCenter,
+                      flProgressBarConfig: _flCtr.flProgressBarConfig,
+              );
+            },
+          ),
+        ],
       ),
     );
   }

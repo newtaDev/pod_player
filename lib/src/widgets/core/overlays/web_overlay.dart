@@ -9,7 +9,7 @@ class _WebOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final overlayColor = Colors.black38;
+    const overlayColor = Colors.black38;
     final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
     return Stack(
       children: [
@@ -17,9 +17,9 @@ class _WebOverlay extends StatelessWidget {
           child: _VideoGestureDetector(
             tag: tag,
             onTap: _flCtr.togglePlayPauseVideo,
-            child: ColoredBox(
+            child: const ColoredBox(
               color: overlayColor,
-              child: const SizedBox.expand(),
+              child: SizedBox.expand(),
             ),
           ),
         ),

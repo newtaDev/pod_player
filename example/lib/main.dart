@@ -68,19 +68,19 @@ class _MyHomePage2State extends State<MyHomePage2> {
   void initState() {
     super.initState();
     controller = FlVideoController(
-      // playerType: FlVideoPlayerType.asset,
-      // fromAssets: 'assets/long_video.mkv',
-      fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
-      // fromNetworkUrl:
-      //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-      // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-      // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
-      // 'http://techslides.com/demos/sample-videos/small.mp4',
-      // fromVimeoVideoId: '518228118',
-      // isLooping: true,
-      // autoPlay: false,
-      fourcedVideoFocus: true
-    )..initialize();
+        // playerType: FlVideoPlayerType.asset,
+        // fromAssets: 'assets/long_video.mkv',
+        fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
+        // fromNetworkUrl:
+        //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+        // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+        // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
+        // 'http://techslides.com/demos/sample-videos/small.mp4',
+        // fromVimeoVideoId: '518228118',
+        // isLooping: true,
+        // autoPlay: false,
+        forcedVideoFocus: true)
+      ..initialize();
   }
 
   @override
@@ -92,21 +92,18 @@ class _MyHomePage2State extends State<MyHomePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
-          children: [
-            FlVideoPlayer(controller: controller),
-            SizedBox(height: 20),
-            // FlVideoPlayer(controller: controller),
-            TextButton(onPressed: () {}, child: Text('has focus'))
-          ],
+        body: FlVideoPlayer(
+          controller: controller,
+          
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print(controller.currentVideoPosition);
-            print(controller.isInitialized);
-            print(controller.totalVideoLength);
-            controller.play();
-          },
-        ));
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     print(controller.currentVideoPosition);
+        //     print(controller.isInitialized);
+        //     print(controller.totalVideoLength);
+        //     controller.play();
+        //   },
+        // )
+        );
   }
 }

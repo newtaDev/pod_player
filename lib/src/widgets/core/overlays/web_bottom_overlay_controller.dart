@@ -22,12 +22,9 @@ class _WebOverlayBottomControlles extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: FlVideoProgressBar(
-                tag: tag,
-                allowGestures: true,
-              ),
+            FlVideoProgressBar(
+              tag: tag,
+              flProgressBarConfig: _flCtr.flProgressBarConfig,
             ),
             Row(
               children: [
@@ -116,15 +113,15 @@ class _WebOverlayBottomControlles extends StatelessWidget {
       if (_flCtr.isFullScreen) {
         if (kIsWeb) {
           _html.document.exitFullscreen();
-        } else {
-          _flCtr.exitFullScreenView(context, tag);
+          return;
         }
+        _flCtr.exitFullScreenView(context, tag);
       } else {
         if (kIsWeb) {
           _html.document.documentElement?.requestFullscreen();
-        } else {
-          _flCtr.enableFullScreenView(context, tag);
+          return;
         }
+        _flCtr.enableFullScreenView(context, tag);
       }
     } else {
       _flCtr.toggleVideoOverlay();

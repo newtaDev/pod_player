@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fl_video_player/src/widgets/fl_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -18,8 +19,9 @@ part './fl_base_controller.dart';
 part './fl_gestures_controller.dart';
 part './fl_player_controller.dart';
 part './fl_vimeo_controller.dart';
+part './fl_ui_controller.dart';
 
-class FlGetXVideoController extends _FlGesturesController {
+class FlGetXVideoController extends _FlUiController {
   ///main videoplayer controller
   VideoPlayerController? get videoCtr => _videoCtr;
 
@@ -145,11 +147,15 @@ class FlGetXVideoController extends _FlGesturesController {
     }
   }
 
+  Timer? _keyBoardEventTimer;
+
   ///Listning on keyboard events
   void onKeyBoardEvents({
     required RawKeyEvent event,
     required BuildContext appContext,
+    required String tag,
   }) {
+    print('ha');
     if (kIsWeb) {
       if (event.isKeyPressed(LogicalKeyboardKey.space)) {
         togglePlayPauseVideo();
@@ -167,12 +173,18 @@ class FlGetXVideoController extends _FlGesturesController {
         onRightDoubleTap();
         return;
       }
-      if (event.logicalKey.debugName =='Key F') {
-        if (isFullScreen) {
-          _html.document.exitFullscreen();
-        } else {
-          _html.document.documentElement?.requestFullscreen();
+      if (event.logicalKey.debugName == 'Key F') {
+        if (_keyBoardEventTimer == null || !_keyBoardEventTimer!.isActive) {
+          if (isFullScreen) {
+            _html.document.exitFullscreen();
+          } else {
+            _html.document.documentElement?.requestFullscreen();
+          }
         }
+        _keyBoardEventTimer = Timer(const Duration(milliseconds: 400), () {
+          _keyBoardEventTimer?.cancel();
+        });
+
         return;
       }
     }

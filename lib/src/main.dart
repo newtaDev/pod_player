@@ -1,45 +1,42 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:universal_html/html.dart' as _html;
-import 'package:video_player/video_player.dart';
 
 import '../fl_video_player.dart';
 import 'controllers/fl_getx_video_controller.dart';
-import 'utils/fl_enums.dart';
-import 'widgets/fl_video_progress_bar.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/core/fl_core_player.dart';
-part 'widgets/core/overlays/mobile_bottomsheet.dart';
-part 'widgets/core/overlays/overlays.dart';
-part 'widgets/full_screen_view.dart';
-part 'widgets/core/overlays/web_dropdown_menu.dart';
 part 'widgets/core/overlays/mob_bottom_overlay_controller.dart';
+part 'widgets/core/overlays/mobile_bottomsheet.dart';
 part 'widgets/core/overlays/mobile_overlay.dart';
-part 'widgets/core/video_gesture_detector.dart';
+part 'widgets/core/overlays/overlays.dart';
 part 'widgets/core/overlays/web_bottom_overlay_controller.dart';
+part 'widgets/core/overlays/web_dropdown_menu.dart';
 part 'widgets/core/overlays/web_overlay.dart';
+part 'widgets/core/video_gesture_detector.dart';
+part 'widgets/full_screen_view.dart';
 
 class FlVideoPlayer extends StatefulWidget {
   final FlVideoController controller;
   final double frameAspectRatio;
   final double videoAspectRatio;
-
+  final bool alwaysShowProgressBar;
+  final FlProgressBarConfig flProgressBarConfig;
   FlVideoPlayer({
     Key? key,
     required this.controller,
     this.frameAspectRatio = 16 / 9,
     this.videoAspectRatio = 16 / 9,
+    this.alwaysShowProgressBar = true,
+    this.flProgressBarConfig = const FlProgressBarConfig(),
   }) : super(key: key) {
     _validate();
+    addToUiController();
   }
 
   void _validate() {
@@ -85,6 +82,15 @@ class FlVideoPlayer extends StatefulWidget {
     }
   }
 
+  void addToUiController() {
+    final flVideoController =
+        Get.find<FlGetXVideoController>(tag: controller.getTag)
+
+          ///add to ui
+          ..alwaysShowProgressBar = alwaysShowProgressBar
+          ..flProgressBarConfig = flProgressBarConfig;
+  }
+
   @override
   _FlVideoPlayerState createState() => _FlVideoPlayerState();
 }
@@ -109,7 +115,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       ..webFullScreenListner(context, widget.controller.getTag);
 
     if (kIsWeb) {
-      if (widget.controller.fourcedVideoFocus) {
+      if (widget.controller.forcedVideoFocus) {
         _flCtr.keyboardFocusWeb = FocusNode();
         _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
       }

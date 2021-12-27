@@ -21,6 +21,7 @@ class FlCorePlayer extends StatelessWidget {
       onKey: (value) => flCtr.onKeyBoardEvents(
         event: value,
         appContext: context,
+        tag: tag,
       ),
       child: Stack(
         fit: StackFit.expand,
@@ -52,13 +53,20 @@ class FlCorePlayer extends StatelessWidget {
               id: 'full-screen',
               builder: (_flCtr) => _flCtr.isFullScreen
                   ? const SizedBox()
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: FlVideoProgressBar(
-                        allowGestures: true,
-                        tag: tag,
-                        height: 5,
-                      ),
+                  : GetBuilder<FlGetXVideoController>(
+                      tag: tag,
+                      id: 'overlay',
+                      builder: (_flCtr) => _flCtr.isOverlayVisible ||
+                              !_flCtr.alwaysShowProgressBar
+                          ? const SizedBox()
+                          : Align(
+                              alignment: Alignment.bottomCenter,
+                              child: FlVideoProgressBar(
+                                tag: tag,
+                                alignment: Alignment.bottomCenter,
+                                flProgressBarConfig: _flCtr.flProgressBarConfig,
+                              ),
+                            ),
                     ),
             ),
         ],
