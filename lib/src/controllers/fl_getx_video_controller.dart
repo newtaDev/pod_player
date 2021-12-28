@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fl_video_player/src/models/fl_progress_bar_config.dart';
 import 'package:fl_video_player/src/widgets/fl_video_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -12,7 +13,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../fl_video_player.dart';
 import '../utils/fl_enums.dart';
-import '../utils/vimeo_models.dart';
+import '../models/vimeo_models.dart';
 import '../utils/vimeo_video_api.dart';
 
 part './fl_base_controller.dart';
@@ -68,6 +69,7 @@ class FlGetXVideoController extends _FlUiController {
     this.vimeoVideoQuality = vimeoVideoQuality;
     _videoPlayerType = playerType;
     this.autoPlay = autoPlay;
+    this.isLooping = isLooping;
   }
 
   ///*init

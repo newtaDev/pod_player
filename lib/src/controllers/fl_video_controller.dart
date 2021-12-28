@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fl_video_player/src/models/fl_video_player_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 
-import 'package:fl_video_player/src/utils/vimeo_models.dart';
+import 'package:fl_video_player/src/models/vimeo_models.dart';
 
 import '../../fl_video_player.dart';
 import 'fl_getx_video_controller.dart';
@@ -23,11 +24,7 @@ class FlVideoController {
   final List<VimeoVideoQalityUrls>? fromVimeoUrls;
   final String? fromAssets;
   final File? fromFile;
-  final bool autoPlay;
-  final bool isLooping;
-
-  ///only for web
-  final bool forcedVideoFocus;
+  final FlVideoPlayerConfig playerConfig;
   FlVideoController({
     this.playerType = FlVideoPlayerType.auto,
     this.fromNetworkUrl,
@@ -35,9 +32,7 @@ class FlVideoController {
     this.fromVimeoUrls,
     this.fromAssets,
     this.fromFile,
-    this.autoPlay = true,
-    this.isLooping = false,
-    this.forcedVideoFocus = false,
+    this.playerConfig = const FlVideoPlayerConfig(),
   }) {
     getTag = UniqueKey().toString();
     _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag)
@@ -48,8 +43,8 @@ class FlVideoController {
         fromVimeoUrls: fromVimeoUrls,
         fromAssets: fromAssets,
         fromFile: fromFile,
-        isLooping: isLooping,
-        autoPlay: autoPlay,
+        autoPlay: playerConfig.autoPlay,
+        isLooping: playerConfig.isLooping,
       );
   }
   //!init

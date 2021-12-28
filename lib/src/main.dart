@@ -8,6 +8,7 @@ import 'package:universal_html/html.dart' as _html;
 
 import '../fl_video_player.dart';
 import 'controllers/fl_getx_video_controller.dart';
+import 'models/fl_progress_bar_config.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/core/fl_core_player.dart';
@@ -115,7 +116,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       ..webFullScreenListner(context, widget.controller.getTag);
 
     if (kIsWeb) {
-      if (widget.controller.forcedVideoFocus) {
+      if (widget.controller.playerConfig.forcedVideoFocus) {
         _flCtr.keyboardFocusWeb = FocusNode();
         _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
       }

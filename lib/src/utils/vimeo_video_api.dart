@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:fl_video_player/src/controllers/fl_getx_video_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'vimeo_models.dart';
+import '../models/vimeo_models.dart';
 
 String flErrorString(String val) {
   return '*\n------error------\n\n$val\n\n------end------\n*';
