@@ -1,4 +1,4 @@
-part of 'package:fl_video_player/src/main.dart';
+part of 'package:fl_video_player/src/fl_video_player.dart';
 
 class FullScreenView extends StatefulWidget {
   final String tag;

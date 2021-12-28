@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 
 import 'package:fl_video_player/src/models/vimeo_models.dart';
 
-import '../../fl_video_player.dart';
+import '../../exports.dart';
 import 'fl_getx_video_controller.dart';
 
 class FlVideoController {

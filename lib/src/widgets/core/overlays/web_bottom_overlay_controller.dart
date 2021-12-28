@@ -1,4 +1,4 @@
-part of 'package:fl_video_player/src/main.dart';
+part of 'package:fl_video_player/src/fl_video_player.dart';
 
 class _WebOverlayBottomControlles extends StatelessWidget {
   final String tag;

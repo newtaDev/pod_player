@@ -1,4 +1,4 @@
-import 'package:fl_video_player/fl_video_player.dart';
+import 'package:fl_video_player/exports.dart';
 import 'package:flutter/material.dart';
 
 void main() {
