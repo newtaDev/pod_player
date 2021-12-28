@@ -173,11 +173,7 @@ class FlGetXVideoController extends _FlUiController {
       }
       if (event.logicalKey.debugName == 'Key F') {
         if (_keyBoardEventTimer == null || !_keyBoardEventTimer!.isActive) {
-          if (isFullScreen) {
-            _html.document.exitFullscreen();
-          } else {
-            _html.document.documentElement?.requestFullscreen();
-          }
+          toggleFullScreenOnWeb();
         }
         _keyBoardEventTimer = Timer(const Duration(milliseconds: 400), () {
           _keyBoardEventTimer?.cancel();
@@ -185,6 +181,14 @@ class FlGetXVideoController extends _FlUiController {
 
         return;
       }
+    }
+  }
+
+  void toggleFullScreenOnWeb() {
+    if (isFullScreen) {
+      _html.document.exitFullscreen();
+    } else {
+      _html.document.documentElement?.requestFullscreen();
     }
   }
 
