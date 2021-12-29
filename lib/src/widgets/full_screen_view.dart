@@ -22,7 +22,7 @@ class _FullScreenViewState extends State<FullScreenView>
       ..enableFullScreen()
       ..playPauseCtr = AnimationController(
         vsync: this,
-        duration: const Duration(milliseconds: 450), 
+        duration: const Duration(milliseconds: 450),
       );
     if (_flCtr.isvideoPlaying) {
       _flCtr.playPauseCtr?.forward();
@@ -32,7 +32,7 @@ class _FullScreenViewState extends State<FullScreenView>
 
   @override
   void dispose() {
-    _flCtr.keyboardFocusWeb = FocusNode();
+    _flCtr.keyboardFocusWeb?.requestFocus();
     _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
     super.dispose();
   }

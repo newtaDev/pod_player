@@ -153,7 +153,6 @@ class FlGetXVideoController extends _FlUiController {
     required BuildContext appContext,
     required String tag,
   }) {
-    print('ha');
     if (kIsWeb) {
       if (event.isKeyPressed(LogicalKeyboardKey.space)) {
         togglePlayPauseVideo();
@@ -261,5 +260,35 @@ class FlGetXVideoController extends _FlUiController {
         flVideoStateChanger(FlVideoState.paused);
       }
     });
+  }
+
+  Future<void> changeVideo(
+    FlVideoPlayerType playerType,
+    String? fromNetworkUrl,
+    String? fromVimeoVideoId,
+    List<VimeoVideoQalityUrls>? fromVimeoUrls,
+    String? fromAssets,
+    File? fromFile,
+    FlVideoPlayerConfig playerConfig,
+  ) async {
+    _videoCtr?.removeListener(videoListner);
+    flVideoStateChanger(FlVideoState.paused);
+    flVideoStateChanger(FlVideoState.loading);
+    keyboardFocusWeb?.removeListener(keyboadListner);
+    removeListenerId('flVideoState', flStateListner);
+    _isWebAutoPlayDone = false;
+    config(
+      playerType: playerType,
+      fromNetworkUrl: fromNetworkUrl,
+      fromVimeoVideoId: fromVimeoVideoId,
+      fromVimeoUrls: fromVimeoUrls,
+      fromAssets: fromAssets,
+      fromFile: fromFile,
+      autoPlay: playerConfig.autoPlay,
+      isLooping: playerConfig.isLooping,
+    );
+    keyboardFocusWeb?.requestFocus();
+    keyboardFocusWeb?.addListener(keyboadListner);
+    await videoInit();
   }
 }

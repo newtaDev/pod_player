@@ -84,10 +84,9 @@ class FlVideoController {
 
   //! volume Controllers
 
-  Future<void> mute() async => _ctr.mute;
+  Future<void> mute() async => _ctr.mute();
 
-  Future<void> unMute() async => _ctr.mute;
-
+  Future<void> unMute() async => _ctr.unMute();
   void dispose() {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
@@ -97,4 +96,26 @@ class FlVideoController {
       tag: getTag,
     );
   }
+
+  Future<void> changeVideo({
+    FlVideoPlayerType playerType = FlVideoPlayerType.auto,
+    String? fromNetworkUrl,
+    String? fromVimeoVideoId,
+    List<VimeoVideoQalityUrls>? fromVimeoUrls,
+    String? fromAssets,
+    File? fromFile,
+    FlVideoPlayerConfig playerConfig = const FlVideoPlayerConfig(),
+  }) =>
+      _ctr.changeVideo(
+        playerType,
+        fromNetworkUrl,
+        fromVimeoVideoId,
+        fromVimeoUrls,
+        fromAssets,
+        fromFile,
+        playerConfig,
+      );
+//TODO: change video
+//TODO: support for playlist
+//TODO: start video from
 }
