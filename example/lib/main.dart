@@ -80,8 +80,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
         // fromVimeoVideoId: '518228118',
         // playerConfig : const FlVideoPlayerConfig(autoPlay: false,isLooping: true)
         playerConfig: FlVideoPlayerConfig(forcedVideoFocus: true))
-      ..initialise()
-      ..videoStartsFrom(const Duration(seconds: 8));
+      ..initialise();
   }
 
   @override
