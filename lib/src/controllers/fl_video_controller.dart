@@ -16,6 +16,7 @@ class FlVideoController {
   ///
   late FlGetXVideoController _ctr;
   late String getTag;
+  bool _isInitialised = false;
 
   ///
   final FlVideoPlayerType playerType;
@@ -48,7 +49,7 @@ class FlVideoController {
       );
   }
   //!init
-  Future<void> initialize() async {
+  Future<void> initialise() async {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await _ctr.videoInit();
     });
@@ -57,14 +58,22 @@ class FlVideoController {
 
   Future<void> _checkAndWaitTillInitialized() async {
     if (_ctr.controllerInitialized) {
+      _isInitialised = true;
       return;
     } else {
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(milliseconds: 500));
       await _checkAndWaitTillInitialized();
     }
   }
 
-  bool get isInitialized => _ctr.videoCtr?.value.isInitialized ?? false;
+  bool get isInitialised => _ctr.videoCtr?.value.isInitialized ?? false;
+  bool? get isVideoPlaying => _ctr.videoCtr?.value.isPlaying;
+  bool? get isVideoBuffering => _ctr.videoCtr?.value.isBuffering;
+  bool? get isVideoLooping => _ctr.videoCtr?.value.isLooping;
+
+  VideoPlayerValue? get videoPlayerValue => _ctr.videoCtr?.value;
+
+  FlVideoPlayerType get videoPlayerType => _ctr.videoPlayerType;
 
   // Future<void> initialize() async => _ctr.videoCtr?.initialize;
 
@@ -87,6 +96,8 @@ class FlVideoController {
   Future<void> mute() async => _ctr.mute();
 
   Future<void> unMute() async => _ctr.unMute();
+
+  ///Dispose controller
   void dispose() {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
@@ -115,7 +126,26 @@ class FlVideoController {
         fromFile,
         playerConfig,
       );
-//TODO: change video
+
+  ///Jumps to specific position of the video
+  Future<void> videoStartsFrom(Duration moment) async {
+    await _checkAndWaitTillInitialized();
+    if (!_isInitialised) return;
+    return _ctr.seekTo(moment);
+  }
+
+  ///Movies video forward from current duration to `_duration`
+  Future<void> videoSeekForward(Duration _duration) async {
+    await _checkAndWaitTillInitialized();
+    if (!_isInitialised) return;
+    return _ctr.seekForward(_duration);
+  }
+
+  ///Movies video backward from current duration to `_duration`
+  Future<void> videoSeekBackward(Duration _duration) async {
+    await _checkAndWaitTillInitialized();
+    if (!_isInitialised) return;
+    return _ctr.seekBackward(_duration);
+  }
 //TODO: support for playlist
-//TODO: start video from
 }

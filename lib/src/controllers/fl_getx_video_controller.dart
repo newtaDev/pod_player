@@ -171,7 +171,7 @@ class FlGetXVideoController extends _FlUiController {
         return;
       }
       if (event.logicalKey.debugName == 'Key F') {
-        if (_keyBoardEventTimer == null || !_keyBoardEventTimer!.isActive) {
+        if (_keyBoardEventTimer == null || !_keyBoardEventTimer!.isActive ) {
           toggleFullScreenOnWeb();
         }
         _keyBoardEventTimer = Timer(const Duration(milliseconds: 400), () {
