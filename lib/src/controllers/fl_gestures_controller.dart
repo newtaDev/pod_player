@@ -46,7 +46,7 @@ class _FlGesturesController extends _FlVimeoVideoController {
       hoverOverlayTimer?.cancel();
       isShowOverlay(true);
       hoverOverlayTimer = Timer(
-        const Duration(seconds: 4),
+        const Duration(seconds: 3),
         () => isShowOverlay(false),
       );
     }

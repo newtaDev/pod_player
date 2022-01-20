@@ -120,7 +120,7 @@ class _FlPlayerController extends FlBaseController {
       isOverlayVisible = false;
       update(['overlay']);
       showOverlayTimer?.cancel();
-      showOverlayTimer = Timer(const Duration(seconds: 4), () {
+      showOverlayTimer = Timer(const Duration(seconds: 3), () {
         if (isOverlayVisible) {
           isOverlayVisible = false;
           update(['overlay']);

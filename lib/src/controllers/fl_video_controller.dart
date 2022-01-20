@@ -17,8 +17,7 @@ class FlVideoController {
   late FlGetXVideoController _ctr;
   late String getTag;
   bool _isInitialised = false;
-
-  ///
+  
   final FlVideoPlayerType playerType;
   final String? fromNetworkUrl;
   final String? fromVimeoVideoId;
