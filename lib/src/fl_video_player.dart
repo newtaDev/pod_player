@@ -8,6 +8,7 @@ import 'package:universal_html/html.dart' as _html;
 
 import '../exports.dart';
 import 'controllers/fl_getx_video_controller.dart';
+import 'models/overlay_options.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/core/fl_core_player.dart';
@@ -27,6 +28,7 @@ class FlVideoPlayer extends StatefulWidget {
   final double videoAspectRatio;
   final bool alwaysShowProgressBar;
   final FlProgressBarConfig flProgressBarConfig;
+  final Widget Function(OverLayOptions options)? overlayBuilder;
   FlVideoPlayer({
     Key? key,
     required this.controller,
@@ -34,6 +36,7 @@ class FlVideoPlayer extends StatefulWidget {
     this.videoAspectRatio = 16 / 9,
     this.alwaysShowProgressBar = true,
     this.flProgressBarConfig = const FlProgressBarConfig(),
+    this.overlayBuilder,
   }) : super(key: key) {
     _validate();
     addToUiController();
@@ -88,7 +91,8 @@ class FlVideoPlayer extends StatefulWidget {
 
           ///add to ui
           ..alwaysShowProgressBar = alwaysShowProgressBar
-          ..flProgressBarConfig = flProgressBarConfig;
+          ..flProgressBarConfig = flProgressBarConfig
+          ..overlayBuilder = overlayBuilder;
   }
 
   @override

@@ -47,11 +47,13 @@ class FlBaseController extends GetxController {
       if (!isMute) {
         isMute = true;
         update(['volume']);
+        update(['update-all']);
       }
     } else {
       if (isMute) {
         isMute = false;
         update(['volume']);
+        update(['update-all']);
       }
     }
   }
@@ -71,6 +73,7 @@ class FlBaseController extends GetxController {
     if (_flVideoState != (_val ?? _flVideoState)) {
       _flVideoState = _val ?? _flVideoState;
       update(['flVideoState']);
+        update(['update-all']);
     }
   }
 
@@ -78,11 +81,13 @@ class FlBaseController extends GetxController {
     if ((_videoCtr?.value.duration.inSeconds ?? Duration.zero.inSeconds) < 60) {
       _videoPosition = _videoCtr?.value.position ?? Duration.zero;
       update(['video-progress']);
+        update(['update-all']);
     } else {
       if (_videoPosition.inSeconds !=
           (_videoCtr?.value.position ?? Duration.zero).inSeconds) {
         _videoPosition = _videoCtr?.value.position ?? Duration.zero;
         update(['video-progress']);
+        update(['update-all']);
       }
     }
   }

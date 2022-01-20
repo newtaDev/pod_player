@@ -48,13 +48,12 @@ class _FlVimeoVideoController extends _FlPlayerController {
     int? quality,
     List<VimeoVideoQalityUrls>? vimeoUrls,
   }) async {
-
     if (vimeoUrls != null) {
       await getVimeoVideoUrls(vimeoUrls: vimeoUrls);
     } else {
       await getVimeoVideoUrls(videoId: videoId);
     }
-    
+
     final q = quality ?? vimeoVideoUrls?[0].quality ?? 720;
     _vimeoVideoUrl = getQualityUrl(q).toString();
     vimeoPlayingVideoQuality = q;
@@ -79,6 +78,7 @@ class _FlVimeoVideoController extends _FlPlayerController {
       setVideoPlayBack(_currentPaybackSpeed);
       flVideoStateChanger(FlVideoState.playing);
       update();
+      update(['update-all']);
     }
   }
 }

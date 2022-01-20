@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fl_video_player/src/models/overlay_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -85,6 +86,7 @@ class FlGetXVideoController extends _FlUiController {
       controllerInitialized = true;
       update();
 
+        update(['update-all']);
       // ignore: unawaited_futures
       Future.delayed(const Duration(milliseconds: 600))
           .then((value) => _isWebAutoPlayDone = true);

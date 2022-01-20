@@ -62,10 +62,12 @@ class _FlGesturesController extends _FlVimeoVideoController {
   void updateLeftTapDuration(int val) {
     leftDoubleTapduration = val;
     update(['double-tap']);
+        update(['update-all']);
   }
 
   void updateRightTapDuration(int val) {
     rightDubleTapduration = val;
     update(['double-tap']);
+        update(['update-all']);
   }
 }
