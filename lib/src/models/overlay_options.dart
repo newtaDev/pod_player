@@ -1,5 +1,5 @@
 
-import '../../exports.dart';
+import '../../fl_video_player.dart';
 
 class OverLayOptions {
   final FlVideoState flVideoState;

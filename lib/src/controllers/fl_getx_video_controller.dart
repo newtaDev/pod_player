@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 
-import '../../exports.dart';
+import '../../fl_video_player.dart';
 import '../models/vimeo_models.dart';
 import '../utils/vimeo_video_api.dart';
 

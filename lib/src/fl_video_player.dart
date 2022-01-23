@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:universal_html/html.dart' as _html;
 
-import '../exports.dart';
+import '../fl_video_player.dart';
 import 'controllers/fl_getx_video_controller.dart';
 import 'models/overlay_options.dart';
 import 'widgets/material_icon_button.dart';
