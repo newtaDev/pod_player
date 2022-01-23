@@ -1,6 +1,5 @@
 import 'package:fl_video_player/fl_video_player.dart';
 import 'package:flutter/material.dart';
-
 void main() {
   runApp(const MyApp());
 }

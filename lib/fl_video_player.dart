@@ -1,7 +1,6 @@
 library fl_video_player;
 
 export 'package:video_player/video_player.dart';
-
 export 'src/controllers/fl_video_controller.dart';
 export 'src/fl_video_player.dart';
 export 'src/models/fl_progress_bar_config.dart';
