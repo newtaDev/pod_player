@@ -131,7 +131,6 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   @override
   void dispose() {
     super.dispose();
-    _flCtr.flVideoStateChanger(FlVideoState.paused);
     if (kIsWeb) {
       _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
     }
