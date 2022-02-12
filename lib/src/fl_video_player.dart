@@ -117,9 +117,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
         duration: const Duration(milliseconds: 450),
       )
       ..webFullScreenListner(context, widget.controller.getTag);
-    if (_flCtr.flVideoState == FlVideoState.playing) {
-      _flCtr.flVideoStateChanger(FlVideoState.playing);
-    }
+
     if (kIsWeb) {
       if (widget.controller.playerConfig.forcedVideoFocus) {
         _flCtr.keyboardFocusWeb = FocusNode();
@@ -131,14 +129,14 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     super.dispose();
+    _flCtr.flVideoStateChanger(FlVideoState.paused);
     if (kIsWeb) {
       _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
     }
     // _flCtr.keyboardFocus?.unfocus();
     // _flCtr.keyboardFocusOnFullScreen?.unfocus();
-    await _flCtr.playPauseCtr?.reverse();
     _flCtr.playPauseCtr?.dispose();
     _flCtr.hoverOverlayTimer?.cancel();
     _flCtr.showOverlayTimer?.cancel();
