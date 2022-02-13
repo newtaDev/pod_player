@@ -27,6 +27,10 @@ class FlBaseController extends GetxController {
 
   String _currentPaybackSpeed = 'Normal';
 
+  bool? isVideoUiBinded;
+
+  bool? wasVideoPlayingOnUiDispose;
+
   ///**listners
 
   Future<void> videoListner() async {

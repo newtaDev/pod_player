@@ -35,7 +35,6 @@ class FlGetXVideoController extends _FlUiController {
   ///
   Duration get videoPosition => _videoPosition;
 
-
   String? fromNetworkUrl;
   String? fromVimeoVideoId;
   String? fromAssets;
@@ -83,7 +82,7 @@ class FlGetXVideoController extends _FlUiController {
       controllerInitialized = true;
       update();
 
-        update(['update-all']);
+      update(['update-all']);
       // ignore: unawaited_futures
       Future.delayed(const Duration(milliseconds: 600))
           .then((value) => _isWebAutoPlayDone = true);
@@ -170,7 +169,7 @@ class FlGetXVideoController extends _FlUiController {
         return;
       }
       if (event.logicalKey.debugName == 'Key F') {
-        if (_keyBoardEventTimer == null || !_keyBoardEventTimer!.isActive ) {
+        if (_keyBoardEventTimer == null || !_keyBoardEventTimer!.isActive) {
           toggleFullScreenOnWeb();
         }
         _keyBoardEventTimer = Timer(const Duration(milliseconds: 400), () {
@@ -252,7 +251,7 @@ class FlGetXVideoController extends _FlUiController {
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      if (autoPlay) {
+      if (autoPlay && (isVideoUiBinded ?? false)) {
         if (kIsWeb) await _videoCtr?.setVolume(0);
         flVideoStateChanger(FlVideoState.playing);
       } else {

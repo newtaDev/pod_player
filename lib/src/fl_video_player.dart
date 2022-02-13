@@ -110,12 +110,15 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       permanent: true,
       tag: widget.controller.getTag,
     )
+      ..isVideoUiBinded = true
       ..playPauseCtr = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 450),
       )
       ..webFullScreenListner(context, widget.controller.getTag);
-
+    if (_flCtr.wasVideoPlayingOnUiDispose ?? false) {
+      _flCtr.flVideoStateChanger(FlVideoState.playing);
+    }
     if (kIsWeb) {
       if (widget.controller.playerConfig.forcedVideoFocus) {
         _flCtr.keyboardFocusWeb = FocusNode();
@@ -129,18 +132,28 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   @override
   void dispose() {
     super.dispose();
+
+    ///Checking if the video was playing when this widget is disposed
+    if (_flCtr.isvideoPlaying) {
+      _flCtr.wasVideoPlayingOnUiDispose = true;
+    } else {
+      _flCtr.wasVideoPlayingOnUiDispose = false;
+    }
+
     _flCtr.flVideoStateChanger(FlVideoState.paused);
     if (kIsWeb) {
       _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
     }
     // _flCtr.keyboardFocus?.unfocus();
     // _flCtr.keyboardFocusOnFullScreen?.unfocus();
-    _flCtr.playPauseCtr?.dispose();
-    _flCtr.hoverOverlayTimer?.cancel();
-    _flCtr.showOverlayTimer?.cancel();
-    _flCtr.showOverlayTimer1?.cancel();
-    _flCtr.leftDoubleTapTimer?.cancel();
-    _flCtr.rightDoubleTapTimer?.cancel();
+    _flCtr
+      ..isVideoUiBinded = false
+      ..playPauseCtr?.dispose()
+      ..hoverOverlayTimer?.cancel()
+      ..showOverlayTimer?.cancel()
+      ..showOverlayTimer1?.cancel()
+      ..leftDoubleTapTimer?.cancel()
+      ..rightDoubleTapTimer?.cancel();
   }
 
   ///
