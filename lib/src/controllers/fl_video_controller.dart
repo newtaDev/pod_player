@@ -12,7 +12,7 @@ class FlVideoController {
   late FlGetXVideoController _ctr;
   late String getTag;
   bool _isInitialised = false;
-  
+
   final FlVideoPlayerType playerType;
   final String? fromNetworkUrl;
   final String? fromVimeoVideoId;
@@ -61,9 +61,9 @@ class FlVideoController {
   }
 
   bool get isInitialised => _ctr.videoCtr?.value.isInitialized ?? false;
-  bool? get isVideoPlaying => _ctr.videoCtr?.value.isPlaying;
-  bool? get isVideoBuffering => _ctr.videoCtr?.value.isBuffering;
-  bool? get isVideoLooping => _ctr.videoCtr?.value.isLooping;
+  bool get isVideoPlaying => _ctr.videoCtr?.value.isPlaying ?? false;
+  bool get isVideoBuffering => _ctr.videoCtr?.value.isBuffering ?? false;
+  bool get isVideoLooping => _ctr.videoCtr?.value.isLooping ?? false;
 
   VideoPlayerValue? get videoPlayerValue => _ctr.videoCtr?.value;
 
@@ -84,6 +84,8 @@ class FlVideoController {
   void play() => _ctr.flVideoStateChanger(FlVideoState.playing);
 
   void pause() => _ctr.flVideoStateChanger(FlVideoState.paused);
+
+  void togglePlayPause() => isVideoPlaying ? pause() : play();
 
   //! volume Controllers
 
