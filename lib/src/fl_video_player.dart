@@ -117,7 +117,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       )
       ..webFullScreenListner(context, widget.controller.getTag);
     if (_flCtr.wasVideoPlayingOnUiDispose ?? false) {
-      _flCtr.flVideoStateChanger(FlVideoState.playing);
+      _flCtr.flVideoStateChanger(FlVideoState.playing, updateUi: false);
     }
     if (kIsWeb) {
       if (widget.controller.playerConfig.forcedVideoFocus) {
@@ -132,7 +132,6 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   @override
   void dispose() {
     super.dispose();
-
     ///Checking if the video was playing when this widget is disposed
     if (_flCtr.isvideoPlaying) {
       _flCtr.wasVideoPlayingOnUiDispose = true;
@@ -140,7 +139,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       _flCtr.wasVideoPlayingOnUiDispose = false;
     }
 
-    _flCtr.flVideoStateChanger(FlVideoState.paused);
+    _flCtr.flVideoStateChanger(FlVideoState.paused, updateUi: false);
     if (kIsWeb) {
       _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
     }

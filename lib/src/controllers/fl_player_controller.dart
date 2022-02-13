@@ -84,13 +84,13 @@ class _FlPlayerController extends FlBaseController {
       isShowOverlay(true);
       // ignore: unawaited_futures
       _videoCtr?.play();
-      await playPauseCtr?.forward();
+      if (isVideoUiBinded ?? false) await playPauseCtr?.forward();
       isShowOverlay(false, delay: const Duration(seconds: 1));
     } else {
       isShowOverlay(true);
       // ignore: unawaited_futures
       _videoCtr?.pause();
-      await playPauseCtr?.reverse();
+      if (isVideoUiBinded ?? false) await playPauseCtr?.reverse();
     }
   }
 

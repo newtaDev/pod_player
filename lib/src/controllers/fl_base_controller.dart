@@ -74,11 +74,13 @@ class FlBaseController extends GetxController {
   }
 
   ///updates state with id `_flVideoState`
-  void flVideoStateChanger(FlVideoState? _val) {
+  void flVideoStateChanger(FlVideoState? _val, {bool updateUi = true}) {
     if (_flVideoState != (_val ?? _flVideoState)) {
       _flVideoState = _val ?? _flVideoState;
-      update(['flVideoState']);
-      update(['update-all']);
+      if (updateUi) {
+        update(['flVideoState']);
+        update(['update-all']);
+      }
     }
   }
 
