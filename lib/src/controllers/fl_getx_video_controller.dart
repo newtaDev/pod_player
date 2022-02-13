@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:fl_video_player/src/models/overlay_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 
 import '../../fl_video_player.dart';
-import '../models/vimeo_models.dart';
 import '../utils/vimeo_video_api.dart';
 
 part './fl_base_controller.dart';
@@ -37,7 +35,6 @@ class FlGetXVideoController extends _FlUiController {
   ///
   Duration get videoPosition => _videoPosition;
 
-  //TODO: convert to getter
 
   String? fromNetworkUrl;
   String? fromVimeoVideoId;

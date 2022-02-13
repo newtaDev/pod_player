@@ -53,13 +53,13 @@ class _FlPlayerController extends FlBaseController {
   Future<void> mute() async {
     await setVolume(0);
     update(['volume']);
-        update(['update-all']);
+    update(['update-all']);
   }
 
   Future<void> unMute() async {
     await setVolume(1);
     update(['volume']);
-        update(['update-all']);
+    update(['update-all']);
   }
 
 // Set volume between 0.0 - 1.0,
@@ -74,7 +74,7 @@ class _FlPlayerController extends FlBaseController {
       isMute = false;
     }
     update(['volume']);
-        update(['update-all']);
+    update(['update-all']);
   }
 
   ///*controll play pause
@@ -98,7 +98,8 @@ class _FlPlayerController extends FlBaseController {
   void togglePlayPauseVideo() {
     isvideoPlaying = !isvideoPlaying;
     flVideoStateChanger(
-        isvideoPlaying ? FlVideoState.playing : FlVideoState.paused);
+      isvideoPlaying ? FlVideoState.playing : FlVideoState.paused,
+    );
   }
 
   ///toogle video player controls
@@ -118,19 +119,19 @@ class _FlPlayerController extends FlBaseController {
     if (!isOverlayVisible) {
       isOverlayVisible = true;
       update(['overlay']);
-        update(['update-all']);
+      update(['update-all']);
       return;
     }
     if (isOverlayVisible) {
       isOverlayVisible = false;
       update(['overlay']);
-        update(['update-all']);
+      update(['update-all']);
       showOverlayTimer?.cancel();
       showOverlayTimer = Timer(const Duration(seconds: 3), () {
         if (isOverlayVisible) {
           isOverlayVisible = false;
           update(['overlay']);
-        update(['update-all']);
+          update(['update-all']);
         }
       });
     }
@@ -158,12 +159,13 @@ class _FlPlayerController extends FlBaseController {
     isLooping = !isLooping;
     await _videoCtr?.setLooping(isLooping);
     update();
-        update(['update-all']);
+    update(['update-all']);
   }
 
   void enableFullScreen() {
     SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
+    );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     if (!isFullScreen) {
       isFullScreen = true;
@@ -175,14 +177,19 @@ class _FlPlayerController extends FlBaseController {
   }
 
   Future<void> disableFullScreen() async {
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]);//for ios
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]); //for ios
     await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    await SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: SystemUiOverlay.values,
+    );
     if (isFullScreen) {
       isFullScreen = false;
       update(['full-screen']);
-        update(['update-all']);
+      update(['update-all']);
     }
   }
 

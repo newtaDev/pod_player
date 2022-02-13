@@ -28,8 +28,9 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                 id: 'video-progress',
                 builder: (_flCtr) {
                   return Text(
-                      _flCtr.calculateVideoDuration(_flCtr.videoPosition),
-                      style: const TextStyle(color: itemColor));
+                    _flCtr.calculateVideoDuration(_flCtr.videoPosition),
+                    style: const TextStyle(color: itemColor),
+                  );
                 },
               ),
               const Text(
@@ -83,7 +84,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               return FlVideoProgressBar(
                 tag: tag,
                 alignment: Alignment.bottomCenter,
-                      flProgressBarConfig: _flCtr.flProgressBarConfig,
+                flProgressBarConfig: _flCtr.flProgressBarConfig,
               );
             },
           ),

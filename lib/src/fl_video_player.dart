@@ -8,7 +8,6 @@ import 'package:universal_html/html.dart' as _html;
 
 import '../fl_video_player.dart';
 import 'controllers/fl_getx_video_controller.dart';
-import 'models/overlay_options.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/core/fl_core_player.dart';
@@ -86,17 +85,16 @@ class FlVideoPlayer extends StatefulWidget {
   }
 
   void addToUiController() {
-    final flVideoController =
-        Get.find<FlGetXVideoController>(tag: controller.getTag)
+    Get.find<FlGetXVideoController>(tag: controller.getTag)
 
-          ///add to ui
-          ..alwaysShowProgressBar = alwaysShowProgressBar
-          ..flProgressBarConfig = flProgressBarConfig
-          ..overlayBuilder = overlayBuilder;
+      ///add to ui
+      ..alwaysShowProgressBar = alwaysShowProgressBar
+      ..flProgressBarConfig = flProgressBarConfig
+      ..overlayBuilder = overlayBuilder;
   }
 
   @override
-  _FlVideoPlayerState createState() => _FlVideoPlayerState();
+  State<FlVideoPlayer> createState() => _FlVideoPlayerState();
 }
 
 class _FlVideoPlayerState extends State<FlVideoPlayer>

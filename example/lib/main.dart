@@ -96,7 +96,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
             FlVideoPlayer(
               controller: controller,
             ),
-            TextButton(onPressed: () {}, child: Text('Haii')),
+            TextButton(onPressed: () {}, child: const Text('Haii')),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -109,7 +109,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
             //   fromNetworkUrl:
             //       'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
             // );
-            print(controller.videoPlayerValue?.size);
+            // print(controller.videoPlayerValue?.size);
             controller.unMute();
           },
         ));

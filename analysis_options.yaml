@@ -31,3 +31,4 @@ linter:
     avoid_dynamic_calls: false
     sort_constructors_first: false
     sort_pub_dependencies: false
+    avoid_positional_boolean_parameters: false

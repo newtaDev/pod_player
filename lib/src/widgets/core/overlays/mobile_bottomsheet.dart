@@ -24,8 +24,9 @@ class _MobileBottomSheet extends StatelessWidget {
                 Navigator.of(context).pop();
                 Timer(const Duration(milliseconds: 100), () {
                   showModalBottomSheet(
-                      context: context,
-                      builder: (context) => _VideoQualitySelectorMob(tag: tag));
+                    context: context,
+                    builder: (context) => _VideoQualitySelectorMob(tag: tag),
+                  );
                 });
                 // await Future.delayed(
                 //   const Duration(milliseconds: 100),
@@ -42,18 +43,20 @@ class _MobileBottomSheet extends StatelessWidget {
             },
           ),
           _bottomSheetTiles(
-              title: 'Playback speed',
-              icon: Icons.slow_motion_video_rounded,
-              subText: _flCtr.currentPaybackSpeed,
-              onTap: () {
-                Navigator.of(context).pop();
-                Timer(const Duration(milliseconds: 100), () {
-                  showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      builder: (context) => _VideoPlaybackSelectorMob(tag: tag));
-                });
-              }),
+            title: 'Playback speed',
+            icon: Icons.slow_motion_video_rounded,
+            subText: _flCtr.currentPaybackSpeed,
+            onTap: () {
+              Navigator.of(context).pop();
+              Timer(const Duration(milliseconds: 100), () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => _VideoPlaybackSelectorMob(tag: tag),
+                );
+              });
+            },
+          ),
         ],
       ),
     );
@@ -82,10 +85,11 @@ class _MobileBottomSheet extends StatelessWidget {
                 height: 4,
                 width: 4,
                 child: DecoratedBox(
-                    decoration: BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle,
-                )),
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle,
+                  ),
+                ),
               ),
             if (subText != null) const SizedBox(width: 6),
             if (subText != null)
@@ -99,8 +103,6 @@ class _MobileBottomSheet extends StatelessWidget {
     );
   }
 }
-
-
 
 class _VideoQualitySelectorMob extends StatelessWidget {
   final void Function()? onTap;
@@ -119,22 +121,22 @@ class _VideoQualitySelectorMob extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: _flctr.vimeoVideoUrls
-                ?.map((e) => ListTile(
-                      title: Text('${e.quality}p'),
-                      onTap: () {
-                        onTap != null ? onTap!() : Navigator.of(context).pop();
+                ?.map(
+                  (e) => ListTile(
+                    title: Text('${e.quality}p'),
+                    onTap: () {
+                      onTap != null ? onTap!() : Navigator.of(context).pop();
 
-                        _flctr.changeVimeoVideoQuality(e.quality);
-                      },
-                    ))
+                      _flctr.changeVimeoVideoQuality(e.quality);
+                    },
+                  ),
+                )
                 .toList() ??
             [],
       ),
     );
   }
 }
-
-
 
 class _VideoPlaybackSelectorMob extends StatelessWidget {
   final void Function()? onTap;

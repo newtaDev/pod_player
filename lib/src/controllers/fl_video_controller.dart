@@ -1,13 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:fl_video_player/src/models/fl_video_player_config.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
-
-import 'package:fl_video_player/src/models/vimeo_models.dart';
 
 import '../../fl_video_player.dart';
 import 'fl_getx_video_controller.dart';
