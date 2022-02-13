@@ -1,5 +1,6 @@
 import 'package:fl_video_player/fl_video_player.dart';
 import 'package:flutter/material.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -9,12 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -63,6 +61,7 @@ class MyHomePage2 extends StatefulWidget {
 
 class _MyHomePage2State extends State<MyHomePage2> {
   late FlVideoController controller;
+  bool? isVideoPlaying;
   @override
   void initState() {
     super.initState();
@@ -79,11 +78,27 @@ class _MyHomePage2State extends State<MyHomePage2> {
       // fromVimeoVideoId: '518228118',
       // playerConfig : const FlVideoPlayerConfig(autoPlay: false,isLooping: true)
       playerConfig: const FlVideoPlayerConfig(forcedVideoFocus: true),
-    )..initialise();
+    )..initialise().then((value) {
+        setState(() {
+          isVideoPlaying = controller.isVideoPlaying;
+        });
+      });
+    controller.addListener(_listner);
+  }
+
+  void _listner() {
+    print('listning');
+    if (controller.isVideoPlaying != isVideoPlaying) {
+      print('play pause changed');
+      setState(() {
+        isVideoPlaying = controller.isVideoPlaying;
+      });
+    }
   }
 
   @override
   void dispose() {
+    controller.removeListener(_listner);
     controller.dispose();
     super.dispose();
   }
@@ -91,15 +106,14 @@ class _MyHomePage2State extends State<MyHomePage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
-          children: [
-            FlVideoPlayer(
-              controller: controller,
-            ),
-            TextButton(onPressed: () {}, child: const Text('Haii')),
-          ],
-        ),
+        body: FlVideoPlayer(controller: controller),
         floatingActionButton: FloatingActionButton(
+          child: isVideoPlaying == null
+              ? const CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.white,
+                )
+              : Icon(!isVideoPlaying! ? Icons.play_arrow : Icons.pause),
+          backgroundColor: Colors.black,
           onPressed: () async {
             // print(controller.currentVideoPosition);
             // print(controller.isInitialized);
@@ -110,7 +124,9 @@ class _MyHomePage2State extends State<MyHomePage2> {
             //       'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
             // );
             // print(controller.videoPlayerValue?.size);
-            controller.unMute();
+            // controller.unMute();
+
+            controller.togglePlayPause();
           },
         ));
   }

@@ -85,8 +85,23 @@ class FlVideoController {
 
   void pause() => _ctr.flVideoStateChanger(FlVideoState.paused);
 
-  void togglePlayPause() => isVideoPlaying ? pause() : play();
+  void togglePlayPause() {
+    isVideoPlaying ? pause() : play();
+  }
 
+  ///Listen to changes in video
+  void addListener(void Function() listner) {
+    _checkAndWaitTillInitialized().then(
+      (value) => _ctr.videoCtr?.addListener(listner),
+    );
+  }
+
+  ///remove registred listners
+  void removeListener(void Function() listner) {
+    _checkAndWaitTillInitialized().then(
+      (value) => _ctr.videoCtr?.removeListener(listner),
+    );
+  }
   //! volume Controllers
 
   Future<void> mute() async => _ctr.mute();
