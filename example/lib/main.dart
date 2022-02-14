@@ -78,6 +78,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
       // fromVimeoVideoId: '518228118',
       // playerConfig : const FlVideoPlayerConfig(autoPlay: false,isLooping: true)
       playerConfig: const FlVideoPlayerConfig(forcedVideoFocus: true),
+      enableLogs: true,
     )..initialise().then((value) {
         setState(() {
           isVideoPlaying = controller.isVideoPlaying;
@@ -87,9 +88,7 @@ class _MyHomePage2State extends State<MyHomePage2> {
   }
 
   void _listner() {
-    print('listning');
     if (controller.isVideoPlaying != isVideoPlaying) {
-      print('play pause changed');
       setState(() {
         isVideoPlaying = controller.isVideoPlaying;
       });
@@ -125,7 +124,6 @@ class _MyHomePage2State extends State<MyHomePage2> {
             // );
             // print(controller.videoPlayerValue?.size);
             // controller.unMute();
-
             controller.togglePlayPause();
           },
         ));
