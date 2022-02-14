@@ -1,7 +1,6 @@
 part of 'fl_getx_video_controller.dart';
 
 class _FlPlayerController extends FlBaseController {
-  AnimationController? playPauseCtr;
   Timer? showOverlayTimer;
   Timer? showOverlayTimer1;
 
@@ -84,13 +83,11 @@ class _FlPlayerController extends FlBaseController {
       isShowOverlay(true);
       // ignore: unawaited_futures
       _videoCtr?.play();
-      if (isVideoUiBinded ?? false) await playPauseCtr?.forward();
       isShowOverlay(false, delay: const Duration(seconds: 1));
     } else {
       isShowOverlay(true);
       // ignore: unawaited_futures
       _videoCtr?.pause();
-      if (isVideoUiBinded ?? false) await playPauseCtr?.reverse();
     }
   }
 
@@ -162,12 +159,14 @@ class _FlPlayerController extends FlBaseController {
     update(['update-all']);
   }
 
-  void enableFullScreen() {
-    SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
-    );
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  Future<void> enableFullScreen(BuildContext context, String tag) async {
+    flLog('-full-screen-enable-entred');
     if (!isFullScreen) {
+      await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
+      );
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+      _enableFullScreenView(tag);
       isFullScreen = true;
       WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
         update(['full-screen']);
@@ -176,47 +175,57 @@ class _FlPlayerController extends FlBaseController {
     }
   }
 
-  Future<void> disableFullScreen() async {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]); //for ios
-    await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-    await SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: SystemUiOverlay.values,
-    );
+  Future<void> disableFullScreen(
+    BuildContext context,
+    String tag, {
+    bool enablePop = true,
+  }) async {
+    flLog('-full-screen-disable-entred');
     if (isFullScreen) {
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown
+      ]); //for ios
+      await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+      await SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: SystemUiOverlay.values,
+      );
+      if (enablePop) _exitFullScreenView(context, tag);
       isFullScreen = false;
       update(['full-screen']);
       update(['update-all']);
     }
   }
 
-  void exitFullScreenView(BuildContext context, String tag) {
-    Get.find<FlGetXVideoController>(tag: tag).disableFullScreen().then((value) {
-      if (isWebPopupOverlayOpen) Navigator.of(context).pop();
-      Navigator.of(context).pop();
-    });
+  void _exitFullScreenView(BuildContext context, String tag) {
+    flLog('popped-full-screen');
+
+    if (isWebPopupOverlayOpen) Navigator.of(context).pop();
+    Navigator.of(currentContext).pop();
   }
 
-  void enableFullScreenView(BuildContext context, String tag) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        opaque: true,
-        fullscreenDialog: true,
-        pageBuilder: (BuildContext context, _, __) => FullScreenView(
-          tag: tag,
+  void _enableFullScreenView(String tag) {
+    if (!isFullScreen) {
+      flLog('full-screen-enabled');
+
+      Navigator.push(
+        currentContext,
+        PageRouteBuilder(
+          opaque: true,
+          fullscreenDialog: true,
+          pageBuilder: (BuildContext context, _, __) => FullScreenView(
+            tag: tag,
+          ),
+          reverseTransitionDuration: const Duration(milliseconds: 400),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
         ),
-        reverseTransitionDuration: const Duration(milliseconds: 400),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-      ),
-    );
+      );
+    }
   }
 
   ///claculates video `position` or `duration`

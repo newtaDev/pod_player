@@ -1,6 +1,5 @@
 part of 'package:fl_video_player/src/fl_video_player.dart';
 
-
 class _WebOverlay extends StatelessWidget {
   final String tag;
   const _WebOverlay({
@@ -18,7 +17,7 @@ class _WebOverlay extends StatelessWidget {
           child: _VideoGestureDetector(
             tag: tag,
             onTap: _flCtr.togglePlayPauseVideo,
-            onDoubleTap: _flCtr.toggleFullScreenOnWeb,
+            onDoubleTap: () => _flCtr.toggleFullScreenOnWeb(context, tag),
             child: const ColoredBox(
               color: overlayColor,
               child: SizedBox.expand(),

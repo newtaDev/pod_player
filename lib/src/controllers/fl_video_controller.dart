@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import '../../fl_video_player.dart';
 import 'fl_getx_video_controller.dart';
 
+bool enableDevLogs = false;
+
 class FlVideoController {
   ///
   late FlGetXVideoController _ctr;
@@ -20,6 +22,8 @@ class FlVideoController {
   final String? fromAssets;
   final File? fromFile;
   final FlVideoPlayerConfig playerConfig;
+  bool enableLogs = false;
+
   FlVideoController({
     this.playerType = FlVideoPlayerType.auto,
     this.fromNetworkUrl,
@@ -28,8 +32,11 @@ class FlVideoController {
     this.fromAssets,
     this.fromFile,
     this.playerConfig = const FlVideoPlayerConfig(),
+    this.enableLogs = false,
   }) {
     getTag = UniqueKey().toString();
+    enableDevLogs = enableLogs;
+    Get.config(enableLog: enableLogs);
     _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag)
       ..config(
         playerType: playerType,

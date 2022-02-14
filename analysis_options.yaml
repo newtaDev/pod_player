@@ -32,3 +32,4 @@ linter:
     sort_constructors_first: false
     sort_pub_dependencies: false
     avoid_positional_boolean_parameters: false
+    use_build_context_synchronously: false

@@ -18,15 +18,7 @@ class _FullScreenViewState extends State<FullScreenView>
   void initState() {
     _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
     _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
-    _flCtr
-      ..enableFullScreen()
-      ..playPauseCtr = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 450),
-      );
-    if (_flCtr.isvideoPlaying) {
-      _flCtr.playPauseCtr?.forward();
-    }
+
     super.initState();
   }
 
@@ -46,7 +38,14 @@ class _FullScreenViewState extends State<FullScreenView>
     );
     return WillPopScope(
       onWillPop: () async {
-        await _flCtr.disableFullScreen();
+        if (kIsWeb) {
+          await _flCtr.disableFullScreen(
+            context,
+            widget.tag,
+            enablePop: false,
+          );
+        }
+        if (!kIsWeb) await _flCtr.disableFullScreen(context, widget.tag);
         return true;
       },
       child: Scaffold(

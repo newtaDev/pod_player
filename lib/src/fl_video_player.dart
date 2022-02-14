@@ -8,6 +8,7 @@ import 'package:universal_html/html.dart' as _html;
 
 import '../fl_video_player.dart';
 import 'controllers/fl_getx_video_controller.dart';
+import 'utils/logger.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/core/fl_core_player.dart';
@@ -98,7 +99,7 @@ class FlVideoPlayer extends StatefulWidget {
 }
 
 class _FlVideoPlayerState extends State<FlVideoPlayer>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late FlGetXVideoController _flCtr;
   // late String tag;
   @override
@@ -109,13 +110,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       FlGetXVideoController(),
       permanent: true,
       tag: widget.controller.getTag,
-    )
-      ..isVideoUiBinded = true
-      ..playPauseCtr = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 450),
-      )
-      ..webFullScreenListner(context, widget.controller.getTag);
+    )..isVideoUiBinded = true;
     if (_flCtr.wasVideoPlayingOnUiDispose ?? false) {
       _flCtr.flVideoStateChanger(FlVideoState.playing, updateUi: false);
     }
@@ -132,27 +127,26 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   @override
   void dispose() {
     super.dispose();
+
     ///Checking if the video was playing when this widget is disposed
     if (_flCtr.isvideoPlaying) {
       _flCtr.wasVideoPlayingOnUiDispose = true;
     } else {
       _flCtr.wasVideoPlayingOnUiDispose = false;
     }
-
-    _flCtr.flVideoStateChanger(FlVideoState.paused, updateUi: false);
+    _flCtr
+      ..isVideoUiBinded = false
+      ..flVideoStateChanger(FlVideoState.paused, updateUi: false);
     if (kIsWeb) {
       _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
     }
     // _flCtr.keyboardFocus?.unfocus();
     // _flCtr.keyboardFocusOnFullScreen?.unfocus();
-    _flCtr
-      ..isVideoUiBinded = false
-      ..playPauseCtr?.dispose()
-      ..hoverOverlayTimer?.cancel()
-      ..showOverlayTimer?.cancel()
-      ..showOverlayTimer1?.cancel()
-      ..leftDoubleTapTimer?.cancel()
-      ..rightDoubleTapTimer?.cancel();
+    _flCtr.hoverOverlayTimer?.cancel();
+    _flCtr.showOverlayTimer?.cancel();
+    _flCtr.showOverlayTimer1?.cancel();
+    _flCtr.leftDoubleTapTimer?.cancel();
+    _flCtr.rightDoubleTapTimer?.cancel();
   }
 
   ///
@@ -163,6 +157,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   );
   @override
   Widget build(BuildContext context) {
+    _flCtr.currentContext = context;
     return GetBuilder<FlGetXVideoController>(
       tag: widget.controller.getTag,
       builder: (_) {
@@ -226,24 +221,41 @@ class _PlayPause extends StatefulWidget {
 class _PlayPauseState extends State<_PlayPause>
     with SingleTickerProviderStateMixin {
   late final AnimationController _payCtr;
+  late FlGetXVideoController _flCtr;
   @override
   void initState() {
+    _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
     _payCtr = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 450),
     );
+    _flCtr.addListenerId('flVideoState', playPauseListner);
+    if (_flCtr.isvideoPlaying) {
+      if (mounted) _payCtr.forward();
+    }
     super.initState();
+  }
+
+  void playPauseListner() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (_flCtr.flVideoState == FlVideoState.playing) {
+        if (mounted) _payCtr.forward();
+      }
+      if (_flCtr.flVideoState == FlVideoState.paused) {
+        if (mounted) _payCtr.reverse();
+      }
+    });
   }
 
   @override
   void dispose() {
+    flLog('Play-pause-controller-disposed');
     _payCtr.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
     return GetBuilder<FlGetXVideoController>(
       tag: widget.tag,
       id: 'overlay',
@@ -276,7 +288,7 @@ class _PlayPauseState extends State<_PlayPause>
   Widget _playPause(FlGetXVideoController _flCtr) {
     return AnimatedIcon(
       icon: AnimatedIcons.play_pause,
-      progress: _flCtr.playPauseCtr ?? _payCtr,
+      progress: _payCtr,
       color: Colors.white,
       size: widget.size,
     );

@@ -31,6 +31,9 @@ class FlBaseController extends GetxController {
 
   bool? wasVideoPlayingOnUiDispose;
 
+
+  late BuildContext currentContext;
+
   ///**listners
 
   Future<void> videoListner() async {

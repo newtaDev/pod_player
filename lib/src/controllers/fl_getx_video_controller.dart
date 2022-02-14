@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -9,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 
 import '../../fl_video_player.dart';
+import '../utils/logger.dart';
 import '../utils/vimeo_video_api.dart';
 
 part './fl_base_controller.dart';
@@ -69,7 +69,7 @@ class FlGetXVideoController extends _FlUiController {
   Future<void> videoInit() async {
     ///
     checkPlayerType();
-    log(_videoPlayerType.toString());
+    flLog(_videoPlayerType.toString());
     try {
       await _initializePlayer();
       await _videoCtr?.initialize();
@@ -87,7 +87,7 @@ class FlGetXVideoController extends _FlUiController {
       Future.delayed(const Duration(milliseconds: 600))
           .then((value) => _isWebAutoPlayDone = true);
     } catch (e) {
-      log('ERROR ON FLVIDEOPLAYER:  $e');
+      flLog('ERROR ON FLVIDEOPLAYER:  $e');
       rethrow;
     }
   }
@@ -143,8 +143,6 @@ class FlGetXVideoController extends _FlUiController {
     }
   }
 
-  Timer? _keyBoardEventTimer;
-
   ///Listning on keyboard events
   void onKeyBoardEvents({
     required RawKeyEvent event,
@@ -168,30 +166,34 @@ class FlGetXVideoController extends _FlUiController {
         onRightDoubleTap();
         return;
       }
-      if (event.logicalKey.debugName == 'Key F') {
-        if (_keyBoardEventTimer == null || !_keyBoardEventTimer!.isActive) {
-          toggleFullScreenOnWeb();
-        }
-        _keyBoardEventTimer = Timer(const Duration(milliseconds: 400), () {
-          _keyBoardEventTimer?.cancel();
-        });
-
-        return;
+      if (event.isKeyPressed(LogicalKeyboardKey.keyF) &&
+          event.logicalKey.keyLabel == 'F') {
+        toggleFullScreenOnWeb(appContext, tag);
       }
+      if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+        if (isFullScreen) {
+          _html.document.exitFullscreen();
+          disableFullScreen(appContext, tag);
+        }
+      }
+
+      return;
     }
   }
 
-  void toggleFullScreenOnWeb() {
+  void toggleFullScreenOnWeb(BuildContext context, String tag) {
     if (isFullScreen) {
       _html.document.exitFullscreen();
+      disableFullScreen(context, tag);
     } else {
       _html.document.documentElement?.requestFullscreen();
+      enableFullScreen(context, tag);
     }
   }
 
   ///this func will listne to update id `_flVideoState`
   void flStateListner() {
-    log(_flVideoState.toString());
+    flLog(_flVideoState.toString());
     switch (_flVideoState) {
       case FlVideoState.playing:
         playVideo(true);
@@ -232,21 +234,6 @@ class FlGetXVideoController extends _FlUiController {
     }
   }
 
-  void webFullScreenListner(BuildContext context, String tag) {
-    ///
-    if (kIsWeb) {
-      ///this will listne to fullScreen and exitFullScreen state in web
-      _html.document.documentElement?.onFullscreenChange.listen(
-        (e) {
-          if (isFullScreen) {
-            exitFullScreenView(context, tag);
-          } else {
-            enableFullScreenView(context, tag);
-          }
-        },
-      );
-    }
-  }
 
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {

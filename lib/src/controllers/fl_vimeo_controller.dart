@@ -66,7 +66,7 @@ class _FlVimeoVideoController extends _FlPlayerController {
               .first
               .urls ??
           _vimeoVideoUrl;
-      log(_vimeoVideoUrl);
+      flLog(_vimeoVideoUrl);
       vimeoPlayingVideoQuality = quality;
       _videoCtr?.removeListener(videoListner);
       flVideoStateChanger(FlVideoState.paused);

@@ -39,7 +39,7 @@ class _VideoOverlays extends StatelessWidget {
                 child: _VideoGestureDetector(
                   tag: tag,
                   onTap: _flCtr.togglePlayPauseVideo,
-                  onDoubleTap: _flCtr.toggleFullScreenOnWeb,
+                  onDoubleTap:()=> _flCtr.toggleFullScreenOnWeb(context,tag),
                   child: const ColoredBox(
                     color: Colors.black38,
                     child: SizedBox.expand(),

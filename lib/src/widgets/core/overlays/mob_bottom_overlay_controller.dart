@@ -50,9 +50,9 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                 onPressed: () {
                   if (_flCtr.isOverlayVisible) {
                     if (_fl.isFullScreen) {
-                      _flCtr.exitFullScreenView(context, tag);
+                      _flCtr.disableFullScreen(context, tag);
                     } else {
-                      _flCtr.enableFullScreenView(context, tag);
+                      _flCtr.enableFullScreen(context, tag);
                     }
                   } else {
                     _flCtr.toggleVideoOverlay();
