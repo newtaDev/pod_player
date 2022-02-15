@@ -11,17 +11,17 @@ dependencies:
   flutter:
     sdk: flutter
   # ui
-  lottie: ^1.2.1
+  lottie: ^1.2.2
   # 
-  video_player: ^2.2.7
-  http: ^0.13.3
-  get: ^4.3.8
+  video_player: ^2.2.18
+  http: ^0.13.4
+  get: ^4.6.1
   universal_html: ^2.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^2.1.2
+  very_good_analysis: ^2.4.0
 
 flutter:
   uses-material-design: true
