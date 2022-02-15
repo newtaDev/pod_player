@@ -106,26 +106,56 @@ class _MyHomePage2State extends State<MyHomePage2> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: FlVideoPlayer(controller: controller),
-        floatingActionButton: FloatingActionButton(
-          child: isVideoPlaying == null
-              ? const CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.white,
-                )
-              : Icon(!isVideoPlaying! ? Icons.play_arrow : Icons.pause),
-          backgroundColor: Colors.black,
-          onPressed: () async {
-            // print(controller.currentVideoPosition);
-            // print(controller.isInitialized);
-            // print(controller.totalVideoLength);
-            // controller.play();
-            // controller.changeVideo(
-            //   fromNetworkUrl:
-            //       'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-            // );
-            // print(controller.videoPlayerValue?.size);
-            // controller.unMute();
-            controller.togglePlayPause();
-          },
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FloatingActionButton(
+              child: isVideoPlaying == null
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.black,
+                        color: Colors.white,
+                        strokeWidth: 1,
+                      ),
+                    )
+                  : Icon(!isVideoPlaying! ? Icons.play_arrow : Icons.pause),
+              backgroundColor: Colors.black,
+              onPressed: () async {
+                // print(controller.currentVideoPosition);
+                // print(controller.isInitialized);
+                // print(controller.totalVideoLength);
+                // controller.play();
+                controller.togglePlayPause();
+
+                // print(controller.videoPlayerValue?.size);
+                // controller.unMute();
+              },
+            ),
+            FloatingActionButton.extended(
+              heroTag: 'change-video',
+              isExtended: true,
+              label: Row(
+                children: const [Icon(Icons.skip_next), Text('Change video')],
+              ),
+              backgroundColor: Colors.black,
+              onPressed: () async {
+                // print(controller.currentVideoPosition);
+                // print(controller.isInitialized);
+                // print(controller.totalVideoLength);
+                // controller.play();
+                await controller.changeVideo(
+                  fromNetworkUrl:
+                      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+                );
+                controller.addListener(_listner);
+
+                // print(controller.videoPlayerValue?.size);
+                // controller.unMute();
+              },
+            ),
+          ],
         ));
   }
 }
