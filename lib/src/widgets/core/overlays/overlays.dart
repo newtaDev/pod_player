@@ -15,6 +15,7 @@ class _VideoOverlays extends StatelessWidget {
         id: 'update-all',
         tag: tag,
         builder: (_flCtr) {
+          ///Custom overlay
           final _progressBar = FlVideoProgressBar(
             tag: tag,
             flProgressBarConfig: _flCtr.flProgressBarConfig,
@@ -39,7 +40,7 @@ class _VideoOverlays extends StatelessWidget {
                 child: _VideoGestureDetector(
                   tag: tag,
                   onTap: _flCtr.togglePlayPauseVideo,
-                  onDoubleTap:()=> _flCtr.toggleFullScreenOnWeb(context,tag),
+                  onDoubleTap: () => _flCtr.toggleFullScreenOnWeb(context, tag),
                   child: const ColoredBox(
                     color: Colors.black38,
                     child: SizedBox.expand(),
@@ -52,6 +53,7 @@ class _VideoOverlays extends StatelessWidget {
         },
       );
     } else {
+      ///Built in overlay
       return GetBuilder<FlGetXVideoController>(
         tag: tag,
         id: 'overlay',

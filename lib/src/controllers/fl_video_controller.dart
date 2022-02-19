@@ -115,6 +115,9 @@ class FlVideoController {
 
   Future<void> unMute() async => _ctr.unMute();
 
+  void setDoubeTapForwarDuration(int seconds, {bool modify = true}) =>
+      _ctr.doubleTapForwardSeconds = seconds;
+
   ///Dispose controller
   void dispose() {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);

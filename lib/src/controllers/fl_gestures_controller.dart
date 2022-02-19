@@ -16,9 +16,12 @@ class _FlGesturesController extends _FlVimeoVideoController {
   void onLeftDoubleTap() {
     isShowOverlay(true);
     leftDoubleTapTimer?.cancel();
+    rightDoubleTapTimer?.cancel();
+
+    isRightDbTapIconVisible = false;
     isLeftDbTapIconVisible = true;
-    updateLeftTapDuration(leftDoubleTapduration += 10);
-    seekBackward(const Duration(seconds: 10));
+    updateLeftTapDuration(leftDoubleTapduration += doubleTapForwardSeconds);
+    seekBackward(Duration(seconds: doubleTapForwardSeconds));
     leftDoubleTapTimer = Timer(const Duration(milliseconds: 1500), () {
       isLeftDbTapIconVisible = false;
       updateLeftTapDuration(0);
@@ -30,9 +33,12 @@ class _FlGesturesController extends _FlVimeoVideoController {
   void onRightDoubleTap() {
     isShowOverlay(true);
     rightDoubleTapTimer?.cancel();
+    leftDoubleTapTimer?.cancel();
+
+    isLeftDbTapIconVisible = false;
     isRightDbTapIconVisible = true;
-    updateRightTapDuration(rightDubleTapduration += 10);
-    seekForward(const Duration(seconds: 10));
+    updateRightTapDuration(rightDubleTapduration += doubleTapForwardSeconds);
+    seekForward(Duration(seconds: doubleTapForwardSeconds));
     rightDoubleTapTimer = Timer(const Duration(milliseconds: 1500), () {
       isRightDbTapIconVisible = false;
       updateRightTapDuration(0);
@@ -62,12 +68,12 @@ class _FlGesturesController extends _FlVimeoVideoController {
   void updateLeftTapDuration(int val) {
     leftDoubleTapduration = val;
     update(['double-tap']);
-        update(['update-all']);
+    update(['update-all']);
   }
 
   void updateRightTapDuration(int val) {
     rightDubleTapduration = val;
     update(['double-tap']);
-        update(['update-all']);
+    update(['update-all']);
   }
 }

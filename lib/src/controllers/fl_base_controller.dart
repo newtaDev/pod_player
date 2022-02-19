@@ -31,6 +31,7 @@ class FlBaseController extends GetxController {
 
   bool? wasVideoPlayingOnUiDispose;
 
+  int doubleTapForwardSeconds = 10;
 
   late BuildContext currentContext;
 
