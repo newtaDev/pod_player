@@ -62,7 +62,7 @@ class _VideoOverlays extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             opacity: _flCtr.isOverlayVisible ? 1 : 0,
             child: Stack(
-              fit: StackFit.expand,
+              fit: StackFit.passthrough,
               children: [
                 if (!kIsWeb) _MobileOverlay(tag: tag),
                 if (kIsWeb) _WebOverlay(tag: tag),

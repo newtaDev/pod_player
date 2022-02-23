@@ -52,6 +52,8 @@ class _WebOverlay extends StatelessWidget {
             ],
           ),
         ),
+                IgnorePointer(child: Text('data',style: TextStyle(color: Colors.white),)),
+
       ],
     );
   }

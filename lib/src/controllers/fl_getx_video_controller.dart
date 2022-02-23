@@ -44,23 +44,18 @@ class FlGetXVideoController extends _FlUiController {
   bool controllerInitialized = false;
 
   void config({
-    String? fromNetworkUrl,
-    String? fromVimeoVideoId,
-    List<VimeoVideoQalityUrls>? fromVimeoUrls,
-    String? fromAssets,
-    File? fromFile,
-    required FlVideoPlayerType playerType,
+    required PlayVideoFrom playVideoFrom,
     bool isLooping = false,
     bool autoPlay = true,
     int? vimeoVideoQuality,
   }) {
-    this.fromNetworkUrl = fromNetworkUrl;
-    this.fromVimeoVideoId = fromVimeoVideoId;
-    this.fromVimeoUrls = fromVimeoUrls;
-    this.fromAssets = fromAssets;
-    this.fromFile = fromFile;
+    fromNetworkUrl = playVideoFrom.fromNetworkUrl;
+    fromVimeoVideoId = playVideoFrom.fromVimeoVideoId;
+    fromVimeoUrls = playVideoFrom.fromVimeoUrls;
+    fromAssets = playVideoFrom.fromAssets;
+    fromFile = playVideoFrom.fromFile;
     this.vimeoVideoQuality = vimeoVideoQuality;
-    _videoPlayerType = playerType;
+    _videoPlayerType = playVideoFrom.playerType;
     this.autoPlay = autoPlay;
     this.isLooping = isLooping;
   }
@@ -234,7 +229,6 @@ class FlGetXVideoController extends _FlUiController {
     }
   }
 
-
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
@@ -247,15 +241,10 @@ class FlGetXVideoController extends _FlUiController {
     });
   }
 
-  Future<void> changeVideo(
-    FlVideoPlayerType playerType,
-    String? fromNetworkUrl,
-    String? fromVimeoVideoId,
-    List<VimeoVideoQalityUrls>? fromVimeoUrls,
-    String? fromAssets,
-    File? fromFile,
-    FlVideoPlayerConfig playerConfig,
-  ) async {
+  Future<void> changeVideo({
+    required PlayVideoFrom playVideoFrom,
+    required FlVideoPlayerConfig playerConfig,
+  }) async {
     _videoCtr?.removeListener(videoListner);
     flVideoStateChanger(FlVideoState.paused);
     flVideoStateChanger(FlVideoState.loading);
@@ -263,12 +252,7 @@ class FlGetXVideoController extends _FlUiController {
     removeListenerId('flVideoState', flStateListner);
     _isWebAutoPlayDone = false;
     config(
-      playerType: playerType,
-      fromNetworkUrl: fromNetworkUrl,
-      fromVimeoVideoId: fromVimeoVideoId,
-      fromVimeoUrls: fromVimeoUrls,
-      fromAssets: fromAssets,
-      fromFile: fromFile,
+      playVideoFrom: playVideoFrom,
       autoPlay: playerConfig.autoPlay,
       isLooping: playerConfig.isLooping,
     );

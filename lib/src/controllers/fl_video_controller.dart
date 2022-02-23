@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -15,22 +14,12 @@ class FlVideoController {
   late String getTag;
   bool _isInitialised = false;
 
-  final FlVideoPlayerType playerType;
-  final String? fromNetworkUrl;
-  final String? fromVimeoVideoId;
-  final List<VimeoVideoQalityUrls>? fromVimeoUrls;
-  final String? fromAssets;
-  final File? fromFile;
+  final PlayVideoFrom playVideoFrom;
   final FlVideoPlayerConfig playerConfig;
   bool enableLogs = false;
 
   FlVideoController({
-    this.playerType = FlVideoPlayerType.auto,
-    this.fromNetworkUrl,
-    this.fromVimeoVideoId,
-    this.fromVimeoUrls,
-    this.fromAssets,
-    this.fromFile,
+    required this.playVideoFrom,
     this.playerConfig = const FlVideoPlayerConfig(),
     this.enableLogs = false,
   }) {
@@ -39,12 +28,7 @@ class FlVideoController {
     Get.config(enableLog: enableLogs);
     _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag)
       ..config(
-        playerType: playerType,
-        fromNetworkUrl: fromNetworkUrl,
-        fromVimeoVideoId: fromVimeoVideoId,
-        fromVimeoUrls: fromVimeoUrls,
-        fromAssets: fromAssets,
-        fromFile: fromFile,
+        playVideoFrom: playVideoFrom,
         autoPlay: playerConfig.autoPlay,
         isLooping: playerConfig.isLooping,
       );
@@ -130,22 +114,12 @@ class FlVideoController {
   }
 
   Future<void> changeVideo({
-    FlVideoPlayerType playerType = FlVideoPlayerType.auto,
-    String? fromNetworkUrl,
-    String? fromVimeoVideoId,
-    List<VimeoVideoQalityUrls>? fromVimeoUrls,
-    String? fromAssets,
-    File? fromFile,
+    required PlayVideoFrom playVideoFrom,
     FlVideoPlayerConfig playerConfig = const FlVideoPlayerConfig(),
   }) =>
       _ctr.changeVideo(
-        playerType,
-        fromNetworkUrl,
-        fromVimeoVideoId,
-        fromVimeoUrls,
-        fromAssets,
-        fromFile,
-        playerConfig,
+        playVideoFrom: playVideoFrom,
+        playerConfig: playerConfig,
       );
 
   ///Jumps to specific position of the video
