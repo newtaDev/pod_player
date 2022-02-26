@@ -58,30 +58,36 @@ class _MobileOverlay extends StatelessWidget {
             ),
           ],
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                MaterialIconButton(
-                  toolTipMesg: 'More',
-                  color: itemColor,
-                  onPressed: () {
-                    if (_flCtr.isOverlayVisible) {
-                      _bottomSheet(context);
-                    } else {
-                      _flCtr.toggleVideoOverlay();
-                    }
-                  },
-                  child: const Icon(
-                    Icons.more_vert_rounded,
-                  ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: IgnorePointer(
+                  child: _flCtr.videoTitle ?? const SizedBox(),
                 ),
-              ],
-            ),
-            _MobileOverlayBottomControlles(tag: tag)
-          ],
+              ),
+              MaterialIconButton(
+                toolTipMesg: 'More',
+                color: itemColor,
+                onPressed: () {
+                  if (_flCtr.isOverlayVisible) {
+                    _bottomSheet(context);
+                  } else {
+                    _flCtr.toggleVideoOverlay();
+                  }
+                },
+                child: const Icon(
+                  Icons.more_vert_rounded,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: _MobileOverlayBottomControlles(tag: tag),
         ),
       ],
     );
@@ -94,9 +100,6 @@ class _MobileOverlay extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class _LeftRightDoubleTapBox extends StatelessWidget {
   final String tag;

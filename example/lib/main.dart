@@ -1,6 +1,9 @@
+import 'package:example/screens/from_asset.dart';
+import 'package:example/screens/from_network.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/cutom_video_player.dart';
+import 'screens/cutom_video_controllers.dart';
+import 'screens/from_vimeo_id.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +14,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
-      home: MainPage(),
+      routes: {
+        '/fromVimeoId': (context) => const PlayVideoFromVimeoId(),
+        '/fromAsset': (context) => const PlayVideoFromAsset(),
+        '/fromNetwork': (context) => const PlayVideoFromNetwork(),
+        '/customVideo': (context) => const CustomVideoControlls(),
+      },
+      home: const MainPage(),
     );
   }
 }
@@ -33,19 +42,22 @@ class _MainPageState extends State<MainPage> {
         child: ListView(
           shrinkWrap: true,
           children: [
-            _button('Play video from File'),
-            _button('Play video from Asset'),
-            _button('Play video from Network'),
-            _button('Play video from Vimeo video id'),
+            // _button('Play video from File'),
+            _button(
+              'Play video from Asset',
+              onPressed: () => Navigator.of(context).pushNamed('/fromAsset'),
+            ),
+            _button(
+              'Play video from Network',
+              onPressed: () => Navigator.of(context).pushNamed('/fromNetwork'),
+            ),
+            _button(
+              'Play video from Vimeo video id',
+              onPressed: () => Navigator.of(context).pushNamed('/fromVimeoId'),
+            ),
             _button(
               'Custom Video player',
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const CustomVideoPlayer(),
-                  ),
-                );
-              },
+              onPressed: () => Navigator.of(context).pushNamed('/customVideo'),
             ),
           ],
         ),

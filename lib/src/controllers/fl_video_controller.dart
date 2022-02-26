@@ -56,6 +56,10 @@ class FlVideoController {
   bool get isVideoBuffering => _ctr.videoCtr?.value.isBuffering ?? false;
   bool get isVideoLooping => _ctr.videoCtr?.value.isLooping ?? false;
 
+  bool get isMute => _ctr.isMute;
+
+  FlVideoState get videoState => _ctr.flVideoState;
+
   VideoPlayerValue? get videoPlayerValue => _ctr.videoCtr?.value;
 
   FlVideoPlayerType get videoPlayerType => _ctr.videoPlayerType;
@@ -99,8 +103,9 @@ class FlVideoController {
 
   Future<void> unMute() async => _ctr.unMute();
 
-  void setDoubeTapForwarDuration(int seconds, {bool modify = true}) =>
-      _ctr.doubleTapForwardSeconds = seconds;
+  Future<void> toggleVolume() async {
+    _ctr.isMute ? await _ctr.unMute() : await _ctr.mute();
+  }
 
   ///Dispose controller
   void dispose() {
@@ -122,25 +127,46 @@ class FlVideoController {
         playerConfig: playerConfig,
       );
 
+  //Change double tap duration
+  void setDoubeTapForwarDuration(int seconds, {bool modify = true}) =>
+      _ctr.doubleTapForwardSeconds = seconds;
+
   ///Jumps to specific position of the video
-  Future<void> videoStartsFrom(Duration moment) async {
+  Future<void> videoSeekTo(Duration moment) async {
     await _checkAndWaitTillInitialized();
     if (!_isInitialised) return;
     return _ctr.seekTo(moment);
   }
 
-  ///Movies video forward from current duration to `_duration`
+  ///Moves video forward from current duration to `_duration`
   Future<void> videoSeekForward(Duration _duration) async {
     await _checkAndWaitTillInitialized();
     if (!_isInitialised) return;
     return _ctr.seekForward(_duration);
   }
 
-  ///Movies video backward from current duration to `_duration`
+  ///Moves video backward from current duration to `_duration`
   Future<void> videoSeekBackward(Duration _duration) async {
     await _checkAndWaitTillInitialized();
     if (!_isInitialised) return;
     return _ctr.seekBackward(_duration);
   }
+
+  ///on right double tap
+  Future<void> doubleTapVideoForward(int seconds) async {
+    await _checkAndWaitTillInitialized();
+    if (!_isInitialised) return;
+    return _ctr.onRightDoubleTap(seconds: seconds);
+  }
+
+  ///on left double tap
+  Future<void> doubleTapVideoBackward(int seconds) async {
+    await _checkAndWaitTillInitialized();
+    if (!_isInitialised) return;
+    return _ctr.onLeftDoubleTap(seconds: seconds);
+  }
+
+  void enableFullScreen() => _ctr.enableFullScreen(getTag);
+  void disableFullScreen(BuildContext context) => _ctr.disableFullScreen(context,getTag);
 //TODO: support for playlist
 }

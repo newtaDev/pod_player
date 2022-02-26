@@ -27,8 +27,11 @@ class FlVideoPlayer extends StatefulWidget {
   final double frameAspectRatio;
   final double videoAspectRatio;
   final bool alwaysShowProgressBar;
+  final bool matchVideoAspectRatioToVideo;
+  final bool matchFrameAspectRatioToVideo;
   final FlProgressBarConfig flProgressBarConfig;
   final Widget Function(OverLayOptions options)? overlayBuilder;
+  final Widget? videoTitle;
   FlVideoPlayer({
     Key? key,
     required this.controller,
@@ -37,6 +40,9 @@ class FlVideoPlayer extends StatefulWidget {
     this.alwaysShowProgressBar = true,
     this.flProgressBarConfig = const FlProgressBarConfig(),
     this.overlayBuilder,
+    this.videoTitle,
+    this.matchVideoAspectRatioToVideo = false,
+    this.matchFrameAspectRatioToVideo = false,
   }) : super(key: key) {
     _validate();
     addToUiController();
@@ -91,7 +97,8 @@ class FlVideoPlayer extends StatefulWidget {
       ///add to ui
       ..alwaysShowProgressBar = alwaysShowProgressBar
       ..flProgressBarConfig = flProgressBarConfig
-      ..overlayBuilder = overlayBuilder;
+      ..overlayBuilder = overlayBuilder
+      ..videoTitle = videoTitle;
   }
 
   @override
@@ -161,11 +168,14 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     return GetBuilder<FlGetXVideoController>(
       tag: widget.controller.getTag,
       builder: (_) {
+        final _frameAspectRatio = widget.matchFrameAspectRatioToVideo
+            ? _flCtr.videoCtr?.value.aspectRatio ?? widget.frameAspectRatio
+            : widget.frameAspectRatio;
         return Center(
           child: ColoredBox(
             color: Colors.black,
             child: AspectRatio(
-              aspectRatio: widget.frameAspectRatio,
+              aspectRatio: _frameAspectRatio,
               child: Center(
                 child: _flCtr.videoCtr == null
                     ? circularProgressIndicator
@@ -181,6 +191,9 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   }
 
   Widget _buildPlayer() {
+    final _videoAspectRatio = widget.matchVideoAspectRatioToVideo
+        ? _flCtr.videoCtr?.value.aspectRatio ?? widget.videoAspectRatio
+        : widget.videoAspectRatio;
     if (kIsWeb) {
       return GetBuilder<FlGetXVideoController>(
         tag: widget.controller.getTag,
@@ -189,7 +202,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
           if (_flCtr.isFullScreen) return circularProgressIndicator;
           return FlCorePlayer(
             videoPlayerCtr: _flCtr.videoCtr!,
-            videoAspectRatio: widget.videoAspectRatio,
+            videoAspectRatio: _videoAspectRatio,
             tag: widget.controller.getTag,
           );
         },
@@ -197,7 +210,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     } else {
       return FlCorePlayer(
         videoPlayerCtr: _flCtr.videoCtr!,
-        videoAspectRatio: widget.videoAspectRatio,
+        videoAspectRatio: _videoAspectRatio,
         tag: widget.controller.getTag,
       );
     }

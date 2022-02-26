@@ -121,10 +121,10 @@ class _WebOverlayBottomControlles extends StatelessWidget {
       } else {
         if (kIsWeb) {
           _html.document.documentElement?.requestFullscreen();
-          _flCtr.enableFullScreen(context, tag);
+          _flCtr.enableFullScreen(tag);
           return;
         } else {
-          _flCtr.enableFullScreen(context, tag);
+          _flCtr.enableFullScreen(tag);
         }
       }
     } else {

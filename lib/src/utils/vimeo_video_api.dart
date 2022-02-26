@@ -30,7 +30,7 @@ class VimeoVideoApi {
       );
     } catch (error) {
       if (error.toString().contains('XMLHttpRequest')) {
-        log(flErrorString('(INFO) Please enable CORS in your browser'));
+        log(flErrorString('(INFO)To play vimeo video in WEB, Please enable CORS in your browser'));
         debugPrint(
           'ERROR REFERENCE:\nEnable this plugin: https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en',
         );

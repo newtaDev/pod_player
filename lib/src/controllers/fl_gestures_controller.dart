@@ -13,15 +13,17 @@ class _FlGesturesController extends _FlVimeoVideoController {
 
   ///*handle double tap
 
-  void onLeftDoubleTap() {
+  void onLeftDoubleTap({int? seconds}) {
     isShowOverlay(true);
     leftDoubleTapTimer?.cancel();
     rightDoubleTapTimer?.cancel();
 
     isRightDbTapIconVisible = false;
     isLeftDbTapIconVisible = true;
-    updateLeftTapDuration(leftDoubleTapduration += doubleTapForwardSeconds);
-    seekBackward(Duration(seconds: doubleTapForwardSeconds));
+    updateLeftTapDuration(
+      leftDoubleTapduration += seconds ?? doubleTapForwardSeconds,
+    );
+    seekBackward(Duration(seconds: seconds ?? doubleTapForwardSeconds));
     leftDoubleTapTimer = Timer(const Duration(milliseconds: 1500), () {
       isLeftDbTapIconVisible = false;
       updateLeftTapDuration(0);
@@ -30,15 +32,17 @@ class _FlGesturesController extends _FlVimeoVideoController {
     });
   }
 
-  void onRightDoubleTap() {
+  void onRightDoubleTap({int? seconds}) {
     isShowOverlay(true);
     rightDoubleTapTimer?.cancel();
     leftDoubleTapTimer?.cancel();
 
     isLeftDbTapIconVisible = false;
     isRightDbTapIconVisible = true;
-    updateRightTapDuration(rightDubleTapduration += doubleTapForwardSeconds);
-    seekForward(Duration(seconds: doubleTapForwardSeconds));
+    updateRightTapDuration(
+      rightDubleTapduration += seconds ?? doubleTapForwardSeconds,
+    );
+    seekForward(Duration(seconds: seconds ?? doubleTapForwardSeconds));
     rightDoubleTapTimer = Timer(const Duration(milliseconds: 1500), () {
       isRightDbTapIconVisible = false;
       updateRightTapDuration(0);

@@ -159,13 +159,13 @@ class _FlPlayerController extends FlBaseController {
     update(['update-all']);
   }
 
-  Future<void> enableFullScreen(BuildContext context, String tag) async {
+  void enableFullScreen(String tag) {
     flLog('-full-screen-enable-entred');
     if (!isFullScreen) {
-      await SystemChrome.setPreferredOrientations(
+      SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
       );
-      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       _enableFullScreenView(tag);
       isFullScreen = true;
       WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -175,33 +175,31 @@ class _FlPlayerController extends FlBaseController {
     }
   }
 
-  Future<void> disableFullScreen(
+  void disableFullScreen(
     BuildContext context,
     String tag, {
     bool enablePop = true,
-  }) async {
+  }) {
     flLog('-full-screen-disable-entred');
     if (isFullScreen) {
-      await SystemChrome.setPreferredOrientations([
+      SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown
       ]); //for ios
-      await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-      await SystemChrome.setEnabledSystemUIMode(
+      SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+      SystemChrome.setEnabledSystemUIMode(
         SystemUiMode.manual,
         overlays: SystemUiOverlay.values,
       );
-      if (enablePop) _exitFullScreenView(context, tag);
+      if (enablePop) _exitFullScreenView(context,tag);
       isFullScreen = false;
       update(['full-screen']);
       update(['update-all']);
     }
   }
 
-  void _exitFullScreenView(BuildContext context, String tag) {
+  void _exitFullScreenView(BuildContext context,String tag) {
     flLog('popped-full-screen');
-
-    if (isWebPopupOverlayOpen) Navigator.of(context).pop();
     Navigator.of(currentContext).pop();
   }
 

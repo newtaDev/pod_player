@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -182,7 +183,7 @@ class FlGetXVideoController extends _FlUiController {
       disableFullScreen(context, tag);
     } else {
       _html.document.documentElement?.requestFullscreen();
-      enableFullScreen(context, tag);
+      enableFullScreen(tag);
     }
   }
 
