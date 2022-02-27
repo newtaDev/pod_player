@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:fl_video_player/fl_video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CustomVideoControlls extends StatefulWidget {
   const CustomVideoControlls({Key? key}) : super(key: key);
@@ -28,8 +27,8 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
     controller = FlVideoController(
       playVideoFrom: PlayVideoFrom(
         // playerType: FlVideoPlayerType.asset,
-        fromAssets: 'assets/long_video.mkv',
-        // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
+        // fromAssets: 'assets/long_video.mkv',
+        fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
         // fromNetworkUrl:
         // 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
         // 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
@@ -145,6 +144,11 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                     controller.videoSeekTo(const Duration(minutes: 1));
                   }),
                   sizeH20,
+                  _iconButton('Enable full screen', Icons.fullscreen,
+                      onPressed: () {
+                    controller.enableFullScreen();
+                  }),
+                  sizeH20,
                   _iconButton(controller.isMute ? 'UnMute video' : 'mute video',
                       controller.isMute ? Icons.volume_up : Icons.volume_off,
                       onPressed: () {
@@ -212,10 +216,17 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
               snackBar('Loading....');
               FocusScope.of(context).unfocus();
               await controller.changeVideo(
-                playVideoFrom:
-                    PlayVideoFrom(fromVimeoVideoId: vimeoTextFieldCtr.text),
+                playVideoFrom: PlayVideoFrom(
+                  fromVimeoVideoId: vimeoTextFieldCtr.text,
+                ),
               );
               controller.addListener(_listner);
+              controller.onVimeoVideoQualityChanged(
+                () {
+                  log('Vimeo video quality changed');
+                  controller.addListener(_listner);
+                },
+              );
             } catch (e) {
               snackBar(
                   "Unable to load,${kIsWeb ? 'Please enable CORS in web' : ''}  \n$e");

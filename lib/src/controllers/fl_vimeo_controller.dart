@@ -8,6 +8,9 @@ class _FlVimeoVideoController extends _FlPlayerController {
   List<VimeoVideoQalityUrls>? vimeoVideoUrls;
   late String _vimeoVideoUrl;
 
+  ///invokes callback from external controller
+  VoidCallback? onVimeoVideoQualityChanged;
+
   ///*vimeo player configs
   ///
   ///get all  `quality urls`
@@ -77,6 +80,7 @@ class _FlVimeoVideoController extends _FlPlayerController {
       await _videoCtr?.seekTo(_videoPosition);
       setVideoPlayBack(_currentPaybackSpeed);
       flVideoStateChanger(FlVideoState.playing);
+      onVimeoVideoQualityChanged?.call();
       update();
       update(['update-all']);
     }

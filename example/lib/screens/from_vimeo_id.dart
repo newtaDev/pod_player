@@ -27,7 +27,11 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Center(child: FlVideoPlayer(controller: controller))),
+      body: SafeArea(
+        child: Center(
+          child: FlVideoPlayer(controller: controller),
+        ),
+      ),
     );
   }
 }

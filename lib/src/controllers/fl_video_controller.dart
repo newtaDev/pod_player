@@ -128,7 +128,7 @@ class FlVideoController {
       );
 
   //Change double tap duration
-  void setDoubeTapForwarDuration(int seconds, {bool modify = true}) =>
+  void setDoubeTapForwarDuration(int seconds) =>
       _ctr.doubleTapForwardSeconds = seconds;
 
   ///Jumps to specific position of the video
@@ -167,6 +167,12 @@ class FlVideoController {
   }
 
   void enableFullScreen() => _ctr.enableFullScreen(getTag);
-  void disableFullScreen(BuildContext context) => _ctr.disableFullScreen(context,getTag);
+  
+  void disableFullScreen(BuildContext context) =>
+      _ctr.disableFullScreen(context, getTag);
+
+  void onVimeoVideoQualityChanged(VoidCallback callback) {
+    _ctr.onVimeoVideoQualityChanged = callback;
+  }
 //TODO: support for playlist
 }
