@@ -168,7 +168,7 @@ class FlGetXVideoController extends _FlUiController {
       if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
         if (isFullScreen) {
           _html.document.exitFullscreen();
-          disableFullScreen(appContext, tag);
+          if (!isWebPopupOverlayOpen) disableFullScreen(appContext, tag);
         }
       }
 
@@ -179,7 +179,7 @@ class FlGetXVideoController extends _FlUiController {
   void toggleFullScreenOnWeb(BuildContext context, String tag) {
     if (isFullScreen) {
       _html.document.exitFullscreen();
-      disableFullScreen(context, tag);
+      if (!isWebPopupOverlayOpen) disableFullScreen(context, tag);
     } else {
       _html.document.documentElement?.requestFullscreen();
       enableFullScreen(tag);
