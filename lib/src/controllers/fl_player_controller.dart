@@ -177,8 +177,9 @@ class _FlPlayerController extends FlBaseController {
 
   void disableFullScreen(
     BuildContext context,
-    String tag,
-  ) {
+    String tag, {
+    bool enablePop = true,
+  }) {
     flLog('-full-screen-disable-entred');
     if (isFullScreen) {
       SystemChrome.setPreferredOrientations([
@@ -190,7 +191,7 @@ class _FlPlayerController extends FlBaseController {
         SystemUiMode.manual,
         overlays: SystemUiOverlay.values,
       );
-      _exitFullScreenView(context, tag);
+      if (enablePop) _exitFullScreenView(context, tag);
       isFullScreen = false;
       update(['full-screen']);
       update(['update-all']);
@@ -199,7 +200,7 @@ class _FlPlayerController extends FlBaseController {
 
   void _exitFullScreenView(BuildContext context, String tag) {
     flLog('popped-full-screen');
-    Navigator.of(context).pop();
+    Navigator.of(fullScreenContext).pop();
   }
 
   void _enableFullScreenView(String tag) {
@@ -207,7 +208,7 @@ class _FlPlayerController extends FlBaseController {
       flLog('full-screen-enabled');
 
       Navigator.push(
-        currentContext,
+        mainContext,
         PageRouteBuilder(
           opaque: true,
           fullscreenDialog: true,

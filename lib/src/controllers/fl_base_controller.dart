@@ -33,7 +33,8 @@ class FlBaseController extends GetxController {
 
   int doubleTapForwardSeconds = 10;
 
-  late BuildContext currentContext;
+  late BuildContext mainContext;
+  late BuildContext fullScreenContext;
 
   ///**listners
 

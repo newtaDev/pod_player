@@ -164,7 +164,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   );
   @override
   Widget build(BuildContext context) {
-    _flCtr.currentContext = context;
+    _flCtr.mainContext = context;
     return GetBuilder<FlGetXVideoController>(
       tag: widget.controller.getTag,
       builder: (_) {

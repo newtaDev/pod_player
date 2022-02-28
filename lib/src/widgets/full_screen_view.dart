@@ -17,6 +17,7 @@ class _FullScreenViewState extends State<FullScreenView>
   @override
   void initState() {
     _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+    _flCtr.fullScreenContext = context;
     _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
 
     super.initState();
@@ -37,8 +38,15 @@ class _FullScreenViewState extends State<FullScreenView>
       strokeWidth: 2,
     );
     return WillPopScope(
-      onWillPop: () async{
-         _flCtr.disableFullScreen(context, widget.tag);
+      onWillPop: () async {
+        if (kIsWeb) {
+          _flCtr.disableFullScreen(
+            context,
+            widget.tag,
+            enablePop: false,
+          );
+        }
+        if (!kIsWeb) _flCtr.disableFullScreen(context, widget.tag);
         return true;
       },
       child: Scaffold(
