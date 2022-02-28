@@ -38,14 +38,7 @@ class _FullScreenViewState extends State<FullScreenView>
     );
     return WillPopScope(
       onWillPop: () async{
-        if (kIsWeb) {
-           _flCtr.disableFullScreen(
-            context,
-            widget.tag,
-            enablePop: false,
-          );
-        }
-        if (!kIsWeb)  _flCtr.disableFullScreen(context, widget.tag);
+         _flCtr.disableFullScreen(context, widget.tag);
         return true;
       },
       child: Scaffold(

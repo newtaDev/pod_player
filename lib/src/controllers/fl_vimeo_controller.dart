@@ -56,7 +56,9 @@ class _FlVimeoVideoController extends _FlPlayerController {
     } else {
       await getVimeoVideoUrls(videoId: videoId);
     }
-
+    if (vimeoVideoUrls?.isEmpty ?? true) {
+      throw Exception('vimeoVideoUrls cannot be empty');
+    }
     final q = quality ?? vimeoVideoUrls?[0].quality ?? 720;
     _vimeoVideoUrl = getQualityUrl(q).toString();
     vimeoPlayingVideoQuality = q;
