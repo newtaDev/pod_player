@@ -27,7 +27,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
             toolTipMesg: 'Settings',
             color: Colors.white,
             child: const Icon(Icons.settings),
-            onPressed: () => _flCtr.isWebPopupOverlayOpen = true,
+            onPressed: () =>_flCtr.isFullScreen? _flCtr.isWebPopupOverlayOpen = true: _flCtr.isWebPopupOverlayOpen = false,
             onTapDown: (details) async {
               final _settingsMenu = await showMenu<String>(
                 context: context,
