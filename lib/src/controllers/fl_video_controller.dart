@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:universal_html/html.dart' as _html;
 
 import '../../fl_video_player.dart';
 import 'fl_getx_video_controller.dart';
@@ -166,10 +167,15 @@ class FlVideoController {
     return _ctr.onLeftDoubleTap(seconds: seconds);
   }
 
-  void enableFullScreen() => _ctr.enableFullScreen(getTag);
-  
-  void disableFullScreen(BuildContext context) =>
-      _ctr.disableFullScreen(context, getTag);
+  void enableFullScreen() {
+    _html.document.documentElement?.requestFullscreen();
+    _ctr.enableFullScreen(getTag);
+  }
+
+  void disableFullScreen(BuildContext context) {
+    _html.document.exitFullscreen();
+    if (!_ctr.isWebPopupOverlayOpen) _ctr.disableFullScreen(context, getTag);
+  }
 
   void onVimeoVideoQualityChanged(VoidCallback callback) {
     _ctr.onVimeoVideoQualityChanged = callback;
