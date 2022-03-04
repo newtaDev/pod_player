@@ -20,15 +20,14 @@ This is a Simple and easy to use video player, player controller similar to yout
 - Enable/disable fullscreen player
 - [TODO] support for video playlist
 
----
 
 ## Features on web
 
 - Video player integration with keyboard
 
   - `SPACE` play/pause video
-  - `m` mute/unMute video
-  - `f` enable/disable fullscreen
+  - `M` mute/unMute video
+  - `F` enable/disable fullscreen
   - `->` seek video forward
   - `<-` seek video backward
 
