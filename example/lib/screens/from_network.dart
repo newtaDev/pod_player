@@ -30,8 +30,23 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-          SafeArea(child: Center(child: FlVideoPlayer(controller: controller))),
+      body: SafeArea(
+        child: Center(
+          child: FlVideoPlayer(
+            controller: controller,
+            flProgressBarConfig: const FlProgressBarConfig(
+              padding: EdgeInsets.only(
+                bottom: 20,
+                left: 20,
+                right: 20,
+              ),
+              playingBarColor: Colors.blue,
+              circleHandlerColor: Colors.blue,
+              backgroundColor: Colors.blueGrey,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

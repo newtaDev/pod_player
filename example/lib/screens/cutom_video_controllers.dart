@@ -21,6 +21,8 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
   final vimeoTextFieldCtr = TextEditingController(
     text: '518228118',
   );
+
+  bool alwaysShowProgressBar = true;
   @override
   void initState() {
     super.initState();
@@ -103,6 +105,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
           children: [
             sizeH20,
             FlVideoPlayer(
+              alwaysShowProgressBar: alwaysShowProgressBar,
               controller: controller,
               matchFrameAspectRatioToVideo: true,
               matchVideoAspectRatioToVideo: true,
@@ -127,6 +130,14 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                   _loadVideoFromUrl(),
                   sizeH20,
                   _loadVideoFromVimeo(),
+                  sizeH20,
+                  _iconButton(
+                      'Hide progress bar on overlay hidden', Icons.hide_source,
+                      onPressed: () {
+                    setState(() {
+                      alwaysShowProgressBar = false;
+                    });
+                  }),
                   sizeH20,
                   _iconButton('Backward video 5s', Icons.replay_5_rounded,
                       onPressed: () {
