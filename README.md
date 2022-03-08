@@ -97,10 +97,9 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
   late final FlVideoController controller;
   @override
   void initState() {
-    controller = FlVideoController(
-      playVideoFrom: PlayVideoFrom(
-        fromNetworkUrl:
-            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+  controller = FlVideoController(
+      playVideoFrom: PlayVideoFrom.network(
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
       ),
     )..initialise();
     super.initState();

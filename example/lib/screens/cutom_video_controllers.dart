@@ -27,18 +27,17 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
   void initState() {
     super.initState();
     controller = FlVideoController(
-      playVideoFrom: PlayVideoFrom(
-        // playerType: FlVideoPlayerType.asset,
-        // fromAssets: 'assets/long_video.mkv',
-        fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
-        // fromNetworkUrl:
-        // 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-        // 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-        // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-        // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
-        // 'http://techslides.com/demos/sample-videos/small.mp4',
-        // fromVimeoVideoId: '518228118',
-      ),
+      playVideoFrom: PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
+      // playerType: FlVideoPlayerType.asset,
+      // fromAssets: 'assets/long_video.mkv',
+      // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
+      // fromNetworkUrl:
+      // 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      // 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+      // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+      // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
+      // 'http://techslides.com/demos/sample-videos/small.mp4',
+      // fromVimeoVideoId: '518228118',
       // playerConfig : const FlVideoPlayerConfig(autoPlay: false,isLooping: true)
       // playerConfig: const FlVideoPlayerConfig(forcedVideoFocus: true),
       enableLogs: true,
@@ -227,9 +226,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
               snackBar('Loading....');
               FocusScope.of(context).unfocus();
               await controller.changeVideo(
-                playVideoFrom: PlayVideoFrom(
-                  fromVimeoVideoId: vimeoTextFieldCtr.text,
-                ),
+                playVideoFrom: PlayVideoFrom.vimeoId(vimeoTextFieldCtr.text),
               );
               controller.addListener(_listner);
               controller.onVimeoVideoQualityChanged(
@@ -273,9 +270,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
               snackBar('Loading....');
               FocusScope.of(context).unfocus();
               await controller.changeVideo(
-                playVideoFrom: PlayVideoFrom(
-                  fromNetworkUrl: videoTextFieldCtr.text,
-                ),
+                playVideoFrom: PlayVideoFrom.network(videoTextFieldCtr.text),
               );
               controller.addListener(_listner);
             } catch (e) {

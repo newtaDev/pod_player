@@ -10,5 +10,4 @@ enum FlVideoPlayerType {
   file,
   asset,
   vimeo,
-  auto,
 }

@@ -1,4 +1,5 @@
 import 'package:fl_video_player/fl_video_player.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromNetwork extends StatefulWidget {
@@ -13,9 +14,8 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
   @override
   void initState() {
     controller = FlVideoController(
-      playVideoFrom: PlayVideoFrom(
-        fromNetworkUrl:
-            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+      playVideoFrom: PlayVideoFrom.network(
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
       ),
     )..initialise();
     super.initState();
@@ -35,11 +35,13 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
           child: FlVideoPlayer(
             controller: controller,
             flProgressBarConfig: const FlProgressBarConfig(
-              padding: EdgeInsets.only(
-                bottom: 20,
-                left: 20,
-                right: 20,
-              ),
+              padding: kIsWeb
+                  ? EdgeInsets.zero
+                  : EdgeInsets.only(
+                      bottom: 20,
+                      left: 20,
+                      right: 20,
+                    ),
               playingBarColor: Colors.blue,
               circleHandlerColor: Colors.blue,
               backgroundColor: Colors.blueGrey,

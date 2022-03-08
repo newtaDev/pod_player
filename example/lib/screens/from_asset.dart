@@ -13,9 +13,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromAsset> {
   @override
   void initState() {
     controller = FlVideoController(
-      playVideoFrom: PlayVideoFrom(
-        fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
-      ),
+      playVideoFrom: PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
     )..initialise();
     super.initState();
   }

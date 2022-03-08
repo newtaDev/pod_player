@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -35,25 +34,16 @@ class FlGetXVideoController extends _FlUiController {
   ///
   Duration get videoPosition => _videoPosition;
 
-  String? fromNetworkUrl;
-  String? fromVimeoVideoId;
-  String? fromAssets;
-  File? fromFile;
   int? vimeoVideoQuality;
-  List<VimeoVideoQalityUrls>? fromVimeoUrls;
   bool controllerInitialized = false;
-
+  late PlayVideoFrom playVideoFrom;
   void config({
     required PlayVideoFrom playVideoFrom,
     bool isLooping = false,
     bool autoPlay = true,
     int? vimeoVideoQuality,
   }) {
-    fromNetworkUrl = playVideoFrom.fromNetworkUrl;
-    fromVimeoVideoId = playVideoFrom.fromVimeoVideoId;
-    fromVimeoUrls = playVideoFrom.fromVimeoUrls;
-    fromAssets = playVideoFrom.fromAssets;
-    fromFile = playVideoFrom.fromFile;
+    this.playVideoFrom = playVideoFrom;
     this.vimeoVideoQuality = vimeoVideoQuality;
     _videoPlayerType = playVideoFrom.playerType;
     this.autoPlay = autoPlay;
@@ -63,7 +53,7 @@ class FlGetXVideoController extends _FlUiController {
   ///*init
   Future<void> videoInit() async {
     ///
-    checkPlayerType();
+    // checkPlayerType();
     flLog(_videoPlayerType.toString());
     try {
       await _initializePlayer();
@@ -92,50 +82,109 @@ class FlGetXVideoController extends _FlUiController {
       case FlVideoPlayerType.network:
 
         ///
-        _videoCtr = VideoPlayerController.network(fromNetworkUrl!);
+        _videoCtr = VideoPlayerController.network(
+          playVideoFrom.dataSource!,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          formatHint: playVideoFrom.formatHint,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+          httpHeaders: playVideoFrom.httpHeaders,
+        );
 
         break;
       case FlVideoPlayerType.vimeo:
 
         ///
-        if (fromVimeoVideoId != null) {
+        if (playVideoFrom.dataSource != null) {
           await vimeoPlayerInit(
             quality: vimeoVideoQuality,
-            videoId: fromVimeoVideoId,
+            videoId: playVideoFrom.dataSource,
           );
         } else {
           await vimeoPlayerInit(
             quality: vimeoVideoQuality,
-            vimeoUrls: fromVimeoUrls,
+            vimeoUrls: playVideoFrom.vimeoUrls,
           );
         }
 
-        _videoCtr = VideoPlayerController.network(_vimeoVideoUrl);
+        _videoCtr = VideoPlayerController.network(
+          _vimeoVideoUrl,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          formatHint: playVideoFrom.formatHint,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+          httpHeaders: playVideoFrom.httpHeaders,
+        );
 
         break;
       case FlVideoPlayerType.asset:
 
         ///
-        _videoCtr = VideoPlayerController.asset(fromAssets!);
+        _videoCtr = VideoPlayerController.asset(
+          playVideoFrom.dataSource!,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          package: playVideoFrom.package,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+        );
         break;
       case FlVideoPlayerType.file:
 
         ///
-        _videoCtr = VideoPlayerController.file(fromFile!);
+        _videoCtr = VideoPlayerController.file(
+          playVideoFrom.file!,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+        );
 
         break;
-      case FlVideoPlayerType.auto:
-        assert(
-          fromNetworkUrl != null ||
-              fromAssets != null ||
-              fromVimeoVideoId != null ||
-              fromVimeoUrls != null ||
-              fromFile != null,
-          '''---------  any one parameter is required  ---------''',
-        );
-        _videoCtr = VideoPlayerController.network(fromNetworkUrl!);
-        break;
     }
+
+    // switch (_videoPlayerType) {
+    //   case FlVideoPlayerType.network:
+
+    //     ///
+    //     _videoCtr = VideoPlayerController.network(fromNetworkUrl!);
+
+    //     break;
+    //   case FlVideoPlayerType.vimeo:
+
+    //     ///
+    //     if (fromVimeoVideoId != null) {
+    //       await vimeoPlayerInit(
+    //         quality: vimeoVideoQuality,
+    //         videoId: fromVimeoVideoId,
+    //       );
+    //     } else {
+    //       await vimeoPlayerInit(
+    //         quality: vimeoVideoQuality,
+    //         vimeoUrls: fromVimeoUrls,
+    //       );
+    //     }
+
+    //     _videoCtr = VideoPlayerController.network(_vimeoVideoUrl);
+
+    //     break;
+    //   case FlVideoPlayerType.asset:
+
+    //     ///
+    //     _videoCtr = VideoPlayerController.asset(fromAssets!);
+    //     break;
+    //   case FlVideoPlayerType.file:
+
+    //     ///
+    //     _videoCtr = VideoPlayerController.file(fromFile!);
+
+    //     break;
+    //   case FlVideoPlayerType.auto:
+    //     assert(
+    //       fromNetworkUrl != null ||
+    //           fromAssets != null ||
+    //           fromVimeoVideoId != null ||
+    //           fromVimeoUrls != null ||
+    //           fromFile != null,
+    //       '''---------  any one parameter is required  ---------''',
+    //     );
+    //     _videoCtr = VideoPlayerController.network(fromNetworkUrl!);
+    //     break;
+    // }
   }
 
   ///Listning on keyboard events
@@ -206,28 +255,28 @@ class FlGetXVideoController extends _FlUiController {
   }
 
   ///check video player type
-  void checkPlayerType() {
-    if (_videoPlayerType == FlVideoPlayerType.auto) {
-      if (fromVimeoVideoId != null || fromVimeoUrls != null) {
-        _videoPlayerType = FlVideoPlayerType.vimeo;
-        return;
-      }
-      if (fromNetworkUrl != null) {
-        _videoPlayerType = FlVideoPlayerType.network;
-        return;
-      }
-      if (fromAssets != null) {
-        _videoPlayerType = FlVideoPlayerType.asset;
-        return;
-      }
-      if (fromFile != null) {
-        _videoPlayerType = FlVideoPlayerType.file;
-        return;
-      }
-      //Default
-      _videoPlayerType = FlVideoPlayerType.auto;
-    }
-  }
+  // void checkPlayerType() {
+  //   if (_videoPlayerType == FlVideoPlayerType.auto) {
+  //     if (fromVimeoVideoId != null || fromVimeoUrls != null) {
+  //       _videoPlayerType = FlVideoPlayerType.vimeo;
+  //       return;
+  //     }
+  //     if (fromNetworkUrl != null) {
+  //       _videoPlayerType = FlVideoPlayerType.network;
+  //       return;
+  //     }
+  //     if (fromAssets != null) {
+  //       _videoPlayerType = FlVideoPlayerType.asset;
+  //       return;
+  //     }
+  //     if (fromFile != null) {
+  //       _videoPlayerType = FlVideoPlayerType.file;
+  //       return;
+  //     }
+  //     //Default
+  //     _videoPlayerType = FlVideoPlayerType.auto;
+  //   }
+  // }
 
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {

@@ -13,7 +13,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   @override
   void initState() {
     controller = FlVideoController(
-      playVideoFrom: PlayVideoFrom(fromVimeoVideoId: '518228118'),
+      playVideoFrom: PlayVideoFrom.vimeoId('518228118'),
     )..initialise();
     super.initState();
   }
