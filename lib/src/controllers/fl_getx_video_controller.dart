@@ -137,54 +137,6 @@ class FlGetXVideoController extends _FlUiController {
         break;
     }
 
-    // switch (_videoPlayerType) {
-    //   case FlVideoPlayerType.network:
-
-    //     ///
-    //     _videoCtr = VideoPlayerController.network(fromNetworkUrl!);
-
-    //     break;
-    //   case FlVideoPlayerType.vimeo:
-
-    //     ///
-    //     if (fromVimeoVideoId != null) {
-    //       await vimeoPlayerInit(
-    //         quality: vimeoVideoQuality,
-    //         videoId: fromVimeoVideoId,
-    //       );
-    //     } else {
-    //       await vimeoPlayerInit(
-    //         quality: vimeoVideoQuality,
-    //         vimeoUrls: fromVimeoUrls,
-    //       );
-    //     }
-
-    //     _videoCtr = VideoPlayerController.network(_vimeoVideoUrl);
-
-    //     break;
-    //   case FlVideoPlayerType.asset:
-
-    //     ///
-    //     _videoCtr = VideoPlayerController.asset(fromAssets!);
-    //     break;
-    //   case FlVideoPlayerType.file:
-
-    //     ///
-    //     _videoCtr = VideoPlayerController.file(fromFile!);
-
-    //     break;
-    //   case FlVideoPlayerType.auto:
-    //     assert(
-    //       fromNetworkUrl != null ||
-    //           fromAssets != null ||
-    //           fromVimeoVideoId != null ||
-    //           fromVimeoUrls != null ||
-    //           fromFile != null,
-    //       '''---------  any one parameter is required  ---------''',
-    //     );
-    //     _videoCtr = VideoPlayerController.network(fromNetworkUrl!);
-    //     break;
-    // }
   }
 
   ///Listning on keyboard events
@@ -253,30 +205,6 @@ class FlGetXVideoController extends _FlUiController {
         break;
     }
   }
-
-  ///check video player type
-  // void checkPlayerType() {
-  //   if (_videoPlayerType == FlVideoPlayerType.auto) {
-  //     if (fromVimeoVideoId != null || fromVimeoUrls != null) {
-  //       _videoPlayerType = FlVideoPlayerType.vimeo;
-  //       return;
-  //     }
-  //     if (fromNetworkUrl != null) {
-  //       _videoPlayerType = FlVideoPlayerType.network;
-  //       return;
-  //     }
-  //     if (fromAssets != null) {
-  //       _videoPlayerType = FlVideoPlayerType.asset;
-  //       return;
-  //     }
-  //     if (fromFile != null) {
-  //       _videoPlayerType = FlVideoPlayerType.file;
-  //       return;
-  //     }
-  //     //Default
-  //     _videoPlayerType = FlVideoPlayerType.auto;
-  //   }
-  // }
 
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {

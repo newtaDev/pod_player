@@ -162,9 +162,15 @@ class _FlPlayerController extends FlBaseController {
   void enableFullScreen(String tag) {
     flLog('-full-screen-enable-entred');
     if (!isFullScreen) {
-      SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
-      );
+      if (kIsWeb) {
+        SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeRight],
+        );
+      } else {
+        SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
+        );
+      }
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       _enableFullScreenView(tag);
       isFullScreen = true;

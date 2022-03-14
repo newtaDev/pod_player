@@ -11,12 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   # ui
-  lottie: ^1.2.2
+  lottie: any
   # 
   video_player: ^2.2.18
-  http: ^0.13.4
+  http: any
   get: ^4.6.1
-  universal_html: ^2.0.8
+  universal_html: any
 
 dev_dependencies:
   flutter_test:

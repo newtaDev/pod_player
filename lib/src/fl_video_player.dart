@@ -44,52 +44,8 @@ class FlVideoPlayer extends StatefulWidget {
     this.matchVideoAspectRatioToVideo = false,
     this.matchFrameAspectRatioToVideo = false,
   }) : super(key: key) {
-    // _validate();
     addToUiController();
   }
-
-  // void _validate() {
-  //   final flVideoController =
-  //       Get.find<FlGetXVideoController>(tag: controller.getTag);
-
-  //   switch (flVideoController.videoPlayerType) {
-  //     case FlVideoPlayerType.network:
-  //       assert(
-  //         flVideoController.fromNetworkUrl != null,
-  //         '''---------  FlVideoController( fromVideoUrl: )-------- parameter is required  ---------''',
-  //       );
-  //       break;
-  //     case FlVideoPlayerType.asset:
-  //       assert(
-  //         flVideoController.fromAssets != null,
-  //         '''---------  FlVideoController( fromAssets: )-------- parameter is required  ---------''',
-  //       );
-  //       break;
-  //     case FlVideoPlayerType.vimeo:
-  //       assert(
-  //         flVideoController.fromVimeoVideoId != null ||
-  //             flVideoController.fromVimeoUrls != null,
-  //         '''---------  FlVideoController( fromVimeoVideoId: )-------- parameter is required  --------- OR  ---------  FlVideoController( fromVimeoUrls: )-------- parameter is required  ---------''',
-  //       );
-  //       break;
-  //     case FlVideoPlayerType.file:
-  //       assert(
-  //         flVideoController.fromFile != null,
-  //         '''---------  FlVideoController( fromFile: )--------  parameter is required  ---------''',
-  //       );
-  //       break;
-  //     case FlVideoPlayerType.auto:
-  //       assert(
-  //         flVideoController.fromNetworkUrl != null ||
-  //             flVideoController.fromAssets != null ||
-  //             flVideoController.fromVimeoVideoId != null ||
-  //             flVideoController.fromVimeoUrls != null ||
-  //             flVideoController.fromFile != null,
-  //         '''--------- add required parameters to FlVideoController  ---------''',
-  //       );
-  //       break;
-  //   }
-  // }
 
   void addToUiController() {
     Get.find<FlGetXVideoController>(tag: controller.getTag)
