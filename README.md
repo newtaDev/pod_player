@@ -7,7 +7,7 @@ This plugin uses [`video_player`](https://pub.dartlang.org/packages/video_player
 This is a Simple and easy to use video player, player controller similar to youtube player and also can play videos from vimeo / vimeo_id
 
 ## Features
-
+---
 - Video overlay similar to youtube
 - Can play videos from vimeo id
 - Double tap to seek video.
@@ -22,7 +22,7 @@ This is a Simple and easy to use video player, player controller similar to yout
 
 
 ## Features on web
-
+----
 - Video player integration with keyboard
 
   - `SPACE` play/pause video
@@ -41,7 +41,7 @@ This is a Simple and easy to use video player, player controller similar to yout
 
 ---
 
-|                                               `with overlay`                                               |                                             `without overlay`                                              |
+|                                               `with overlay`                                               |                                             `without overlay`  (alwaysShowProgressBar = true)                                              |
 | :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 | ![](https://user-images.githubusercontent.com/85326522/156813671-ba562deb-3607-46a6-800c-d3a731b22cdd.jpg) | ![](https://user-images.githubusercontent.com/85326522/156813681-fad9f1f9-d73c-478f-8477-b42342424b4a.jpg) |
 
@@ -70,7 +70,18 @@ This is a Simple and easy to use video player, player controller similar to yout
 ---
 
 ![](https://user-images.githubusercontent.com/85326522/156824569-d1ec705d-c278-4503-81fb-84e9dcb58336.jpg)
+
+---
+
+| PLATFORM | AVAILABLE  | 
+| :---:   | :-: |
+| Android | ✅ | 
+| IOS | ✅ | 
+| WEB | ✅ | 
+
+
 ## Installation
+---
 
 In your `pubspec.yaml` file within your Flutter Project:
 
@@ -78,11 +89,44 @@ In your `pubspec.yaml` file within your Flutter Project:
 dependencies:
   fl_video_player: <latest_version>
 ```
+### Android
+---
 
+If you are using network-based videos, ensure that the following permission is present in your Android Manifest file, located in <project root>/android/app/src/main/AndroidManifest.xml:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+If you need to access videos using http (rather than https) URLs. 
+Inside application tag
+
+```xml
+<application
+  - - - 
+  - - - - - - 
+  android:usesCleartextTraffic="true"
+
+```
+
+
+### ios
+---
+
+Add permissions to your app's Info.plist file, located in <project root>/ios/Runner/Info.plist 
+
+```xml
+<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+```
 ## How to use
+---
 
 ```dart
-import 'package:fl_video_player/fl_video_player.dart';
+import 'package:pod_player/src/fl_video_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromNetwork extends StatefulWidget {
@@ -135,6 +179,6 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
 | ![](https://user-images.githubusercontent.com/85326522/156813694-65cc70ff-f87f-4668-9ac4-7c0ee14c40cb.jpg) | ![](https://user-images.githubusercontent.com/85326522/156821283-f5470bd2-21ad-4fee-90ac-85176ccc788f.jpg) | ![](https://user-images.githubusercontent.com/85326522/156821301-7c6b1a6d-68a6-4945-8cca-d5e417042e30.jpg) | 
 
 ## Example
-
+---
 Please run the app in the [`example/`](https://github.com/newtaDev/fl_video_player/tree/master/example) folder to start playing!
 

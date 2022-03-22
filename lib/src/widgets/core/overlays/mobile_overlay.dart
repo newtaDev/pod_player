@@ -1,4 +1,4 @@
-part of 'package:fl_video_player/src/fl_video_player.dart';
+part of 'package:pod_player/src/fl_video_player.dart';
 
 class _MobileOverlay extends StatelessWidget {
   final String tag;
@@ -132,8 +132,8 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
                 children: [
                   Lottie.asset(
                     isLeft
-                        ? 'packages/fl_video_player/assets/forward_left.json'
-                        : 'packages/fl_video_player/assets/forward_right.json',
+                        ? 'packages/pod_player/assets/forward_left.json'
+                        : 'packages/pod_player/assets/forward_right.json',
                   ),
                   if (isLeft
                       ? _flctr.isLeftDbTapIconVisible

@@ -1,11 +1,11 @@
-name: fl_video_player
-description: A new Flutter project.
-
-version: 1.0.0+1
-publish_to: none
+name: pod_player
+description: A new Flutter package project.
+version: 0.0.1
+homepage:
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: ">=2.16.1 <3.0.0"
+  flutter: ">=1.17.0"
 
 dependencies:
   flutter:
@@ -24,7 +24,5 @@ dev_dependencies:
   very_good_analysis: ^2.4.0
 
 flutter:
-  uses-material-design: true
-
   assets:
     - assets/

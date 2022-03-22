@@ -1,4 +1,4 @@
-import 'package:fl_video_player/fl_video_player.dart';
+import 'package:pod_player/fl_video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

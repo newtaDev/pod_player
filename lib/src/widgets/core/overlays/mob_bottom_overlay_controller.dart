@@ -1,4 +1,4 @@
-part of 'package:fl_video_player/src/fl_video_player.dart';
+part of 'package:pod_player/src/fl_video_player.dart';
 
 class _MobileOverlayBottomControlles extends StatelessWidget {
   final String tag;
