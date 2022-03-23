@@ -1,4 +1,4 @@
-part of 'fl_getx_video_controller.dart';
+part of 'pod_getx_video_controller.dart';
 
 class _FlPlayerController extends FlBaseController {
   Timer? showOverlayTimer;

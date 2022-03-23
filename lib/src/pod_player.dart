@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:universal_html/html.dart' as _html;
 
-import '../fl_video_player.dart';
-import 'controllers/fl_getx_video_controller.dart';
+import '../pod_player.dart';
+import 'controllers/pod_getx_video_controller.dart';
 import 'utils/logger.dart';
 import 'widgets/material_icon_button.dart';
 
-part 'widgets/core/fl_core_player.dart';
+part 'widgets/core/pod_core_player.dart';
 part 'widgets/core/overlays/mob_bottom_overlay_controller.dart';
 part 'widgets/core/overlays/mobile_bottomsheet.dart';
 part 'widgets/core/overlays/mobile_overlay.dart';

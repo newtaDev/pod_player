@@ -6,15 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 
-import '../../fl_video_player.dart';
+import '../../pod_player.dart';
 import '../utils/logger.dart';
 import '../utils/vimeo_video_api.dart';
 
-part './fl_base_controller.dart';
-part './fl_gestures_controller.dart';
-part './fl_player_controller.dart';
-part './fl_ui_controller.dart';
-part './fl_vimeo_controller.dart';
+part 'pod_base_controller.dart';
+part 'pod_gestures_controller.dart';
+part 'pod_video_controller.dart';
+part 'pod_ui_controller.dart';
+part 'pod_vimeo_controller.dart';
 
 class FlGetXVideoController extends _FlUiController {
   ///main videoplayer controller

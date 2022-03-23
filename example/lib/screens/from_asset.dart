@@ -1,4 +1,4 @@
-import 'package:pod_player/fl_video_player.dart';
+import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromAsset extends StatefulWidget {

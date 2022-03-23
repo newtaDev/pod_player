@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '../../fl_video_player.dart';
+import '../../pod_player.dart';
 
 class PlayVideoFrom {
   final String? dataSource;

@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 
-import '../../fl_video_player.dart';
-import 'fl_getx_video_controller.dart';
+import '../../pod_player.dart';
+import 'pod_getx_video_controller.dart';
 
 bool enableDevLogs = false;
 
