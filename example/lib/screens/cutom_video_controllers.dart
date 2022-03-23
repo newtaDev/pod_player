@@ -28,7 +28,6 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
     super.initState();
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
-      // playerType: FlVideoPlayerType.asset,
       // fromAssets: 'assets/long_video.mkv',
       // fromAssets: 'assets/SampleVideo_720x480_20mb.mp4',
       // fromNetworkUrl:
@@ -38,8 +37,6 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
       // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
       // 'http://techslides.com/demos/sample-videos/small.mp4',
       // fromVimeoVideoId: '518228118',
-      // playerConfig : const FlVideoPlayerConfig(autoPlay: false,isLooping: true)
-      // playerConfig: const FlVideoPlayerConfig(forcedVideoFocus: true),
       enableLogs: true,
     )..initialise().then((value) {
         setState(() {

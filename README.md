@@ -1,10 +1,23 @@
-# fl_video_player
+# pod_player
+
+<h1 align="center">
+  <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/159757765-db86f850-fea8-4dc2-bd86-0a27648b24e5.png" alt="pod_player"></a>
+</h1>
 
 Flutter video player for web & mobile, controls similar to `YouTube player` and also supports playing video from `vimeo`
 
-This plugin uses [`video_player`](https://pub.dartlang.org/packages/video_player)
 
-This is a Simple and easy to use video player, player controller similar to youtube player and also can play videos from vimeo / vimeo_id
+This is a simple and easy-to-use video player. Its video controls are similar to Youtube player (with customizable controls) and also can play videos from Vimeo. (By providing Vimeo video_id)
+
+This plugin built upon flutter's official [`video_player`](https://pub.dartlang.org/packages/video_player) plugin
+
+---
+
+| PLATFORM | AVAILABLE  | 
+| :---:   | :-: | 
+| Android | ✅ | 
+| IOS | ✅ | 
+| WEB | ✅ | 
 
 ## Features
 ---
@@ -71,13 +84,6 @@ This is a Simple and easy to use video player, player controller similar to yout
 
 ![](https://user-images.githubusercontent.com/85326522/156824569-d1ec705d-c278-4503-81fb-84e9dcb58336.jpg)
 
----
-
-| PLATFORM | AVAILABLE  | 
-| :---:   | :-: |
-| Android | ✅ | 
-| IOS | ✅ | 
-| WEB | ✅ | 
 
 
 ## Installation
@@ -87,12 +93,12 @@ In your `pubspec.yaml` file within your Flutter Project:
 
 ```yaml
 dependencies:
-  fl_video_player: <latest_version>
+  pod_player: <latest_version>
 ```
 ### Android
 ---
 
-If you are using network-based videos, ensure that the following permission is present in your Android Manifest file, located in <project root>/android/app/src/main/AndroidManifest.xml:
+If you are using network-based videos, ensure that the following permission is present in your Android Manifest file, located in `<project root>/android/app/src/main/AndroidManifest.xml`:
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -113,7 +119,7 @@ Inside application tag
 ### ios
 ---
 
-Add permissions to your app's Info.plist file, located in <project root>/ios/Runner/Info.plist 
+Add permissions to your app's Info.plist file, located in `<project root>/ios/Runner/Info.plist` 
 
 ```xml
 <key>NSAppTransportSecurity</key>
@@ -126,7 +132,7 @@ Add permissions to your app's Info.plist file, located in <project root>/ios/Run
 ---
 
 ```dart
-import 'package:pod_player/src/fl_video_player.dart';
+import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromNetwork extends StatefulWidget {
@@ -137,17 +143,16 @@ class PlayVideoFromNetwork extends StatefulWidget {
 }
 
 class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
-  late final FlVideoController controller;
+  late final PodPlayerController controller;
   @override
   void initState() {
-  controller = FlVideoController(
+    controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.network(
         'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
       ),
     )..initialise();
     super.initState();
   }
-
   @override
   void dispose() {
     controller.dispose();
@@ -157,7 +162,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FlVideoPlayer(
+      body: PodVideoPlayer(
         controller: controller,
       ),
     );
