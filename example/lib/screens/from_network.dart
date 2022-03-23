@@ -34,7 +34,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
         child: Center(
           child: FlVideoPlayer(
             controller: controller,
-            flProgressBarConfig: const FlProgressBarConfig(
+            podProgressBarConfig: const FlProgressBarConfig(
               padding: kIsWeb
                   ? EdgeInsets.zero
                   : EdgeInsets.only(

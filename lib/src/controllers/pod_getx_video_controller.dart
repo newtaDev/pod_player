@@ -20,8 +20,8 @@ class FlGetXVideoController extends _FlUiController {
   ///main videoplayer controller
   VideoPlayerController? get videoCtr => _videoCtr;
 
-  ///flVideoPlayer state notifier
-  FlVideoState get flVideoState => _flVideoState;
+  ///podVideoPlayer state notifier
+  FlVideoState get podVideoState => _podVideoState;
 
   ///vimeo or general --video player type
   FlVideoPlayerType get videoPlayerType => _videoPlayerType;
@@ -54,14 +54,14 @@ class FlGetXVideoController extends _FlUiController {
   Future<void> videoInit() async {
     ///
     // checkPlayerType();
-    flLog(_videoPlayerType.toString());
+    podLog(_videoPlayerType.toString());
     try {
       await _initializePlayer();
       await _videoCtr?.initialize();
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
       await setLooping(isLooping);
       _videoCtr?.addListener(videoListner);
-      addListenerId('flVideoState', flStateListner);
+      addListenerId('podVideoState', podStateListner);
 
       checkAutoPlayVideo();
       controllerInitialized = true;
@@ -72,7 +72,7 @@ class FlGetXVideoController extends _FlUiController {
       Future.delayed(const Duration(milliseconds: 600))
           .then((value) => _isWebAutoPlayDone = true);
     } catch (e) {
-      flLog('ERROR ON FLVIDEOPLAYER:  $e');
+      podLog('ERROR ON FLVIDEOPLAYER:  $e');
       rethrow;
     }
   }
@@ -187,10 +187,10 @@ class FlGetXVideoController extends _FlUiController {
     }
   }
 
-  ///this func will listne to update id `_flVideoState`
-  void flStateListner() {
-    flLog(_flVideoState.toString());
-    switch (_flVideoState) {
+  ///this func will listne to update id `_podVideoState`
+  void podStateListner() {
+    podLog(_podVideoState.toString());
+    switch (_podVideoState) {
       case FlVideoState.playing:
         playVideo(true);
         break;
@@ -211,9 +211,9 @@ class FlGetXVideoController extends _FlUiController {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       if (autoPlay && (isVideoUiBinded ?? false)) {
         if (kIsWeb) await _videoCtr?.setVolume(0);
-        flVideoStateChanger(FlVideoState.playing);
+        podVideoStateChanger(FlVideoState.playing);
       } else {
-        flVideoStateChanger(FlVideoState.paused);
+        podVideoStateChanger(FlVideoState.paused);
       }
     });
   }
@@ -223,10 +223,10 @@ class FlGetXVideoController extends _FlUiController {
     required FlVideoPlayerConfig playerConfig,
   }) async {
     _videoCtr?.removeListener(videoListner);
-    flVideoStateChanger(FlVideoState.paused);
-    flVideoStateChanger(FlVideoState.loading);
+    podVideoStateChanger(FlVideoState.paused);
+    podVideoStateChanger(FlVideoState.loading);
     keyboardFocusWeb?.removeListener(keyboadListner);
-    removeListenerId('flVideoState', flStateListner);
+    removeListenerId('podVideoState', podStateListner);
     _isWebAutoPlayDone = false;
     config(
       playVideoFrom: playVideoFrom,

@@ -94,7 +94,7 @@ class _FlPlayerController extends FlBaseController {
   ///toogle play pause
   void togglePlayPauseVideo() {
     isvideoPlaying = !isvideoPlaying;
-    flVideoStateChanger(
+    podVideoStateChanger(
       isvideoPlaying ? FlVideoState.playing : FlVideoState.paused,
     );
   }
@@ -160,7 +160,7 @@ class _FlPlayerController extends FlBaseController {
   }
 
   void enableFullScreen(String tag) {
-    flLog('-full-screen-enable-entred');
+    podLog('-full-screen-enable-entred');
     if (!isFullScreen) {
       if (kIsWeb) {
         SystemChrome.setPreferredOrientations(
@@ -186,7 +186,7 @@ class _FlPlayerController extends FlBaseController {
     String tag, {
     bool enablePop = true,
   }) {
-    flLog('-full-screen-disable-entred');
+    podLog('-full-screen-disable-entred');
     if (isFullScreen) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
@@ -205,13 +205,13 @@ class _FlPlayerController extends FlBaseController {
   }
 
   void _exitFullScreenView(BuildContext context, String tag) {
-    flLog('popped-full-screen');
+    podLog('popped-full-screen');
     Navigator.of(fullScreenContext).pop();
   }
 
   void _enableFullScreenView(String tag) {
     if (!isFullScreen) {
-      flLog('full-screen-enabled');
+      podLog('full-screen-enabled');
 
       Navigator.push(
         mainContext,

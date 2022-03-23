@@ -10,14 +10,14 @@ class _WebOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const overlayColor = Colors.black38;
-    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
     return Stack(
       children: [
         Positioned.fill(
           child: _VideoGestureDetector(
             tag: tag,
-            onTap: _flCtr.togglePlayPauseVideo,
-            onDoubleTap: () => _flCtr.toggleFullScreenOnWeb(context, tag),
+            onTap: _podCtr.togglePlayPauseVideo,
+            onDoubleTap: () => _podCtr.toggleFullScreenOnWeb(context, tag),
             child: const ColoredBox(
               color: overlayColor,
               child: SizedBox.expand(),
@@ -52,7 +52,7 @@ class _WebOverlay extends StatelessWidget {
             ],
           ),
         ),
-        IgnorePointer(child: _flCtr.videoTitle ?? const SizedBox()),
+        IgnorePointer(child: _podCtr.videoTitle ?? const SizedBox()),
       ],
     );
   }

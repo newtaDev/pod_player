@@ -19,7 +19,7 @@ class _FlVimeoVideoController extends _FlPlayerController {
     List<VimeoVideoQalityUrls>? vimeoUrls,
   }) async {
     try {
-      flVideoStateChanger(FlVideoState.loading);
+      podVideoStateChanger(FlVideoState.loading);
       final _vimeoVideoUrls =
           vimeoUrls ?? await VimeoVideoApi.getvideoQualityLink(videoId!);
 
@@ -32,7 +32,7 @@ class _FlVimeoVideoController extends _FlPlayerController {
       ///
       vimeoVideoUrls = _vimeoVideoUrls;
     } catch (e) {
-      flVideoStateChanger(FlVideoState.error);
+      podVideoStateChanger(FlVideoState.error);
 
       rethrow;
     }
@@ -71,17 +71,17 @@ class _FlVimeoVideoController extends _FlPlayerController {
               .first
               .urls ??
           _vimeoVideoUrl;
-      flLog(_vimeoVideoUrl);
+      podLog(_vimeoVideoUrl);
       vimeoPlayingVideoQuality = quality;
       _videoCtr?.removeListener(videoListner);
-      flVideoStateChanger(FlVideoState.paused);
-      flVideoStateChanger(FlVideoState.loading);
+      podVideoStateChanger(FlVideoState.paused);
+      podVideoStateChanger(FlVideoState.loading);
       _videoCtr = VideoPlayerController.network(_vimeoVideoUrl);
       await _videoCtr?.initialize();
       _videoCtr?.addListener(videoListner);
       await _videoCtr?.seekTo(_videoPosition);
       setVideoPlayBack(_currentPaybackSpeed);
-      flVideoStateChanger(FlVideoState.playing);
+      podVideoStateChanger(FlVideoState.playing);
       onVimeoVideoQualityChanged?.call();
       update();
       update(['update-all']);

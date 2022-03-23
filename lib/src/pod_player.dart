@@ -29,7 +29,7 @@ class FlVideoPlayer extends StatefulWidget {
   final bool alwaysShowProgressBar;
   final bool matchVideoAspectRatioToVideo;
   final bool matchFrameAspectRatioToVideo;
-  final FlProgressBarConfig flProgressBarConfig;
+  final FlProgressBarConfig podProgressBarConfig;
   final Widget Function(OverLayOptions options)? overlayBuilder;
   final Widget? videoTitle;
   FlVideoPlayer({
@@ -38,7 +38,7 @@ class FlVideoPlayer extends StatefulWidget {
     this.frameAspectRatio = 16 / 9,
     this.videoAspectRatio = 16 / 9,
     this.alwaysShowProgressBar = true,
-    this.flProgressBarConfig = const FlProgressBarConfig(),
+    this.podProgressBarConfig = const FlProgressBarConfig(),
     this.overlayBuilder,
     this.videoTitle,
     this.matchVideoAspectRatioToVideo = false,
@@ -52,7 +52,7 @@ class FlVideoPlayer extends StatefulWidget {
 
       ///add to ui
       ..alwaysShowProgressBar = alwaysShowProgressBar
-      ..flProgressBarConfig = flProgressBarConfig
+      ..podProgressBarConfig = podProgressBarConfig
       ..overlayBuilder = overlayBuilder
       ..videoTitle = videoTitle;
   }
@@ -63,24 +63,24 @@ class FlVideoPlayer extends StatefulWidget {
 
 class _FlVideoPlayerState extends State<FlVideoPlayer>
     with TickerProviderStateMixin {
-  late FlGetXVideoController _flCtr;
+  late FlGetXVideoController _podCtr;
   // late String tag;
   @override
   void initState() {
     super.initState();
     // tag = widget.controller?.tag ?? UniqueKey().toString();
-    _flCtr = Get.put(
+    _podCtr = Get.put(
       FlGetXVideoController(),
       permanent: true,
       tag: widget.controller.getTag,
     )..isVideoUiBinded = true;
-    if (_flCtr.wasVideoPlayingOnUiDispose ?? false) {
-      _flCtr.flVideoStateChanger(FlVideoState.playing, updateUi: false);
+    if (_podCtr.wasVideoPlayingOnUiDispose ?? false) {
+      _podCtr.podVideoStateChanger(FlVideoState.playing, updateUi: false);
     }
     if (kIsWeb) {
       if (widget.controller.playerConfig.forcedVideoFocus) {
-        _flCtr.keyboardFocusWeb = FocusNode();
-        _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
+        _podCtr.keyboardFocusWeb = FocusNode();
+        _podCtr.keyboardFocusWeb?.addListener(_podCtr.keyboadListner);
       }
       //to disable mouse right click
       _html.document.onContextMenu.listen((event) => event.preventDefault());
@@ -92,24 +92,24 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
     super.dispose();
 
     ///Checking if the video was playing when this widget is disposed
-    if (_flCtr.isvideoPlaying) {
-      _flCtr.wasVideoPlayingOnUiDispose = true;
+    if (_podCtr.isvideoPlaying) {
+      _podCtr.wasVideoPlayingOnUiDispose = true;
     } else {
-      _flCtr.wasVideoPlayingOnUiDispose = false;
+      _podCtr.wasVideoPlayingOnUiDispose = false;
     }
-    _flCtr
+    _podCtr
       ..isVideoUiBinded = false
-      ..flVideoStateChanger(FlVideoState.paused, updateUi: false);
+      ..podVideoStateChanger(FlVideoState.paused, updateUi: false);
     if (kIsWeb) {
-      _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
+      _podCtr.keyboardFocusWeb?.removeListener(_podCtr.keyboadListner);
     }
-    // _flCtr.keyboardFocus?.unfocus();
-    // _flCtr.keyboardFocusOnFullScreen?.unfocus();
-    _flCtr.hoverOverlayTimer?.cancel();
-    _flCtr.showOverlayTimer?.cancel();
-    _flCtr.showOverlayTimer1?.cancel();
-    _flCtr.leftDoubleTapTimer?.cancel();
-    _flCtr.rightDoubleTapTimer?.cancel();
+    // _podCtr.keyboardFocus?.unfocus();
+    // _podCtr.keyboardFocusOnFullScreen?.unfocus();
+    _podCtr.hoverOverlayTimer?.cancel();
+    _podCtr.showOverlayTimer?.cancel();
+    _podCtr.showOverlayTimer1?.cancel();
+    _podCtr.leftDoubleTapTimer?.cancel();
+    _podCtr.rightDoubleTapTimer?.cancel();
   }
 
   ///
@@ -120,12 +120,12 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
   );
   @override
   Widget build(BuildContext context) {
-    _flCtr.mainContext = context;
+    _podCtr.mainContext = context;
     return GetBuilder<FlGetXVideoController>(
       tag: widget.controller.getTag,
       builder: (_) {
         final _frameAspectRatio = widget.matchFrameAspectRatioToVideo
-            ? _flCtr.videoCtr?.value.aspectRatio ?? widget.frameAspectRatio
+            ? _podCtr.videoCtr?.value.aspectRatio ?? widget.frameAspectRatio
             : widget.frameAspectRatio;
         return Center(
           child: ColoredBox(
@@ -133,9 +133,9 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
             child: AspectRatio(
               aspectRatio: _frameAspectRatio,
               child: Center(
-                child: _flCtr.videoCtr == null
+                child: _podCtr.videoCtr == null
                     ? circularProgressIndicator
-                    : _flCtr.videoCtr!.value.isInitialized
+                    : _podCtr.videoCtr!.value.isInitialized
                         ? _buildPlayer()
                         : circularProgressIndicator,
               ),
@@ -148,16 +148,16 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
 
   Widget _buildPlayer() {
     final _videoAspectRatio = widget.matchVideoAspectRatioToVideo
-        ? _flCtr.videoCtr?.value.aspectRatio ?? widget.videoAspectRatio
+        ? _podCtr.videoCtr?.value.aspectRatio ?? widget.videoAspectRatio
         : widget.videoAspectRatio;
     if (kIsWeb) {
       return GetBuilder<FlGetXVideoController>(
         tag: widget.controller.getTag,
         id: 'full-screen',
-        builder: (_flCtr) {
-          if (_flCtr.isFullScreen) return circularProgressIndicator;
+        builder: (_podCtr) {
+          if (_podCtr.isFullScreen) return circularProgressIndicator;
           return FlCorePlayer(
-            videoPlayerCtr: _flCtr.videoCtr!,
+            videoPlayerCtr: _podCtr.videoCtr!,
             videoAspectRatio: _videoAspectRatio,
             tag: widget.controller.getTag,
           );
@@ -165,7 +165,7 @@ class _FlVideoPlayerState extends State<FlVideoPlayer>
       );
     } else {
       return FlCorePlayer(
-        videoPlayerCtr: _flCtr.videoCtr!,
+        videoPlayerCtr: _podCtr.videoCtr!,
         videoAspectRatio: _videoAspectRatio,
         tag: widget.controller.getTag,
       );
@@ -190,16 +190,16 @@ class _PlayPause extends StatefulWidget {
 class _PlayPauseState extends State<_PlayPause>
     with SingleTickerProviderStateMixin {
   late final AnimationController _payCtr;
-  late FlGetXVideoController _flCtr;
+  late FlGetXVideoController _podCtr;
   @override
   void initState() {
-    _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+    _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
     _payCtr = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 450),
     );
-    _flCtr.addListenerId('flVideoState', playPauseListner);
-    if (_flCtr.isvideoPlaying) {
+    _podCtr.addListenerId('podVideoState', playPauseListner);
+    if (_podCtr.isvideoPlaying) {
       if (mounted) _payCtr.forward();
     }
     super.initState();
@@ -207,10 +207,10 @@ class _PlayPauseState extends State<_PlayPause>
 
   void playPauseListner() {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (_flCtr.flVideoState == FlVideoState.playing) {
+      if (_podCtr.podVideoState == FlVideoState.playing) {
         if (mounted) _payCtr.forward();
       }
-      if (_flCtr.flVideoState == FlVideoState.paused) {
+      if (_podCtr.podVideoState == FlVideoState.paused) {
         if (mounted) _payCtr.reverse();
       }
     });
@@ -218,7 +218,7 @@ class _PlayPauseState extends State<_PlayPause>
 
   @override
   void dispose() {
-    flLog('Play-pause-controller-disposed');
+    podLog('Play-pause-controller-disposed');
     _payCtr.dispose();
     super.dispose();
   }
@@ -228,33 +228,33 @@ class _PlayPauseState extends State<_PlayPause>
     return GetBuilder<FlGetXVideoController>(
       tag: widget.tag,
       id: 'overlay',
-      builder: (_flctr) {
+      builder: (_podCtr) {
         return GetBuilder<FlGetXVideoController>(
           tag: widget.tag,
-          id: 'flVideoState',
+          id: 'podVideoState',
           builder: (_f) => MaterialIconButton(
             toolTipMesg: _f.isvideoPlaying
                 ? 'Pause${kIsWeb ? ' (space)' : ''}'
                 : 'Play${kIsWeb ? ' (space)' : ''}',
             onPressed:
-                _flCtr.isOverlayVisible ? _flCtr.togglePlayPauseVideo : null,
-            child: onStateChange(_flCtr),
+                _podCtr.isOverlayVisible ? _podCtr.togglePlayPauseVideo : null,
+            child: onStateChange(_podCtr),
           ),
         );
       },
     );
   }
 
-  Widget onStateChange(FlGetXVideoController _flCtr) {
-    if (kIsWeb) return _playPause(_flCtr);
-    if (_flCtr.flVideoState == FlVideoState.loading) {
+  Widget onStateChange(FlGetXVideoController _podCtr) {
+    if (kIsWeb) return _playPause(_podCtr);
+    if (_podCtr.podVideoState == FlVideoState.loading) {
       return const SizedBox();
     } else {
-      return _playPause(_flCtr);
+      return _playPause(_podCtr);
     }
   }
 
-  Widget _playPause(FlGetXVideoController _flCtr) {
+  Widget _playPause(FlGetXVideoController _podCtr) {
     return AnimatedIcon(
       icon: AnimatedIcons.play_pause,
       progress: _payCtr,

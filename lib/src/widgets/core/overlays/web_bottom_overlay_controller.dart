@@ -10,13 +10,13 @@ class _WebOverlayBottomControlles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
     const durationTextStyle = TextStyle(color: Colors.white70);
     const itemColor = Colors.white;
 
     return MouseRegion(
-      onHover: (event) => _flCtr.onOverlayHover(),
-      onExit: (event) => _flCtr.onOverlayHoverExit(),
+      onHover: (event) => _podCtr.onOverlayHover(),
+      onExit: (event) => _podCtr.onOverlayHoverExit(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
@@ -24,7 +24,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
           children: [
             FlVideoProgressBar(
               tag: tag,
-              flProgressBarConfig: _flCtr.flProgressBarConfig,
+              podProgressBarConfig: _podCtr.podProgressBarConfig,
             ),
             Row(
               children: [
@@ -39,14 +39,14 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                         GetBuilder<FlGetXVideoController>(
                           tag: tag,
                           id: 'volume',
-                          builder: (_flCtr) => MaterialIconButton(
-                            toolTipMesg: _flCtr.isMute
+                          builder: (_podCtr) => MaterialIconButton(
+                            toolTipMesg: _podCtr.isMute
                                 ? 'Unmute${kIsWeb ? ' (m)' : ''}'
                                 : 'Mute${kIsWeb ? ' (m)' : ''}',
                             color: itemColor,
-                            onPressed: _flCtr.toggleMute,
+                            onPressed: _podCtr.toggleMute,
                             child: Icon(
-                              _flCtr.isMute
+                              _podCtr.isMute
                                   ? Icons.volume_off_rounded
                                   : Icons.volume_up_rounded,
                             ),
@@ -55,10 +55,10 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                         GetBuilder<FlGetXVideoController>(
                           tag: tag,
                           id: 'video-progress',
-                          builder: (_flCtr) {
+                          builder: (_podCtr) {
                             return Text(
-                              _flCtr.calculateVideoDuration(
-                                _flCtr.videoPosition,
+                              _podCtr.calculateVideoDuration(
+                                _podCtr.videoPosition,
                               ),
                               style: durationTextStyle,
                             );
@@ -69,7 +69,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           style: durationTextStyle,
                         ),
                         Text(
-                          _flCtr.calculateVideoDuration(_flCtr.videoDuration),
+                          _podCtr.calculateVideoDuration(_podCtr.videoDuration),
                           style: durationTextStyle,
                         ),
                       ],
@@ -85,13 +85,13 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                       children: [
                         _WebSettingsDropdown(tag: tag),
                         MaterialIconButton(
-                          toolTipMesg: _flCtr.isFullScreen
+                          toolTipMesg: _podCtr.isFullScreen
                               ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
                               : 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                           color: itemColor,
-                          onPressed: () => _onFullScreenToggle(_flCtr, context),
+                          onPressed: () => _onFullScreenToggle(_podCtr, context),
                           child: Icon(
-                            _flCtr.isFullScreen
+                            _podCtr.isFullScreen
                                 ? Icons.fullscreen_exit
                                 : Icons.fullscreen,
                           ),
@@ -108,27 +108,27 @@ class _WebOverlayBottomControlles extends StatelessWidget {
     );
   }
 
-  void _onFullScreenToggle(FlGetXVideoController _flCtr, BuildContext context) {
-    if (_flCtr.isOverlayVisible) {
-      if (_flCtr.isFullScreen) {
+  void _onFullScreenToggle(FlGetXVideoController _podCtr, BuildContext context) {
+    if (_podCtr.isOverlayVisible) {
+      if (_podCtr.isFullScreen) {
         if (kIsWeb) {
           _html.document.exitFullscreen();
-          _flCtr.disableFullScreen(context, tag);
+          _podCtr.disableFullScreen(context, tag);
           return;
         } else {
-          _flCtr.disableFullScreen(context, tag);
+          _podCtr.disableFullScreen(context, tag);
         }
       } else {
         if (kIsWeb) {
           _html.document.documentElement?.requestFullscreen();
-          _flCtr.enableFullScreen(tag);
+          _podCtr.enableFullScreen(tag);
           return;
         } else {
-          _flCtr.enableFullScreen(tag);
+          _podCtr.enableFullScreen(tag);
         }
       }
     } else {
-      _flCtr.toggleVideoOverlay();
+      _podCtr.toggleVideoOverlay();
     }
   }
 }

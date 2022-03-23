@@ -15,7 +15,7 @@ class FlBaseController extends GetxController {
   bool _isWebAutoPlayDone = false;
 
   ///
-  FlVideoState _flVideoState = FlVideoState.loading;
+  FlVideoState _podVideoState = FlVideoState.loading;
 
   ///
   bool isWebPopupOverlayOpen = false;
@@ -69,7 +69,7 @@ class FlBaseController extends GetxController {
   }
 
   void _listneToVideoState() {
-    flVideoStateChanger(
+    podVideoStateChanger(
       _videoCtr!.value.isBuffering || !_videoCtr!.value.isInitialized
           ? FlVideoState.loading
           : _videoCtr!.value.isPlaying
@@ -78,12 +78,12 @@ class FlBaseController extends GetxController {
     );
   }
 
-  ///updates state with id `_flVideoState`
-  void flVideoStateChanger(FlVideoState? _val, {bool updateUi = true}) {
-    if (_flVideoState != (_val ?? _flVideoState)) {
-      _flVideoState = _val ?? _flVideoState;
+  ///updates state with id `_podVideoState`
+  void podVideoStateChanger(FlVideoState? _val, {bool updateUi = true}) {
+    if (_podVideoState != (_val ?? _podVideoState)) {
+      _podVideoState = _val ?? _podVideoState;
       if (updateUi) {
-        update(['flVideoState']);
+        update(['podVideoState']);
         update(['update-all']);
       }
     }

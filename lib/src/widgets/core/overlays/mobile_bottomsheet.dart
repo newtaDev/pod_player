@@ -12,14 +12,14 @@ class _MobileBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<FlGetXVideoController>(
       tag: tag,
-      builder: (_flCtr) => Column(
+      builder: (_podCtr) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (_flCtr.videoPlayerType == FlVideoPlayerType.vimeo)
+          if (_podCtr.videoPlayerType == FlVideoPlayerType.vimeo)
             _bottomSheetTiles(
               title: 'Quality',
               icon: Icons.video_settings_rounded,
-              subText: '${_flCtr.vimeoPlayingVideoQuality}p',
+              subText: '${_podCtr.vimeoPlayingVideoQuality}p',
               onTap: () {
                 Navigator.of(context).pop();
                 Timer(const Duration(milliseconds: 100), () {
@@ -36,16 +36,16 @@ class _MobileBottomSheet extends StatelessWidget {
           _bottomSheetTiles(
             title: 'Loop video',
             icon: Icons.loop_rounded,
-            subText: _flCtr.isLooping ? 'On' : 'Off',
+            subText: _podCtr.isLooping ? 'On' : 'Off',
             onTap: () {
               Navigator.of(context).pop();
-              _flCtr.toggleLooping();
+              _podCtr.toggleLooping();
             },
           ),
           _bottomSheetTiles(
             title: 'Playback speed',
             icon: Icons.slow_motion_video_rounded,
-            subText: _flCtr.currentPaybackSpeed,
+            subText: _podCtr.currentPaybackSpeed,
             onTap: () {
               Navigator.of(context).pop();
               Timer(const Duration(milliseconds: 100), () {
@@ -116,18 +116,18 @@ class _VideoQualitySelectorMob extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _flctr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: _flctr.vimeoVideoUrls
+        children: _podCtr.vimeoVideoUrls
                 ?.map(
                   (e) => ListTile(
                     title: Text('${e.quality}p'),
                     onTap: () {
                       onTap != null ? onTap!() : Navigator.of(context).pop();
 
-                      _flctr.changeVimeoVideoQuality(e.quality);
+                      _podCtr.changeVimeoVideoQuality(e.quality);
                     },
                   ),
                 )
@@ -150,17 +150,17 @@ class _VideoPlaybackSelectorMob extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _flctr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: _flctr.videoPlaybackSpeeds
+        children: _podCtr.videoPlaybackSpeeds
             .map(
               (e) => ListTile(
                 title: Text(e),
                 onTap: () {
                   onTap != null ? onTap!() : Navigator.of(context).pop();
-                  _flctr.setVideoPlayBack(e);
+                  _podCtr.setVideoPlayBack(e);
                 },
               ),
             )

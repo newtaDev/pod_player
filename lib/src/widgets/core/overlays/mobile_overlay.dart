@@ -12,7 +12,7 @@ class _MobileOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     const overlayColor = Colors.black38;
     const itemColor = Colors.white;
-    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -21,7 +21,7 @@ class _MobileOverlay extends StatelessWidget {
             Expanded(
               child: _VideoGestureDetector(
                 tag: tag,
-                onDoubleTap: _flCtr.onLeftDoubleTap,
+                onDoubleTap: _podCtr.onLeftDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
                   child: _LeftRightDoubleTapBox(
@@ -46,7 +46,7 @@ class _MobileOverlay extends StatelessWidget {
             Expanded(
               child: _VideoGestureDetector(
                 tag: tag,
-                onDoubleTap: _flCtr.onRightDoubleTap,
+                onDoubleTap: _podCtr.onRightDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
                   child: _LeftRightDoubleTapBox(
@@ -65,17 +65,17 @@ class _MobileOverlay extends StatelessWidget {
             children: [
               Expanded(
                 child: IgnorePointer(
-                  child: _flCtr.videoTitle ?? const SizedBox(),
+                  child: _podCtr.videoTitle ?? const SizedBox(),
                 ),
               ),
               MaterialIconButton(
                 toolTipMesg: 'More',
                 color: itemColor,
                 onPressed: () {
-                  if (_flCtr.isOverlayVisible) {
+                  if (_podCtr.isOverlayVisible) {
                     _bottomSheet(context);
                   } else {
-                    _flCtr.toggleVideoOverlay();
+                    _podCtr.toggleVideoOverlay();
                   }
                 },
                 child: const Icon(
@@ -115,15 +115,15 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
     return GetBuilder<FlGetXVideoController>(
       tag: tag,
       id: 'double-tap',
-      builder: (_flctr) {
+      builder: (_podCtr) {
         return SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
-            opacity: _flctr.isLeftDbTapIconVisible && isLeft
+            opacity: _podCtr.isLeftDbTapIconVisible && isLeft
                 ? 1
-                : _flctr.isRightDbTapIconVisible && !isLeft
+                : _podCtr.isRightDbTapIconVisible && !isLeft
                     ? 1
                     : 0,
             child: Center(
@@ -136,12 +136,12 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
                         : 'packages/pod_player/assets/forward_right.json',
                   ),
                   if (isLeft
-                      ? _flctr.isLeftDbTapIconVisible
-                      : _flctr.isRightDbTapIconVisible)
+                      ? _podCtr.isLeftDbTapIconVisible
+                      : _podCtr.isRightDbTapIconVisible)
                     Transform.translate(
                       offset: const Offset(0, 40),
                       child: Text(
-                        '${_flctr.isLeftDbTapIconVisible ? _flctr.leftDoubleTapduration : _flctr.rightDubleTapduration} Sec',
+                        '${_podCtr.isLeftDbTapIconVisible ? _podCtr.leftDoubleTapduration : _podCtr.rightDubleTapduration} Sec',
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

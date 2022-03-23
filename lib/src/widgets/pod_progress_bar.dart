@@ -10,17 +10,17 @@ import '../models/pod_progress_bar_config.dart';
 class FlVideoProgressBar extends StatefulWidget {
   const FlVideoProgressBar({
     Key? key,
-    FlProgressBarConfig? flProgressBarConfig,
+    FlProgressBarConfig? podProgressBarConfig,
     this.onDragStart,
     this.onDragEnd,
     this.onDragUpdate,
     this.alignment = Alignment.center,
     required this.tag,
-  })  : flProgressBarConfig =
-            flProgressBarConfig ?? const FlProgressBarConfig(),
+  })  : podProgressBarConfig =
+            podProgressBarConfig ?? const FlProgressBarConfig(),
         super(key: key);
 
-  final FlProgressBarConfig flProgressBarConfig;
+  final FlProgressBarConfig podProgressBarConfig;
   final Function()? onDragStart;
   final Function()? onDragEnd;
   final Function()? onDragUpdate;
@@ -32,8 +32,8 @@ class FlVideoProgressBar extends StatefulWidget {
 }
 
 class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
-  late final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
-  late VideoPlayerValue? videoPlayerValue = _flCtr.videoCtr?.value;
+  late final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+  late VideoPlayerValue? videoPlayerValue = _podCtr.videoCtr?.value;
   bool _controllerWasPlaying = false;
 
   void seekToRelativePosition(Offset globalPosition) {
@@ -43,7 +43,7 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
       final double relative = tapPos.dx / box.size.width;
       final Duration position =
           (videoPlayerValue?.duration ?? Duration.zero) * relative;
-      _flCtr.seekTo(position);
+      _podCtr.seekTo(position);
     }
   }
 
@@ -54,8 +54,8 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
     return GetBuilder<FlGetXVideoController>(
       tag: widget.tag,
       id: 'video-progress',
-      builder: (_flCtr) {
-        videoPlayerValue = _flCtr.videoCtr?.value;
+      builder: (_podCtr) {
+        videoPlayerValue = _podCtr.videoCtr?.value;
         return LayoutBuilder(
           builder: (context, size) {
             return GestureDetector(
@@ -66,9 +66,9 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
                   return;
                 }
                 _controllerWasPlaying =
-                    _flCtr.videoCtr?.value.isPlaying ?? false;
+                    _podCtr.videoCtr?.value.isPlaying ?? false;
                 if (_controllerWasPlaying) {
-                  _flCtr.videoCtr?.pause();
+                  _podCtr.videoCtr?.pause();
                 }
 
                 if (widget.onDragStart != null) {
@@ -79,16 +79,16 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
                 if (!videoPlayerValue!.isInitialized) {
                   return;
                 }
-                _flCtr.isShowOverlay(true);
+                _podCtr.isShowOverlay(true);
                 seekToRelativePosition(details.globalPosition);
 
                 widget.onDragUpdate?.call();
               },
               onHorizontalDragEnd: (DragEndDetails details) {
                 if (_controllerWasPlaying) {
-                  _flCtr.videoCtr?.play();
+                  _podCtr.videoCtr?.play();
                 }
-                _flCtr.toggleVideoOverlay();
+                _podCtr.toggleVideoOverlay();
 
                 if (widget.onDragEnd != null) {
                   widget.onDragEnd?.call();
@@ -111,29 +111,29 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: Padding(
-        padding: widget.flProgressBarConfig.padding,
+        padding: widget.podProgressBarConfig.padding,
         child: SizedBox(
           width: size.maxWidth,
-          height: widget.flProgressBarConfig.circleHandlerRadius,
+          height: widget.podProgressBarConfig.circleHandlerRadius,
           child: Align(
             alignment: widget.alignment,
             child: GetBuilder<FlGetXVideoController>(
               tag: widget.tag,
               id: 'overlay',
-              builder: (_fl) => CustomPaint(
+              builder: (_podCtr) => CustomPaint(
                 painter: _ProgressBarPainter(
                   videoPlayerValue!,
-                  flProgressBarConfig: widget.flProgressBarConfig.copyWith(
-                    circleHandlerRadius: _fl.isOverlayVisible ||
+                  podProgressBarConfig: widget.podProgressBarConfig.copyWith(
+                    circleHandlerRadius: _podCtr.isOverlayVisible ||
                             widget
-                                .flProgressBarConfig.alwaysVisibleCircleHandler
-                        ? widget.flProgressBarConfig.circleHandlerRadius
+                                .podProgressBarConfig.alwaysVisibleCircleHandler
+                        ? widget.podProgressBarConfig.circleHandlerRadius
                         : 0,
                   ),
                 ),
                 size: Size(
                   double.maxFinite,
-                  widget.flProgressBarConfig.height,
+                  widget.podProgressBarConfig.height,
                 ),
               ),
             ),
@@ -145,10 +145,10 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
 }
 
 class _ProgressBarPainter extends CustomPainter {
-  _ProgressBarPainter(this.value, {this.flProgressBarConfig});
+  _ProgressBarPainter(this.value, {this.podProgressBarConfig});
 
   VideoPlayerValue value;
-  FlProgressBarConfig? flProgressBarConfig;
+  FlProgressBarConfig? podProgressBarConfig;
 
   @override
   bool shouldRepaint(CustomPainter painter) {
@@ -157,19 +157,19 @@ class _ProgressBarPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double height = flProgressBarConfig!.height;
+    final double height = podProgressBarConfig!.height;
     final double width = size.width;
-    final double curveRadius = flProgressBarConfig!.curveRadius;
-    final double circleHandlerRadius = flProgressBarConfig!.circleHandlerRadius;
+    final double curveRadius = podProgressBarConfig!.curveRadius;
+    final double circleHandlerRadius = podProgressBarConfig!.circleHandlerRadius;
     final Paint backgroundPaint =
-        flProgressBarConfig!.getBackgroundPaint != null
-            ? flProgressBarConfig!.getBackgroundPaint!(
+        podProgressBarConfig!.getBackgroundPaint != null
+            ? podProgressBarConfig!.getBackgroundPaint!(
                 width: width,
                 height: height,
                 circleHandlerRadius: circleHandlerRadius,
               )
             : Paint()
-          ..color = flProgressBarConfig!.backgroundColor;
+          ..color = podProgressBarConfig!.backgroundColor;
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -194,8 +194,8 @@ class _ProgressBarPainter extends CustomPainter {
       final double start = range.startFraction(value.duration) * width;
       final double end = range.endFraction(value.duration) * width;
 
-      final Paint bufferedPaint = flProgressBarConfig!.getBufferedPaint != null
-          ? flProgressBarConfig!.getBufferedPaint!(
+      final Paint bufferedPaint = podProgressBarConfig!.getBufferedPaint != null
+          ? podProgressBarConfig!.getBufferedPaint!(
               width: width,
               height: height,
               playedPart: playedPart,
@@ -204,7 +204,7 @@ class _ProgressBarPainter extends CustomPainter {
               bufferedEnd: end,
             )
           : Paint()
-        ..color = flProgressBarConfig!.bufferedBarColor;
+        ..color = podProgressBarConfig!.bufferedBarColor;
 
       canvas.drawRRect(
         RRect.fromRectAndRadius(
@@ -218,15 +218,15 @@ class _ProgressBarPainter extends CustomPainter {
       );
     }
 
-    final Paint playedPaint = flProgressBarConfig!.getPlayedPaint != null
-        ? flProgressBarConfig!.getPlayedPaint!(
+    final Paint playedPaint = podProgressBarConfig!.getPlayedPaint != null
+        ? podProgressBarConfig!.getPlayedPaint!(
             width: width,
             height: height,
             playedPart: playedPart,
             circleHandlerRadius: circleHandlerRadius,
           )
         : Paint()
-      ..color = flProgressBarConfig!.playingBarColor;
+      ..color = podProgressBarConfig!.playingBarColor;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromPoints(
@@ -238,15 +238,15 @@ class _ProgressBarPainter extends CustomPainter {
       playedPaint,
     );
 
-    final Paint handlePaint = flProgressBarConfig!.getCircleHandlerPaint != null
-        ? flProgressBarConfig!.getCircleHandlerPaint!(
+    final Paint handlePaint = podProgressBarConfig!.getCircleHandlerPaint != null
+        ? podProgressBarConfig!.getCircleHandlerPaint!(
             width: width,
             height: height,
             playedPart: playedPart,
             circleHandlerRadius: circleHandlerRadius,
           )
         : Paint()
-      ..color = flProgressBarConfig!.circleHandlerColor;
+      ..color = podProgressBarConfig!.circleHandlerColor;
 
     canvas.drawCircle(
       Offset(playedPart, height / 2),
@@ -308,21 +308,21 @@ class _ProgressBarPainter extends CustomPainter {
 //     return GetBuilder<FlGetXVideoController>(
 //       tag: widget.tag,
 //       id: 'video-progress',
-//       builder: (_flCtr) {
+//       builder: (_podCtr) {
 //         Widget progressIndicator;
-//         if (_flCtr.videoCtr!.value.isInitialized) {
-//           final int duration = _flCtr.videoCtr!.value.duration.inMilliseconds;
-//           final int position = _flCtr.videoCtr!.value.position.inMilliseconds;
+//         if (_podCtr.videoCtr!.value.isInitialized) {
+//           final int duration = _podCtr.videoCtr!.value.duration.inMilliseconds;
+//           final int position = _podCtr.videoCtr!.value.position.inMilliseconds;
 
 //           int maxBuffering = 0;
-//           for (final DurationRange range in _flCtr.videoCtr!.value.buffered) {
+//           for (final DurationRange range in _podCtr.videoCtr!.value.buffered) {
 //             final int end = range.end.inMilliseconds;
 //             if (end > maxBuffering) {
 //               maxBuffering = end;
 //             }
 //           }
 //           relativeVal = position / duration;
-//           final double barHeight = _flCtr.isOverlayVisible
+//           final double barHeight = _podCtr.isOverlayVisible
 //               ? 20
 //               : isHovered
 //                   ? 20
@@ -346,7 +346,7 @@ class _ProgressBarPainter extends CustomPainter {
 //             padding: widget.padding,
 //             child: _VideoProgressGestureDetector(
 //               tag: widget.tag,
-//               controller: _flCtr.videoCtr!,
+//               controller: _podCtr.videoCtr!,
 //               onHoverStart: _onHoverStart,
 //               onExit: _onExit,
 //               onHorizontalDrag: onHrDrag,
@@ -363,10 +363,10 @@ class _ProgressBarPainter extends CustomPainter {
 //   }
 
 //   void onHrDrag(double val) {
-//     final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+//     final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
 
 //     relativeVal = val;
-//     if (kIsWeb) _flCtr.isShowOverlay(true);
+//     if (kIsWeb) _podCtr.isShowOverlay(true);
 //   }
 
 //   Stack _progressWidget(
@@ -376,7 +376,7 @@ class _ProgressBarPainter extends CustomPainter {
 //     int duration,
 //     int position,
 //   ) {
-//     final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+//     final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
 
 //     return Stack(
 //       alignment: alignmentLoc,
@@ -400,8 +400,8 @@ class _ProgressBarPainter extends CustomPainter {
 //             height: widget.height,
 //             isHovered: isHovered,
 //             showThumbHandler: isHovered ||
-//                 _flCtr.isOverlayVisible ||
-//                 _flCtr.flVideoState == FlVideoState.paused,
+//                 _podCtr.isOverlayVisible ||
+//                 _podCtr.flVideoState == FlVideoState.paused,
 //             colors: colors,
 //             alignmentLoc: alignmentLoc),
 //       ],
@@ -550,7 +550,7 @@ class _ProgressBarPainter extends CustomPainter {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     final _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+//     final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
 //     double relative = 0;
 //     void seekToRelativePosition(Offset globalPosition) {
 //       final RenderBox? box = context.findRenderObject() as RenderBox?;
@@ -562,7 +562,7 @@ class _ProgressBarPainter extends CustomPainter {
 
 //     return MouseRegion(
 //       onEnter: widget.onHoverStart,
-//       onHover: (event) => _flCtr.onOverlayHover(),
+//       onHover: (event) => _podCtr.onOverlayHover(),
 //       onExit: widget.onExit,
 //       child: GestureDetector(
 //         behavior: HitTestBehavior.opaque,

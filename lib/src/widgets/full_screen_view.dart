@@ -13,20 +13,20 @@ class FullScreenView extends StatefulWidget {
 
 class _FullScreenViewState extends State<FullScreenView>
     with TickerProviderStateMixin {
-  late FlGetXVideoController _flCtr;
+  late FlGetXVideoController _podCtr;
   @override
   void initState() {
-    _flCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
-    _flCtr.fullScreenContext = context;
-    _flCtr.keyboardFocusWeb?.removeListener(_flCtr.keyboadListner);
+    _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+    _podCtr.fullScreenContext = context;
+    _podCtr.keyboardFocusWeb?.removeListener(_podCtr.keyboadListner);
 
     super.initState();
   }
 
   @override
   void dispose() {
-    _flCtr.keyboardFocusWeb?.requestFocus();
-    _flCtr.keyboardFocusWeb?.addListener(_flCtr.keyboadListner);
+    _podCtr.keyboardFocusWeb?.requestFocus();
+    _podCtr.keyboardFocusWeb?.addListener(_podCtr.keyboadListner);
     super.dispose();
   }
 
@@ -40,34 +40,34 @@ class _FullScreenViewState extends State<FullScreenView>
     return WillPopScope(
       onWillPop: () async {
         if (kIsWeb) {
-          _flCtr.disableFullScreen(
+          _podCtr.disableFullScreen(
             context,
             widget.tag,
             enablePop: false,
           );
         }
-        if (!kIsWeb) _flCtr.disableFullScreen(context, widget.tag);
+        if (!kIsWeb) _podCtr.disableFullScreen(context, widget.tag);
         return true;
       },
       child: Scaffold(
         backgroundColor: Colors.black,
         body: GetBuilder<FlGetXVideoController>(
           tag: widget.tag,
-          builder: (_flCtr) => Center(
+          builder: (_podCtr) => Center(
             child: ColoredBox(
               color: Colors.black,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: Center(
-                  child: _flCtr.videoCtr == null
+                  child: _podCtr.videoCtr == null
                       ? circularProgressIndicator
-                      : _flCtr.videoCtr!.value.isInitialized
+                      : _podCtr.videoCtr!.value.isInitialized
                           ? FlCorePlayer(
                               tag: widget.tag,
-                              videoPlayerCtr: _flCtr.videoCtr!,
+                              videoPlayerCtr: _podCtr.videoCtr!,
                               videoAspectRatio:
-                                  _flCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                                  _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
                             )
                           : circularProgressIndicator,
                 ),

@@ -9,45 +9,45 @@ class _VideoOverlays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _flCtr = Get.find<FlGetXVideoController>(tag: tag);
-    if (_flCtr.overlayBuilder != null) {
+    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    if (_podCtr.overlayBuilder != null) {
       return GetBuilder<FlGetXVideoController>(
         id: 'update-all',
         tag: tag,
-        builder: (_flCtr) {
+        builder: (_podCtr) {
           ///Custom overlay
           final _progressBar = FlVideoProgressBar(
             tag: tag,
-            flProgressBarConfig: _flCtr.flProgressBarConfig,
+            podProgressBarConfig: _podCtr.podProgressBarConfig,
           );
           final overlayOptions = OverLayOptions(
-            flVideoState: _flCtr.flVideoState,
-            videoDuration: _flCtr.videoDuration,
-            videoPosition: _flCtr.videoPosition,
-            isFullScreen: _flCtr.isFullScreen,
-            isLooping: _flCtr.isLooping,
-            isOverlayVisible: _flCtr.isOverlayVisible,
-            isMute: _flCtr.isMute,
-            autoPlay: _flCtr.autoPlay,
-            currentVideoPlaybackSpeed: _flCtr.currentPaybackSpeed,
-            videoPlayBackSpeeds: _flCtr.videoPlaybackSpeeds,
-            videoPlayerType: _flCtr.videoPlayerType,
-            flProgresssBar: _progressBar,
+            podVideoState: _podCtr.podVideoState,
+            videoDuration: _podCtr.videoDuration,
+            videoPosition: _podCtr.videoPosition,
+            isFullScreen: _podCtr.isFullScreen,
+            isLooping: _podCtr.isLooping,
+            isOverlayVisible: _podCtr.isOverlayVisible,
+            isMute: _podCtr.isMute,
+            autoPlay: _podCtr.autoPlay,
+            currentVideoPlaybackSpeed: _podCtr.currentPaybackSpeed,
+            videoPlayBackSpeeds: _podCtr.videoPlaybackSpeeds,
+            videoPlayerType: _podCtr.videoPlayerType,
+            podProgresssBar: _progressBar,
           );
           return Stack(
             children: [
               Positioned.fill(
                 child: _VideoGestureDetector(
                   tag: tag,
-                  onTap: _flCtr.togglePlayPauseVideo,
-                  onDoubleTap: () => _flCtr.toggleFullScreenOnWeb(context, tag),
+                  onTap: _podCtr.togglePlayPauseVideo,
+                  onDoubleTap: () => _podCtr.toggleFullScreenOnWeb(context, tag),
                   child: const ColoredBox(
                     color: Colors.black38,
                     child: SizedBox.expand(),
                   ),
                 ),
               ),
-              _flCtr.overlayBuilder?.call(overlayOptions) ?? const SizedBox(),
+              _podCtr.overlayBuilder?.call(overlayOptions) ?? const SizedBox(),
             ],
           );
         },
@@ -57,10 +57,10 @@ class _VideoOverlays extends StatelessWidget {
       return GetBuilder<FlGetXVideoController>(
         tag: tag,
         id: 'overlay',
-        builder: (_flCtr) {
+        builder: (_podCtr) {
           return AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
-            opacity: _flCtr.isOverlayVisible ? 1 : 0,
+            opacity: _podCtr.isOverlayVisible ? 1 : 0,
             child: Stack(
               fit: StackFit.passthrough,
               children: [

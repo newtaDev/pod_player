@@ -13,15 +13,15 @@ class FlCorePlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final flCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
     return Builder(
       builder: (_ctrx) {
         return RawKeyboardListener(
           autofocus: true,
           focusNode:
-              (flCtr.isFullScreen ? FocusNode() : flCtr.keyboardFocusWeb) ??
+              (_podCtr.isFullScreen ? FocusNode() : _podCtr.keyboardFocusWeb) ??
                   FocusNode(),
-          onKey: (value) => flCtr.onKeyBoardEvents(
+          onKey: (value) => _podCtr.onKeyBoardEvents(
             event: value,
             appContext: _ctrx,
             tag: tag,
@@ -39,8 +39,8 @@ class FlCorePlayer extends StatelessWidget {
               IgnorePointer(
                 child: GetBuilder<FlGetXVideoController>(
                   tag: tag,
-                  id: 'flVideoState',
-                  builder: (_flCtr) {
+                  id: 'podVideoState',
+                  builder: (_podCtr) {
                     const loadingWidget = Center(
                       child: CircularProgressIndicator(
                         backgroundColor: Colors.transparent,
@@ -49,7 +49,7 @@ class FlCorePlayer extends StatelessWidget {
                       ),
                     );
                     if (kIsWeb) {
-                      switch (_flCtr.flVideoState) {
+                      switch (_podCtr.podVideoState) {
                         case FlVideoState.loading:
                           return loadingWidget;
                         case FlVideoState.paused:
@@ -80,7 +80,7 @@ class FlCorePlayer extends StatelessWidget {
                           return const SizedBox();
                       }
                     } else {
-                      if (flCtr.flVideoState == FlVideoState.loading) {
+                      if (_podCtr.podVideoState == FlVideoState.loading) {
                         return loadingWidget;
                       }
                       return const SizedBox();
@@ -92,21 +92,21 @@ class FlCorePlayer extends StatelessWidget {
                 GetBuilder<FlGetXVideoController>(
                   tag: tag,
                   id: 'full-screen',
-                  builder: (_flCtr) => _flCtr.isFullScreen
+                  builder: (_podCtr) => _podCtr.isFullScreen
                       ? const SizedBox()
                       : GetBuilder<FlGetXVideoController>(
                           tag: tag,
                           id: 'overlay',
-                          builder: (_flCtr) => _flCtr.isOverlayVisible ||
-                                  !_flCtr.alwaysShowProgressBar
+                          builder: (_podCtr) => _podCtr.isOverlayVisible ||
+                                  !_podCtr.alwaysShowProgressBar
                               ? const SizedBox()
                               : Align(
                                   alignment: Alignment.bottomCenter,
                                   child: FlVideoProgressBar(
                                     tag: tag,
                                     alignment: Alignment.bottomCenter,
-                                    flProgressBarConfig:
-                                        _flCtr.flProgressBarConfig,
+                                    podProgressBarConfig:
+                                        _podCtr.podProgressBarConfig,
                                   ),
                                 ),
                         ),

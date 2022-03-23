@@ -22,24 +22,24 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
       ),
       child: GetBuilder<FlGetXVideoController>(
         tag: widget.tag,
-        builder: (_flCtr) {
+        builder: (_podCtr) {
           return MaterialIconButton(
             toolTipMesg: 'Settings',
             color: Colors.white,
             child: const Icon(Icons.settings),
-            onPressed: () =>_flCtr.isFullScreen? _flCtr.isWebPopupOverlayOpen = true: _flCtr.isWebPopupOverlayOpen = false,
+            onPressed: () =>_podCtr.isFullScreen? _podCtr.isWebPopupOverlayOpen = true: _podCtr.isWebPopupOverlayOpen = false,
             onTapDown: (details) async {
               final _settingsMenu = await showMenu<String>(
                 context: context,
                 items: [
-                  if (_flCtr.vimeoVideoUrls != null ||
-                      (_flCtr.vimeoVideoUrls?.isNotEmpty ?? false))
+                  if (_podCtr.vimeoVideoUrls != null ||
+                      (_podCtr.vimeoVideoUrls?.isNotEmpty ?? false))
                     PopupMenuItem(
                       value: 'OUALITY',
                       child: _bottomSheetTiles(
                         title: 'Quality',
                         icon: Icons.video_settings_rounded,
-                        subText: '${_flCtr.vimeoPlayingVideoQuality}p',
+                        subText: '${_podCtr.vimeoPlayingVideoQuality}p',
                       ),
                     ),
                   PopupMenuItem(
@@ -47,7 +47,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
                     child: _bottomSheetTiles(
                       title: 'Loop video',
                       icon: Icons.loop_rounded,
-                      subText: _flCtr.isLooping ? 'On' : 'Off',
+                      subText: _podCtr.isLooping ? 'On' : 'Off',
                     ),
                   ),
                   PopupMenuItem(
@@ -55,7 +55,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
                     child: _bottomSheetTiles(
                       title: 'Playback speed',
                       icon: Icons.slow_motion_video_rounded,
-                      subText: _flCtr.currentPaybackSpeed,
+                      subText: _podCtr.currentPaybackSpeed,
                     ),
                   ),
                 ],
@@ -66,17 +66,17 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
               );
               switch (_settingsMenu) {
                 case 'OUALITY':
-                  await _onVimeoQualitySelect(details, _flCtr);
+                  await _onVimeoQualitySelect(details, _podCtr);
                   break;
                 case 'SPEED':
-                  await _onPlaybackSpeedSelect(details, _flCtr);
+                  await _onPlaybackSpeedSelect(details, _podCtr);
                   break;
                 case 'LOOP':
-                  _flCtr.isWebPopupOverlayOpen = false;
-                  await _flCtr.toggleLooping();
+                  _podCtr.isWebPopupOverlayOpen = false;
+                  await _podCtr.toggleLooping();
                   break;
                 default:
-                  _flCtr.isWebPopupOverlayOpen = false;
+                  _podCtr.isWebPopupOverlayOpen = false;
               }
             },
           );
@@ -87,21 +87,21 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
 
   Future<void> _onPlaybackSpeedSelect(
     TapDownDetails details,
-    FlGetXVideoController _flCtr,
+    FlGetXVideoController _podCtr,
   ) async {
     await Future.delayed(
       const Duration(milliseconds: 400),
     );
     await showMenu(
       context: context,
-      items: _flCtr.videoPlaybackSpeeds
+      items: _podCtr.videoPlaybackSpeeds
           .map(
             (e) => PopupMenuItem(
               child: ListTile(
                 title: Text(e),
               ),
               onTap: () {
-                _flCtr.setVideoPlayBack(e);
+                _podCtr.setVideoPlayBack(e);
               },
             ),
           )
@@ -112,26 +112,26 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
         MediaQuery.of(context).size,
       ),
     );
-    _flCtr.isWebPopupOverlayOpen = false;
+    _podCtr.isWebPopupOverlayOpen = false;
   }
 
   Future<void> _onVimeoQualitySelect(
     TapDownDetails details,
-    FlGetXVideoController _flCtr,
+    FlGetXVideoController _podCtr,
   ) async {
     await Future.delayed(
       const Duration(milliseconds: 400),
     );
     await showMenu(
       context: context,
-      items: _flCtr.vimeoVideoUrls
+      items: _podCtr.vimeoVideoUrls
               ?.map(
                 (e) => PopupMenuItem(
                   child: ListTile(
                     title: Text('${e.quality}p'),
                   ),
                   onTap: () {
-                    _flCtr.changeVimeoVideoQuality(
+                    _podCtr.changeVimeoVideoQuality(
                       e.quality,
                     );
                   },
@@ -145,7 +145,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
         MediaQuery.of(context).size,
       ),
     );
-    _flCtr.isWebPopupOverlayOpen = false;
+    _podCtr.isWebPopupOverlayOpen = false;
   }
 
   Widget _bottomSheetTiles({

@@ -59,7 +59,7 @@ class FlVideoController {
 
   bool get isMute => _ctr.isMute;
 
-  FlVideoState get videoState => _ctr.flVideoState;
+  FlVideoState get videoState => _ctr.podVideoState;
 
   VideoPlayerValue? get videoPlayerValue => _ctr.videoCtr?.value;
 
@@ -77,9 +77,9 @@ class FlVideoController {
 
   //! video play/pause
 
-  void play() => _ctr.flVideoStateChanger(FlVideoState.playing);
+  void play() => _ctr.podVideoStateChanger(FlVideoState.playing);
 
-  void pause() => _ctr.flVideoStateChanger(FlVideoState.paused);
+  void pause() => _ctr.podVideoStateChanger(FlVideoState.paused);
 
   void togglePlayPause() {
     isVideoPlaying ? pause() : play();
@@ -112,7 +112,7 @@ class FlVideoController {
   void dispose() {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
-    _ctr.removeListenerId('flVideoState', _ctr.flStateListner);
+    _ctr.removeListenerId('podVideoState', _ctr.podStateListner);
     Get.delete<FlGetXVideoController>(
       force: true,
       tag: getTag,
