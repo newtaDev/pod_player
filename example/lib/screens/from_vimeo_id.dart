@@ -9,10 +9,10 @@ class PlayVideoFromVimeoId extends StatefulWidget {
 }
 
 class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
-  late final FlVideoController controller;
+  late final PodPlayerController controller;
   @override
   void initState() {
-    controller = FlVideoController(
+    controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.vimeoId('518228118'),
     )..initialise();
     super.initState();
@@ -29,7 +29,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: FlVideoPlayer(controller: controller),
+          child: PodVideoPlayer(controller: controller),
         ),
       ),
     );

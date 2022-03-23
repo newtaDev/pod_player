@@ -16,7 +16,7 @@ class _VideoGestureDetector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return MouseRegion(
       onHover: (event) => _podCtr.onOverlayHover(),
       onExit: (event) => _podCtr.onOverlayHoverExit(),

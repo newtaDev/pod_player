@@ -5,7 +5,7 @@ import '../../pod_player.dart';
 class PlayVideoFrom {
   final String? dataSource;
   final List<VimeoVideoQalityUrls>? vimeoUrls;
-  final FlVideoPlayerType playerType;
+  final PodVideoPlayerType playerType;
   final VideoFormat? formatHint;
   final String? package;
   final File? file;
@@ -33,7 +33,7 @@ class PlayVideoFrom {
     Map<String, String> httpHeaders = const {},
   }) {
     return PlayVideoFrom(
-      playerType: FlVideoPlayerType.network,
+      playerType: PodVideoPlayerType.network,
       dataSource: dataSource,
       formatHint: formatHint,
       closedCaptionFile: closedCaptionFile,
@@ -49,7 +49,7 @@ class PlayVideoFrom {
     VideoPlayerOptions? videoPlayerOptions,
   }) {
     return PlayVideoFrom(
-      playerType: FlVideoPlayerType.asset,
+      playerType: PodVideoPlayerType.asset,
       dataSource: dataSource,
       package: package,
       closedCaptionFile: closedCaptionFile,
@@ -64,7 +64,7 @@ class PlayVideoFrom {
   }) {
     return PlayVideoFrom(
       file: file,
-      playerType: FlVideoPlayerType.file,
+      playerType: PodVideoPlayerType.file,
       closedCaptionFile: closedCaptionFile,
       videoPlayerOptions: videoPlayerOptions,
     );
@@ -78,7 +78,7 @@ class PlayVideoFrom {
     Map<String, String> httpHeaders = const {},
   }) {
     return PlayVideoFrom(
-      playerType: FlVideoPlayerType.vimeo,
+      playerType: PodVideoPlayerType.vimeo,
       dataSource: dataSource,
       formatHint: formatHint,
       closedCaptionFile: closedCaptionFile,
@@ -95,7 +95,7 @@ class PlayVideoFrom {
     Map<String, String> httpHeaders = const {},
   }) {
     return PlayVideoFrom(
-      playerType: FlVideoPlayerType.vimeo,
+      playerType: PodVideoPlayerType.vimeo,
       vimeoUrls: vimeoUrls,
       formatHint: formatHint,
       closedCaptionFile: closedCaptionFile,

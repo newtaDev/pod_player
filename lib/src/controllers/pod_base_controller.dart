@@ -1,12 +1,12 @@
 part of 'pod_getx_video_controller.dart';
 // ignore_for_file: prefer_final_fields
 
-class FlBaseController extends GetxController {
+class _PodBaseController extends GetxController {
   ///main video controller
   VideoPlayerController? _videoCtr;
 
   ///
-  late FlVideoPlayerType _videoPlayerType;
+  late PodVideoPlayerType _videoPlayerType;
 
   bool isMute = false;
   FocusNode? keyboardFocusWeb;
@@ -15,7 +15,7 @@ class FlBaseController extends GetxController {
   bool _isWebAutoPlayDone = false;
 
   ///
-  FlVideoState _podVideoState = FlVideoState.loading;
+  PodVideoState _podVideoState = PodVideoState.loading;
 
   ///
   bool isWebPopupOverlayOpen = false;
@@ -71,15 +71,15 @@ class FlBaseController extends GetxController {
   void _listneToVideoState() {
     podVideoStateChanger(
       _videoCtr!.value.isBuffering || !_videoCtr!.value.isInitialized
-          ? FlVideoState.loading
+          ? PodVideoState.loading
           : _videoCtr!.value.isPlaying
-              ? FlVideoState.playing
-              : FlVideoState.paused,
+              ? PodVideoState.playing
+              : PodVideoState.paused,
     );
   }
 
   ///updates state with id `_podVideoState`
-  void podVideoStateChanger(FlVideoState? _val, {bool updateUi = true}) {
+  void podVideoStateChanger(PodVideoState? _val, {bool updateUi = true}) {
     if (_podVideoState != (_val ?? _podVideoState)) {
       _podVideoState = _val ?? _podVideoState;
       if (updateUi) {

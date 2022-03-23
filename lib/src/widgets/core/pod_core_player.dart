@@ -1,10 +1,10 @@
 part of 'package:pod_player/src/pod_player.dart';
 
-class FlCorePlayer extends StatelessWidget {
+class _PodCoreVideoPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
   final double videoAspectRatio;
   final String tag;
-  const FlCorePlayer({
+  const _PodCoreVideoPlayer({
     Key? key,
     required this.videoPlayerCtr,
     required this.videoAspectRatio,
@@ -13,7 +13,7 @@ class FlCorePlayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Builder(
       builder: (_ctrx) {
         return RawKeyboardListener(
@@ -37,7 +37,7 @@ class FlCorePlayer extends StatelessWidget {
               ),
               _VideoOverlays(tag: tag),
               IgnorePointer(
-                child: GetBuilder<FlGetXVideoController>(
+                child: GetBuilder<PodGetXVideoController>(
                   tag: tag,
                   id: 'podVideoState',
                   builder: (_podCtr) {
@@ -50,9 +50,9 @@ class FlCorePlayer extends StatelessWidget {
                     );
                     if (kIsWeb) {
                       switch (_podCtr.podVideoState) {
-                        case FlVideoState.loading:
+                        case PodVideoState.loading:
                           return loadingWidget;
-                        case FlVideoState.paused:
+                        case PodVideoState.paused:
                           return const Center(
                             child: Icon(
                               Icons.play_arrow,
@@ -60,7 +60,7 @@ class FlCorePlayer extends StatelessWidget {
                               color: Colors.white,
                             ),
                           );
-                        case FlVideoState.playing:
+                        case PodVideoState.playing:
                           return Center(
                             child: TweenAnimationBuilder<double>(
                               builder: (context, value, child) => Opacity(
@@ -76,11 +76,11 @@ class FlCorePlayer extends StatelessWidget {
                               ),
                             ),
                           );
-                        case FlVideoState.error:
+                        case PodVideoState.error:
                           return const SizedBox();
                       }
                     } else {
-                      if (_podCtr.podVideoState == FlVideoState.loading) {
+                      if (_podCtr.podVideoState == PodVideoState.loading) {
                         return loadingWidget;
                       }
                       return const SizedBox();
@@ -89,12 +89,12 @@ class FlCorePlayer extends StatelessWidget {
                 ),
               ),
               if (!kIsWeb)
-                GetBuilder<FlGetXVideoController>(
+                GetBuilder<PodGetXVideoController>(
                   tag: tag,
                   id: 'full-screen',
                   builder: (_podCtr) => _podCtr.isFullScreen
                       ? const SizedBox()
-                      : GetBuilder<FlGetXVideoController>(
+                      : GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'overlay',
                           builder: (_podCtr) => _podCtr.isOverlayVisible ||
@@ -102,7 +102,7 @@ class FlCorePlayer extends StatelessWidget {
                               ? const SizedBox()
                               : Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: FlVideoProgressBar(
+                                  child: PodProgressBar(
                                     tag: tag,
                                     alignment: Alignment.bottomCenter,
                                     podProgressBarConfig:

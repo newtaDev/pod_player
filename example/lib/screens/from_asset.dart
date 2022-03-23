@@ -9,10 +9,10 @@ class PlayVideoFromAsset extends StatefulWidget {
 }
 
 class _PlayVideoFromAssetState extends State<PlayVideoFromAsset> {
-  late final FlVideoController controller;
+  late final PodPlayerController controller;
   @override
   void initState() {
-    controller = FlVideoController(
+    controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
     )..initialise();
     super.initState();
@@ -27,7 +27,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromAsset> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: FlVideoPlayer(controller: controller)),
+      body: Center(child: PodVideoPlayer(controller: controller)),
     );
   }
 }

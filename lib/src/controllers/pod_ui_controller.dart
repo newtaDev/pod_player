@@ -1,8 +1,8 @@
 part of 'pod_getx_video_controller.dart';
 
-class _FlUiController extends _FlGesturesController {
+class _PodUiController extends _PodGesturesController {
   bool alwaysShowProgressBar = true;
-  FlProgressBarConfig podProgressBarConfig = const FlProgressBarConfig();
+  PodProgressBarConfig podProgressBarConfig = const PodProgressBarConfig();
   Widget Function(OverLayOptions options)? overlayBuilder;
   Widget? videoTitle;
 }

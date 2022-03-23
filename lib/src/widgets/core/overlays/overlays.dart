@@ -9,14 +9,14 @@ class _VideoOverlays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     if (_podCtr.overlayBuilder != null) {
-      return GetBuilder<FlGetXVideoController>(
+      return GetBuilder<PodGetXVideoController>(
         id: 'update-all',
         tag: tag,
         builder: (_podCtr) {
           ///Custom overlay
-          final _progressBar = FlVideoProgressBar(
+          final _progressBar = PodProgressBar(
             tag: tag,
             podProgressBarConfig: _podCtr.podProgressBarConfig,
           );
@@ -54,7 +54,7 @@ class _VideoOverlays extends StatelessWidget {
       );
     } else {
       ///Built in overlay
-      return GetBuilder<FlGetXVideoController>(
+      return GetBuilder<PodGetXVideoController>(
         tag: tag,
         id: 'overlay',
         builder: (_podCtr) {

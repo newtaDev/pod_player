@@ -12,7 +12,7 @@ class CustomVideoControlls extends StatefulWidget {
 }
 
 class _CustomVideoControllsState extends State<CustomVideoControlls> {
-  late FlVideoController controller;
+  late PodPlayerController controller;
   bool? isVideoPlaying;
   final videoTextFieldCtr = TextEditingController(
     text:
@@ -26,7 +26,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
   @override
   void initState() {
     super.initState();
-    controller = FlVideoController(
+    controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
       // playerType: FlVideoPlayerType.asset,
       // fromAssets: 'assets/long_video.mkv',
@@ -103,11 +103,11 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
         child: ListView(
           children: [
             sizeH20,
-            FlVideoPlayer(
+            PodVideoPlayer(
               alwaysShowProgressBar: alwaysShowProgressBar,
               controller: controller,
               matchFrameAspectRatioToVideo: true,
-              matchVideoAspectRatioToVideo: true,
+              matchVideoAspectRatioToFrame: true,
               videoTitle: _videoTitle,
             ),
             Padding(

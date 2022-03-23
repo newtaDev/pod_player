@@ -1,11 +1,11 @@
-enum FlVideoState {
+enum PodVideoState {
   loading,
   playing,
   paused,
   error,
 }
 
-enum FlVideoPlayerType {
+enum PodVideoPlayerType {
   network,
   file,
   asset,

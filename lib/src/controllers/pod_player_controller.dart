@@ -9,29 +9,29 @@ import 'pod_getx_video_controller.dart';
 
 bool enableDevLogs = false;
 
-class FlVideoController {
+class PodPlayerController {
   ///
-  late FlGetXVideoController _ctr;
+  late PodGetXVideoController _ctr;
   late String getTag;
   bool _isInitialised = false;
 
   final PlayVideoFrom playVideoFrom;
-  final FlVideoPlayerConfig playerConfig;
+  final PodPlayerConfig podPlayerConfig;
   bool enableLogs = false;
 
-  FlVideoController({
+  PodPlayerController({
     required this.playVideoFrom,
-    this.playerConfig = const FlVideoPlayerConfig(),
+    this.podPlayerConfig = const PodPlayerConfig(),
     this.enableLogs = false,
   }) {
     getTag = UniqueKey().toString();
     enableDevLogs = enableLogs;
     Get.config(enableLog: enableLogs);
-    _ctr = Get.put(FlGetXVideoController(), permanent: true, tag: getTag)
+    _ctr = Get.put(PodGetXVideoController(), permanent: true, tag: getTag)
       ..config(
         playVideoFrom: playVideoFrom,
-        autoPlay: playerConfig.autoPlay,
-        isLooping: playerConfig.isLooping,
+        autoPlay: podPlayerConfig.autoPlay,
+        isLooping: podPlayerConfig.isLooping,
       );
   }
   //!init
@@ -59,11 +59,11 @@ class FlVideoController {
 
   bool get isMute => _ctr.isMute;
 
-  FlVideoState get videoState => _ctr.podVideoState;
+  PodVideoState get videoState => _ctr.podVideoState;
 
   VideoPlayerValue? get videoPlayerValue => _ctr.videoCtr?.value;
 
-  FlVideoPlayerType get videoPlayerType => _ctr.videoPlayerType;
+  PodVideoPlayerType get videoPlayerType => _ctr.videoPlayerType;
 
   // Future<void> initialize() async => _ctr.videoCtr?.initialize;
 
@@ -77,9 +77,9 @@ class FlVideoController {
 
   //! video play/pause
 
-  void play() => _ctr.podVideoStateChanger(FlVideoState.playing);
+  void play() => _ctr.podVideoStateChanger(PodVideoState.playing);
 
-  void pause() => _ctr.podVideoStateChanger(FlVideoState.paused);
+  void pause() => _ctr.podVideoStateChanger(PodVideoState.paused);
 
   void togglePlayPause() {
     isVideoPlaying ? pause() : play();
@@ -113,7 +113,7 @@ class FlVideoController {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
     _ctr.removeListenerId('podVideoState', _ctr.podStateListner);
-    Get.delete<FlGetXVideoController>(
+    Get.delete<PodGetXVideoController>(
       force: true,
       tag: getTag,
     );
@@ -121,7 +121,7 @@ class FlVideoController {
 
   Future<void> changeVideo({
     required PlayVideoFrom playVideoFrom,
-    FlVideoPlayerConfig playerConfig = const FlVideoPlayerConfig(),
+    PodPlayerConfig playerConfig = const PodPlayerConfig(),
   }) =>
       _ctr.changeVideo(
         playVideoFrom: playVideoFrom,

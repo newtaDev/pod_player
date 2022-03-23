@@ -1,6 +1,6 @@
 part of 'pod_getx_video_controller.dart';
 
-class _FlGesturesController extends _FlVimeoVideoController {
+class _PodGesturesController extends _PodVimeoVideoController {
   //double tap
   Timer? leftDoubleTapTimer;
   Timer? rightDoubleTapTimer;

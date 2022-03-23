@@ -16,15 +16,15 @@ part 'pod_video_controller.dart';
 part 'pod_ui_controller.dart';
 part 'pod_vimeo_controller.dart';
 
-class FlGetXVideoController extends _FlUiController {
+class PodGetXVideoController extends _PodUiController {
   ///main videoplayer controller
   VideoPlayerController? get videoCtr => _videoCtr;
 
   ///podVideoPlayer state notifier
-  FlVideoState get podVideoState => _podVideoState;
+  PodVideoState get podVideoState => _podVideoState;
 
   ///vimeo or general --video player type
-  FlVideoPlayerType get videoPlayerType => _videoPlayerType;
+  PodVideoPlayerType get videoPlayerType => _videoPlayerType;
 
   String get currentPaybackSpeed => _currentPaybackSpeed;
 
@@ -72,14 +72,14 @@ class FlGetXVideoController extends _FlUiController {
       Future.delayed(const Duration(milliseconds: 600))
           .then((value) => _isWebAutoPlayDone = true);
     } catch (e) {
-      podLog('ERROR ON FLVIDEOPLAYER:  $e');
+      podLog('ERROR ON POD_PLAYER:  $e');
       rethrow;
     }
   }
 
   Future<void> _initializePlayer() async {
     switch (_videoPlayerType) {
-      case FlVideoPlayerType.network:
+      case PodVideoPlayerType.network:
 
         ///
         _videoCtr = VideoPlayerController.network(
@@ -91,7 +91,7 @@ class FlGetXVideoController extends _FlUiController {
         );
 
         break;
-      case FlVideoPlayerType.vimeo:
+      case PodVideoPlayerType.vimeo:
 
         ///
         if (playVideoFrom.dataSource != null) {
@@ -115,7 +115,7 @@ class FlGetXVideoController extends _FlUiController {
         );
 
         break;
-      case FlVideoPlayerType.asset:
+      case PodVideoPlayerType.asset:
 
         ///
         _videoCtr = VideoPlayerController.asset(
@@ -125,7 +125,7 @@ class FlGetXVideoController extends _FlUiController {
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
         );
         break;
-      case FlVideoPlayerType.file:
+      case PodVideoPlayerType.file:
 
         ///
         _videoCtr = VideoPlayerController.file(
@@ -191,16 +191,16 @@ class FlGetXVideoController extends _FlUiController {
   void podStateListner() {
     podLog(_podVideoState.toString());
     switch (_podVideoState) {
-      case FlVideoState.playing:
+      case PodVideoState.playing:
         playVideo(true);
         break;
-      case FlVideoState.paused:
+      case PodVideoState.paused:
         playVideo(false);
         break;
-      case FlVideoState.loading:
+      case PodVideoState.loading:
         isShowOverlay(true);
         break;
-      case FlVideoState.error:
+      case PodVideoState.error:
         playVideo(false);
         break;
     }
@@ -211,20 +211,20 @@ class FlGetXVideoController extends _FlUiController {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       if (autoPlay && (isVideoUiBinded ?? false)) {
         if (kIsWeb) await _videoCtr?.setVolume(0);
-        podVideoStateChanger(FlVideoState.playing);
+        podVideoStateChanger(PodVideoState.playing);
       } else {
-        podVideoStateChanger(FlVideoState.paused);
+        podVideoStateChanger(PodVideoState.paused);
       }
     });
   }
 
   Future<void> changeVideo({
     required PlayVideoFrom playVideoFrom,
-    required FlVideoPlayerConfig playerConfig,
+    required PodPlayerConfig playerConfig,
   }) async {
     _videoCtr?.removeListener(videoListner);
-    podVideoStateChanger(FlVideoState.paused);
-    podVideoStateChanger(FlVideoState.loading);
+    podVideoStateChanger(PodVideoState.paused);
+    podVideoStateChanger(PodVideoState.loading);
     keyboardFocusWeb?.removeListener(keyboadListner);
     removeListenerId('podVideoState', podStateListner);
     _isWebAutoPlayDone = false;

@@ -13,7 +13,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
     const durationTextStyle = TextStyle(color: Colors.white70);
     const itemColor = Colors.white;
 
-    return GetBuilder<FlGetXVideoController>(
+    return GetBuilder<PodGetXVideoController>(
       tag: tag,
       id: 'full-screen',
       builder: (_podCtr) => Column(
@@ -22,7 +22,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
           Row(
             children: [
               const SizedBox(width: 12),
-              GetBuilder<FlGetXVideoController>(
+              GetBuilder<PodGetXVideoController>(
                 tag: tag,
                 id: 'video-progress',
                 builder: (_podCtr) {
@@ -63,7 +63,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               ),
             ],
           ),
-          GetBuilder<FlGetXVideoController>(
+          GetBuilder<PodGetXVideoController>(
             tag: tag,
             id: 'overlay',
             builder: (_podCtr) {
@@ -72,7 +72,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
                   child: Visibility(
                     visible: _podCtr.isOverlayVisible,
-                    child: FlVideoProgressBar(
+                    child: PodProgressBar(
                       tag: tag,
                       alignment: Alignment.topCenter,
                       podProgressBarConfig: _podCtr.podProgressBarConfig,
@@ -80,7 +80,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   ),
                 );
               }
-              return FlVideoProgressBar(
+              return PodProgressBar(
                 tag: tag,
                 alignment: Alignment.bottomCenter,
                 podProgressBarConfig: _podCtr.podProgressBarConfig,

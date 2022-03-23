@@ -13,10 +13,10 @@ class FullScreenView extends StatefulWidget {
 
 class _FullScreenViewState extends State<FullScreenView>
     with TickerProviderStateMixin {
-  late FlGetXVideoController _podCtr;
+  late PodGetXVideoController _podCtr;
   @override
   void initState() {
-    _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+    _podCtr = Get.find<PodGetXVideoController>(tag: widget.tag);
     _podCtr.fullScreenContext = context;
     _podCtr.keyboardFocusWeb?.removeListener(_podCtr.keyboadListner);
 
@@ -51,7 +51,7 @@ class _FullScreenViewState extends State<FullScreenView>
       },
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: GetBuilder<FlGetXVideoController>(
+        body: GetBuilder<PodGetXVideoController>(
           tag: widget.tag,
           builder: (_podCtr) => Center(
             child: ColoredBox(
@@ -63,7 +63,7 @@ class _FullScreenViewState extends State<FullScreenView>
                   child: _podCtr.videoCtr == null
                       ? circularProgressIndicator
                       : _podCtr.videoCtr!.value.isInitialized
-                          ? FlCorePlayer(
+                          ? _PodCoreVideoPlayer(
                               tag: widget.tag,
                               videoPlayerCtr: _podCtr.videoCtr!,
                               videoAspectRatio:

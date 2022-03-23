@@ -10,7 +10,7 @@ class _WebOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const overlayColor = Colors.black38;
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Stack(
       children: [
         Positioned.fill(

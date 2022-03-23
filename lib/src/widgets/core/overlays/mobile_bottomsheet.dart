@@ -10,12 +10,12 @@ class _MobileBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<FlGetXVideoController>(
+    return GetBuilder<PodGetXVideoController>(
       tag: tag,
       builder: (_podCtr) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (_podCtr.videoPlayerType == FlVideoPlayerType.vimeo)
+          if (_podCtr.videoPlayerType == PodVideoPlayerType.vimeo)
             _bottomSheetTiles(
               title: 'Quality',
               icon: Icons.video_settings_rounded,
@@ -116,7 +116,7 @@ class _VideoQualitySelectorMob extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -150,7 +150,7 @@ class _VideoPlaybackSelectorMob extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,

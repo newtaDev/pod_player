@@ -30,8 +30,8 @@ typedef GetProgressBarHandlePaint = Paint Function({
   double? circleHandlerRadius,
 });
 
-class FlProgressBarConfig {
-  const FlProgressBarConfig({
+class PodProgressBarConfig {
+  const PodProgressBarConfig({
     this.playingBarColor = Colors.red,
     this.bufferedBarColor = const Color.fromRGBO(255, 255, 255, 0.38),
     this.circleHandlerColor = Colors.red,
@@ -88,7 +88,7 @@ class FlProgressBarConfig {
   /// Radius to curve the ends of the bar.
   final double curveRadius;
 
-  FlProgressBarConfig copyWith({
+  PodProgressBarConfig copyWith({
     Color? playingBarColor,
     Color? bufferedBarColor,
     Color? circleHandlerColor,
@@ -103,7 +103,7 @@ class FlProgressBarConfig {
     double? circleHandlerRadius,
     double? curveRadius,
   }) {
-    return FlProgressBarConfig(
+    return PodProgressBarConfig(
       playingBarColor: playingBarColor ?? this.playingBarColor,
       bufferedBarColor: bufferedBarColor ?? this.bufferedBarColor,
       circleHandlerColor: circleHandlerColor ?? this.circleHandlerColor,

@@ -12,7 +12,7 @@ class _MobileOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     const overlayColor = Colors.black38;
     const itemColor = Colors.white;
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -38,7 +38,7 @@ class _MobileOverlay extends StatelessWidget {
                 child: SizedBox(
                   height: double.infinity,
                   child: Center(
-                    child: _PlayPause(tag: tag, size: 42),
+                    child: _AnimatedPlayPauseIcon(tag: tag, size: 42),
                   ),
                 ),
               ),
@@ -112,7 +112,7 @@ class _LeftRightDoubleTapBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<FlGetXVideoController>(
+    return GetBuilder<PodGetXVideoController>(
       tag: tag,
       id: 'double-tap',
       builder: (_podCtr) {

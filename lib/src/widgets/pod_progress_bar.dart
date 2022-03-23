@@ -7,20 +7,20 @@ import '../controllers/pod_getx_video_controller.dart';
 import '../models/pod_progress_bar_config.dart';
 
 /// Renders progress bar for the video using custom paint.
-class FlVideoProgressBar extends StatefulWidget {
-  const FlVideoProgressBar({
+class PodProgressBar extends StatefulWidget {
+  const PodProgressBar({
     Key? key,
-    FlProgressBarConfig? podProgressBarConfig,
+    PodProgressBarConfig? podProgressBarConfig,
     this.onDragStart,
     this.onDragEnd,
     this.onDragUpdate,
     this.alignment = Alignment.center,
     required this.tag,
   })  : podProgressBarConfig =
-            podProgressBarConfig ?? const FlProgressBarConfig(),
+            podProgressBarConfig ?? const PodProgressBarConfig(),
         super(key: key);
 
-  final FlProgressBarConfig podProgressBarConfig;
+  final PodProgressBarConfig podProgressBarConfig;
   final Function()? onDragStart;
   final Function()? onDragEnd;
   final Function()? onDragUpdate;
@@ -28,11 +28,11 @@ class FlVideoProgressBar extends StatefulWidget {
   final String tag;
 
   @override
-  State<FlVideoProgressBar> createState() => _FlVideoProgressBarState();
+  State<PodProgressBar> createState() => _PodProgressBarState();
 }
 
-class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
-  late final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
+class _PodProgressBarState extends State<PodProgressBar> {
+  late final _podCtr = Get.find<PodGetXVideoController>(tag: widget.tag);
   late VideoPlayerValue? videoPlayerValue = _podCtr.videoCtr?.value;
   bool _controllerWasPlaying = false;
 
@@ -51,7 +51,7 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
   Widget build(BuildContext context) {
     if (videoPlayerValue == null) return const SizedBox();
 
-    return GetBuilder<FlGetXVideoController>(
+    return GetBuilder<PodGetXVideoController>(
       tag: widget.tag,
       id: 'video-progress',
       builder: (_podCtr) {
@@ -117,7 +117,7 @@ class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
           height: widget.podProgressBarConfig.circleHandlerRadius,
           child: Align(
             alignment: widget.alignment,
-            child: GetBuilder<FlGetXVideoController>(
+            child: GetBuilder<PodGetXVideoController>(
               tag: widget.tag,
               id: 'overlay',
               builder: (_podCtr) => CustomPaint(
@@ -148,7 +148,7 @@ class _ProgressBarPainter extends CustomPainter {
   _ProgressBarPainter(this.value, {this.podProgressBarConfig});
 
   VideoPlayerValue value;
-  FlProgressBarConfig? podProgressBarConfig;
+  PodProgressBarConfig? podProgressBarConfig;
 
   @override
   bool shouldRepaint(CustomPainter painter) {
@@ -255,354 +255,3 @@ class _ProgressBarPainter extends CustomPainter {
     );
   }
 }
-
-//!old
-// import 'dart:developer';
-
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/gestures.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:video_player/video_player.dart';
-
-// import '../controllers/fl_getx_video_controller.dart';
-// import '../utils/fl_enums.dart';
-
-// class FlVideoProgressBar extends StatefulWidget {
-//   const FlVideoProgressBar({
-//     Key? key,
-//     this.colors,
-//     required this.allowGestures,
-//     this.height = 20,
-//     this.padding = EdgeInsets.zero,
-//     required this.tag,
-//   }) : super(key: key);
-
-//   final VideoProgressColors? colors;
-
-//   final bool allowGestures;
-
-//   final double height;
-
-//   final EdgeInsets padding;
-//   final String tag;
-
-//   @override
-//   _FlVideoProgressBarState createState() => _FlVideoProgressBarState();
-// }
-
-// class _FlVideoProgressBarState extends State<FlVideoProgressBar> {
-//   VideoProgressColors get colors =>
-//       widget.colors ??
-//       VideoProgressColors(
-//         backgroundColor: Colors.grey.withOpacity(0.5),
-//         bufferedColor: Colors.grey[500]!,
-//       );
-
-//   double? relativeVal;
-//   late double relativeWidth;
-//   bool isHovered = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetBuilder<FlGetXVideoController>(
-//       tag: widget.tag,
-//       id: 'video-progress',
-//       builder: (_podCtr) {
-//         Widget progressIndicator;
-//         if (_podCtr.videoCtr!.value.isInitialized) {
-//           final int duration = _podCtr.videoCtr!.value.duration.inMilliseconds;
-//           final int position = _podCtr.videoCtr!.value.position.inMilliseconds;
-
-//           int maxBuffering = 0;
-//           for (final DurationRange range in _podCtr.videoCtr!.value.buffered) {
-//             final int end = range.end.inMilliseconds;
-//             if (end > maxBuffering) {
-//               maxBuffering = end;
-//             }
-//           }
-//           relativeVal = position / duration;
-//           final double barHeight = _podCtr.isOverlayVisible
-//               ? 20
-//               : isHovered
-//                   ? 20
-//                   : widget.height;
-//           const alignmentLoc = Alignment.bottomLeft;
-//           progressIndicator = _progressWidget(
-//             alignmentLoc,
-//             barHeight,
-//             maxBuffering,
-//             duration,
-//             position,
-//           );
-//         } else {
-//           progressIndicator = LinearProgressIndicator(
-//             valueColor: AlwaysStoppedAnimation<Color>(colors.playedColor),
-//             backgroundColor: colors.backgroundColor,
-//           );
-//         }
-//         if (widget.allowGestures) {
-//           return Padding(
-//             padding: widget.padding,
-//             child: _VideoProgressGestureDetector(
-//               tag: widget.tag,
-//               controller: _podCtr.videoCtr!,
-//               onHoverStart: _onHoverStart,
-//               onExit: _onExit,
-//               onHorizontalDrag: onHrDrag,
-//               onDragStart: () => isHovered = true,
-//               onDragEnd: () => isHovered = false,
-//               child: progressIndicator,
-//             ),
-//           );
-//         } else {
-//           return progressIndicator;
-//         }
-//       },
-//     );
-//   }
-
-//   void onHrDrag(double val) {
-//     final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
-
-//     relativeVal = val;
-//     if (kIsWeb) _podCtr.isShowOverlay(true);
-//   }
-
-//   Stack _progressWidget(
-//     Alignment alignmentLoc,
-//     double barHeight,
-//     int maxBuffering,
-//     int duration,
-//     int position,
-//   ) {
-//     final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
-
-//     return Stack(
-//       alignment: alignmentLoc,
-//       fit: StackFit.passthrough,
-//       children: <Widget>[
-//         SizedBox(
-//           height: barHeight,
-//           child: Align(
-//             alignment: alignmentLoc,
-//             child: LinearProgressIndicator(
-//               value: maxBuffering / duration,
-//               valueColor: AlwaysStoppedAnimation<Color>(colors.bufferedColor),
-//               backgroundColor: colors.backgroundColor,
-//             ),
-//           ),
-//         ),
-//         _VideoProgressBar(
-//             position: position,
-//             duration: duration,
-//             relativeVal: relativeVal,
-//             height: widget.height,
-//             isHovered: isHovered,
-//             showThumbHandler: isHovered ||
-//                 _podCtr.isOverlayVisible ||
-//                 _podCtr.flVideoState == FlVideoState.paused,
-//             colors: colors,
-//             alignmentLoc: alignmentLoc),
-//       ],
-//     );
-//   }
-
-//   void _onHoverStart(event) {
-//     if (kIsWeb) isHovered = true;
-//   }
-
-//   void _onExit(event) {
-//     if (kIsWeb) {
-//       if (isHovered == true) {
-//         if (mounted) setState(() => isHovered = false);
-//       }
-//     }
-//   }
-// }
-
-// class _VideoProgressBar extends StatelessWidget {
-//   final double? relativeVal;
-//   final int position;
-//   final int duration;
-//   final double height;
-//   final bool isHovered;
-//   final VideoProgressColors colors;
-//   final Alignment alignmentLoc;
-//   final bool showThumbHandler;
-//   const _VideoProgressBar({
-//     Key? key,
-//     this.relativeVal,
-//     required this.position,
-//     required this.duration,
-//     required this.height,
-//     required this.isHovered,
-//     required this.colors,
-//     required this.alignmentLoc,
-//     required this.showThumbHandler,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     ///Progress bar height
-//     final double barHeight = showThumbHandler ? 20 : height;
-
-//     ///Progress bar width
-//     double relativeWidth;
-
-//     ///Progress circle config
-//     final double _progresscircleHeight = showThumbHandler ? 20 : 0;
-//     final double _progresscircleWidth = showThumbHandler ? 15 : 0;
-//     final List<BoxShadow> _progressCircleShadow = showThumbHandler && isHovered
-//         ? [
-//             BoxShadow(
-//               spreadRadius: 4,
-//               color: colors.playedColor.withOpacity(0.3),
-//             )
-//           ]
-//         : [];
-//     return LayoutBuilder(
-//       builder: (context, constraints) {
-//         relativeWidth =
-//             constraints.maxWidth * (relativeVal ?? (position / duration));
-//         return SizedBox(
-//           height: barHeight,
-//           width: relativeWidth,
-//           child: Center(
-//             child: Stack(
-//               children: [
-//                 Align(
-//                   alignment: alignmentLoc,
-//                   child: ColoredBox(
-//                     color: colors.playedColor,
-//                     child: SizedBox(
-//                       height: isHovered ? 6 : 5,
-//                       width: relativeWidth,
-//                     ),
-//                   ),
-//                 ),
-//                 Align(
-//                   alignment: Alignment.bottomRight,
-//                   child: AnimatedOpacity(
-//                     duration: const Duration(milliseconds: 200),
-//                     opacity: showThumbHandler ? 1 : 0,
-//                     child: SizedBox(
-//                       height: _progresscircleHeight,
-//                       width: _progresscircleWidth,
-//                       child: AnimatedContainer(
-//                         duration: const Duration(milliseconds: 100),
-//                         alignment: Alignment.center,
-//                         transform: Matrix4.translationValues(
-//                             0, _progresscircleHeight != 0 ? 7 : 0, 0),
-//                         // ..translate(
-//                         // 0,
-//                         // _progresscircleHeight != 0 ? 7 : 0,
-//                         // ),
-//                         decoration: BoxDecoration(
-//                           shape: BoxShape.circle,
-//                           color: colors.playedColor,
-//                           boxShadow: _progressCircleShadow,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 )
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class _VideoProgressGestureDetector extends StatefulWidget {
-//   const _VideoProgressGestureDetector({
-//     Key? key,
-//     required this.tag,
-//     required this.child,
-//     required this.controller,
-//     this.onHoverStart,
-//     this.onExit,
-//     this.onHorizontalDrag,
-//     this.onDragStart,
-//     this.onDragEnd,
-//   }) : super(key: key);
-//   final String tag;
-//   final Widget child;
-//   final VideoPlayerController controller;
-//   final void Function(PointerEnterEvent event)? onHoverStart;
-//   final void Function(PointerExitEvent event)? onExit;
-//   final void Function(double val)? onHorizontalDrag;
-//   final void Function()? onDragStart;
-//   final void Function()? onDragEnd;
-
-//   @override
-//   _VideoProgressGestureDetectorState createState() =>
-//       _VideoProgressGestureDetectorState();
-// }
-
-// class _VideoProgressGestureDetectorState
-//     extends State<_VideoProgressGestureDetector> {
-//   bool _controllerWasPlaying = false;
-
-//   VideoPlayerController get controller => widget.controller;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final _podCtr = Get.find<FlGetXVideoController>(tag: widget.tag);
-//     double relative = 0;
-//     void seekToRelativePosition(Offset globalPosition) {
-//       final RenderBox? box = context.findRenderObject() as RenderBox?;
-//       final tapPos = box?.globalToLocal(globalPosition) ?? Offset.zero;
-//       relative = tapPos.dx / ((box?.size.width) ?? 0);
-//       final Duration position = controller.value.duration * relative;
-//       controller.seekTo(position);
-//     }
-
-//     return MouseRegion(
-//       onEnter: widget.onHoverStart,
-//       onHover: (event) => _podCtr.onOverlayHover(),
-//       onExit: widget.onExit,
-//       child: GestureDetector(
-//         behavior: HitTestBehavior.opaque,
-//         child: widget.child,
-//         onHorizontalDragStart: (DragStartDetails details) {
-//           if (!controller.value.isInitialized) {
-//             return;
-//           }
-//           _controllerWasPlaying = controller.value.isPlaying;
-//           widget.onDragStart?.call();
-//           if (_controllerWasPlaying) {
-//             controller.pause();
-//           }
-//         },
-//         onHorizontalDragUpdate: (DragUpdateDetails details) {
-//           if (!controller.value.isInitialized) {
-//             return;
-//           }
-//           seekToRelativePosition(details.globalPosition);
-//           if (widget.onHorizontalDrag != null) {
-//             widget.onHorizontalDrag?.call(relative);
-//           }
-//         },
-//         onHorizontalDragEnd: (DragEndDetails details) {
-//           widget.onDragEnd?.call();
-//           if (_controllerWasPlaying) {
-//             controller.play();
-//           }
-//         },
-//         onTapDown: (TapDownDetails details) {
-//           if (!controller.value.isInitialized) {
-//             return;
-//           }
-//           if (widget.onHorizontalDrag != null) {
-//             widget.onHorizontalDrag?.call(relative);
-//           }
-
-//           seekToRelativePosition(details.globalPosition);
-//         },
-//       ),
-//     );
-//   }
-// }

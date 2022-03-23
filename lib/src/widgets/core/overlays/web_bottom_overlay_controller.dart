@@ -10,7 +10,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<FlGetXVideoController>(tag: tag);
+    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
     const durationTextStyle = TextStyle(color: Colors.white70);
     const itemColor = Colors.white;
 
@@ -22,7 +22,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FlVideoProgressBar(
+            PodProgressBar(
               tag: tag,
               podProgressBarConfig: _podCtr.podProgressBarConfig,
             ),
@@ -35,8 +35,8 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
-                        _PlayPause(tag: tag),
-                        GetBuilder<FlGetXVideoController>(
+                        _AnimatedPlayPauseIcon(tag: tag),
+                        GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'volume',
                           builder: (_podCtr) => MaterialIconButton(
@@ -52,7 +52,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                             ),
                           ),
                         ),
-                        GetBuilder<FlGetXVideoController>(
+                        GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'video-progress',
                           builder: (_podCtr) {
@@ -108,7 +108,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
     );
   }
 
-  void _onFullScreenToggle(FlGetXVideoController _podCtr, BuildContext context) {
+  void _onFullScreenToggle(PodGetXVideoController _podCtr, BuildContext context) {
     if (_podCtr.isOverlayVisible) {
       if (_podCtr.isFullScreen) {
         if (kIsWeb) {

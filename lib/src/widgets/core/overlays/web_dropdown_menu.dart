@@ -20,7 +20,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
         focusColor: Colors.white,
         selectedRowColor: Colors.white,
       ),
-      child: GetBuilder<FlGetXVideoController>(
+      child: GetBuilder<PodGetXVideoController>(
         tag: widget.tag,
         builder: (_podCtr) {
           return MaterialIconButton(
@@ -87,7 +87,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
 
   Future<void> _onPlaybackSpeedSelect(
     TapDownDetails details,
-    FlGetXVideoController _podCtr,
+    PodGetXVideoController _podCtr,
   ) async {
     await Future.delayed(
       const Duration(milliseconds: 400),
@@ -117,7 +117,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
 
   Future<void> _onVimeoQualitySelect(
     TapDownDetails details,
-    FlGetXVideoController _podCtr,
+    PodGetXVideoController _podCtr,
   ) async {
     await Future.delayed(
       const Duration(milliseconds: 400),

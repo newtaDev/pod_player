@@ -1,6 +1,6 @@
 part of 'pod_getx_video_controller.dart';
 
-class _FlPlayerController extends FlBaseController {
+class _PodVideoController extends _PodBaseController {
   Timer? showOverlayTimer;
   Timer? showOverlayTimer1;
 
@@ -95,7 +95,7 @@ class _FlPlayerController extends FlBaseController {
   void togglePlayPauseVideo() {
     isvideoPlaying = !isvideoPlaying;
     podVideoStateChanger(
-      isvideoPlaying ? FlVideoState.playing : FlVideoState.paused,
+      isvideoPlaying ? PodVideoState.playing : PodVideoState.paused,
     );
   }
 

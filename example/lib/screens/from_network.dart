@@ -10,10 +10,10 @@ class PlayVideoFromNetwork extends StatefulWidget {
 }
 
 class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
-  late final FlVideoController controller;
+  late final PodPlayerController controller;
   @override
   void initState() {
-    controller = FlVideoController(
+    controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.network(
         'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
       ),
@@ -32,9 +32,9 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: FlVideoPlayer(
+          child: PodVideoPlayer(
             controller: controller,
-            podProgressBarConfig: const FlProgressBarConfig(
+            podProgressBarConfig: const PodProgressBarConfig(
               padding: kIsWeb
                   ? EdgeInsets.zero
                   : EdgeInsets.only(

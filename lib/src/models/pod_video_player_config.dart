@@ -1,19 +1,19 @@
-class FlVideoPlayerConfig {
+class PodPlayerConfig {
   final bool autoPlay;
   final bool isLooping;
   final bool forcedVideoFocus;
-  const FlVideoPlayerConfig({
+  const PodPlayerConfig({
     this.autoPlay = true,
     this.isLooping = false,
     this.forcedVideoFocus = false,
   });
 
-  FlVideoPlayerConfig copyWith({
+  PodPlayerConfig copyWith({
     bool? autoPlay,
     bool? isLooping,
     bool? forcedVideoFocus,
   }) {
-    return FlVideoPlayerConfig(
+    return PodPlayerConfig(
       autoPlay: autoPlay ?? this.autoPlay,
       isLooping: isLooping ?? this.isLooping,
       forcedVideoFocus: forcedVideoFocus ?? this.forcedVideoFocus,

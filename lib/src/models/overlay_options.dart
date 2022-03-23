@@ -2,7 +2,7 @@
 import '../../pod_player.dart';
 
 class OverLayOptions {
-  final FlVideoState podVideoState;
+  final PodVideoState podVideoState;
   final Duration videoDuration;
   final Duration videoPosition;
   final bool isFullScreen;
@@ -12,8 +12,8 @@ class OverLayOptions {
   final bool autoPlay;
   final String currentVideoPlaybackSpeed;
   final List<String> videoPlayBackSpeeds;
-  final FlVideoPlayerType videoPlayerType;
-  final FlVideoProgressBar podProgresssBar;
+  final PodVideoPlayerType videoPlayerType;
+  final PodProgressBar podProgresssBar;
   OverLayOptions({
     required this.podVideoState,
     required this.videoDuration,
