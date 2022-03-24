@@ -105,7 +105,8 @@ If you are using network-based videos, ensure that the following permission is p
 ```
 
 If you need to access videos using http (rather than https) URLs. 
-Inside application tag
+
+Located inside application tag
 
 ```xml
 <application
@@ -119,14 +120,16 @@ Inside application tag
 ### ios
 ---
 
-Add permissions to your app's Info.plist file, located in `<project root>/ios/Runner/Info.plist` 
+Add permissions to your app's Info.plist file,
+
+located in `<project root>/ios/Runner/Info.plist` 
 
 ```xml
 <key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
+<dict>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
+</dict>
 ```
 ## How to use
 ---
