@@ -12,8 +12,8 @@ import '../utils/vimeo_video_api.dart';
 
 part 'pod_base_controller.dart';
 part 'pod_gestures_controller.dart';
-part 'pod_video_controller.dart';
 part 'pod_ui_controller.dart';
+part 'pod_video_controller.dart';
 part 'pod_vimeo_controller.dart';
 
 class PodGetXVideoController extends _PodUiController {
@@ -34,17 +34,17 @@ class PodGetXVideoController extends _PodUiController {
   ///
   Duration get videoPosition => _videoPosition;
 
-  int? vimeoVideoQuality;
+  int? _videoQuality;
   bool controllerInitialized = false;
   late PlayVideoFrom playVideoFrom;
   void config({
     required PlayVideoFrom playVideoFrom,
     bool isLooping = false,
     bool autoPlay = true,
-    int? vimeoVideoQuality,
+    int? videoQuality,
   }) {
     this.playVideoFrom = playVideoFrom;
-    this.vimeoVideoQuality = vimeoVideoQuality;
+    _videoQuality = videoQuality;
     _videoPlayerType = playVideoFrom.playerType;
     this.autoPlay = autoPlay;
     this.isLooping = isLooping;
@@ -91,23 +91,32 @@ class PodGetXVideoController extends _PodUiController {
         );
 
         break;
+      case PodVideoPlayerType.networkQualityUrls:
+        final _url = await videoQualitysInit(
+          quality: _videoQuality,
+          videoUrls: playVideoFrom.videoQualityUrls!,
+        );
+
+        ///
+        _videoCtr = VideoPlayerController.network(
+          _url,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          formatHint: playVideoFrom.formatHint,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+          httpHeaders: playVideoFrom.httpHeaders,
+        );
+
+        break;
       case PodVideoPlayerType.vimeo:
 
         ///
-        if (playVideoFrom.dataSource != null) {
-          await vimeoPlayerInit(
-            quality: vimeoVideoQuality,
-            videoId: playVideoFrom.dataSource,
-          );
-        } else {
-          await vimeoPlayerInit(
-            quality: vimeoVideoQuality,
-            vimeoUrls: playVideoFrom.vimeoUrls,
-          );
-        }
+        final _url = await vimeoPlayerInit(
+          quality: _videoQuality,
+          videoId: playVideoFrom.dataSource,
+        );
 
         _videoCtr = VideoPlayerController.network(
-          _vimeoVideoUrl,
+          _url,
           closedCaptionFile: playVideoFrom.closedCaptionFile,
           formatHint: playVideoFrom.formatHint,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
@@ -126,7 +135,9 @@ class PodGetXVideoController extends _PodUiController {
         );
         break;
       case PodVideoPlayerType.file:
-
+        if (kIsWeb) {
+          throw Exception('file doesnt support web');
+        }
         ///
         _videoCtr = VideoPlayerController.file(
           playVideoFrom.file!,
@@ -136,7 +147,6 @@ class PodGetXVideoController extends _PodUiController {
 
         break;
     }
-
   }
 
   ///Listning on keyboard events

@@ -15,7 +15,7 @@ class _MobileBottomSheet extends StatelessWidget {
       builder: (_podCtr) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (_podCtr.videoPlayerType == PodVideoPlayerType.vimeo)
+          if (_podCtr.vimeoOrVideoUrls.isNotEmpty)
             _bottomSheetTiles(
               title: 'Quality',
               icon: Icons.video_settings_rounded,
@@ -120,19 +120,18 @@ class _VideoQualitySelectorMob extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: _podCtr.vimeoVideoUrls
-                ?.map(
-                  (e) => ListTile(
-                    title: Text('${e.quality}p'),
-                    onTap: () {
-                      onTap != null ? onTap!() : Navigator.of(context).pop();
+        children: _podCtr.vimeoOrVideoUrls
+            .map(
+              (e) => ListTile(
+                title: Text('${e.quality}p'),
+                onTap: () {
+                  onTap != null ? onTap!() : Navigator.of(context).pop();
 
-                      _podCtr.changeVimeoVideoQuality(e.quality);
-                    },
-                  ),
-                )
-                .toList() ??
-            [],
+                  _podCtr.changeVideoQuality(e.quality);
+                },
+              ),
+            )
+            .toList(),
       ),
     );
   }

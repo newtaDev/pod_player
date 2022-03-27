@@ -56,21 +56,27 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           tag: tag,
                           id: 'video-progress',
                           builder: (_podCtr) {
-                            return Text(
-                              _podCtr.calculateVideoDuration(
-                                _podCtr.videoPosition,
-                              ),
-                              style: durationTextStyle,
+                            return Row(
+                              children: [
+                                Text(
+                                  _podCtr.calculateVideoDuration(
+                                    _podCtr.videoPosition,
+                                  ),
+                                  style: durationTextStyle,
+                                ),
+                                const Text(
+                                  ' / ',
+                                  style: durationTextStyle,
+                                ),
+                                Text(
+                                  _podCtr.calculateVideoDuration(
+                                    _podCtr.videoDuration,
+                                  ),
+                                  style: durationTextStyle,
+                                ),
+                              ],
                             );
                           },
-                        ),
-                        const Text(
-                          ' / ',
-                          style: durationTextStyle,
-                        ),
-                        Text(
-                          _podCtr.calculateVideoDuration(_podCtr.videoDuration),
-                          style: durationTextStyle,
                         ),
                       ],
                     ),
@@ -89,7 +95,8 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                               ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
                               : 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                           color: itemColor,
-                          onPressed: () => _onFullScreenToggle(_podCtr, context),
+                          onPressed: () =>
+                              _onFullScreenToggle(_podCtr, context),
                           child: Icon(
                             _podCtr.isFullScreen
                                 ? Icons.fullscreen_exit
@@ -108,7 +115,10 @@ class _WebOverlayBottomControlles extends StatelessWidget {
     );
   }
 
-  void _onFullScreenToggle(PodGetXVideoController _podCtr, BuildContext context) {
+  void _onFullScreenToggle(
+    PodGetXVideoController _podCtr,
+    BuildContext context,
+  ) {
     if (_podCtr.isOverlayVisible) {
       if (_podCtr.isFullScreen) {
         if (kIsWeb) {

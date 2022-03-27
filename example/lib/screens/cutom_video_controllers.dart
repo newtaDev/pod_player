@@ -223,10 +223,10 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
               snackBar('Loading....');
               FocusScope.of(context).unfocus();
               await controller.changeVideo(
-                playVideoFrom: PlayVideoFrom.vimeoId(vimeoTextFieldCtr.text),
+                playVideoFrom: PlayVideoFrom.vimeo(vimeoTextFieldCtr.text),
               );
               controller.addListener(_listner);
-              controller.onVimeoVideoQualityChanged(
+              controller.onVideoQualityChanged(
                 () {
                   log('Vimeo video quality changed');
                   controller.addListener(_listner);

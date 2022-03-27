@@ -27,13 +27,14 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
             toolTipMesg: 'Settings',
             color: Colors.white,
             child: const Icon(Icons.settings),
-            onPressed: () =>_podCtr.isFullScreen? _podCtr.isWebPopupOverlayOpen = true: _podCtr.isWebPopupOverlayOpen = false,
+            onPressed: () => _podCtr.isFullScreen
+                ? _podCtr.isWebPopupOverlayOpen = true
+                : _podCtr.isWebPopupOverlayOpen = false,
             onTapDown: (details) async {
               final _settingsMenu = await showMenu<String>(
                 context: context,
                 items: [
-                  if (_podCtr.vimeoVideoUrls != null ||
-                      (_podCtr.vimeoVideoUrls?.isNotEmpty ?? false))
+                  if (_podCtr.vimeoOrVideoUrls.isNotEmpty)
                     PopupMenuItem(
                       value: 'OUALITY',
                       child: _bottomSheetTiles(
@@ -124,21 +125,20 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
     );
     await showMenu(
       context: context,
-      items: _podCtr.vimeoVideoUrls
-              ?.map(
-                (e) => PopupMenuItem(
-                  child: ListTile(
-                    title: Text('${e.quality}p'),
-                  ),
-                  onTap: () {
-                    _podCtr.changeVimeoVideoQuality(
-                      e.quality,
-                    );
-                  },
-                ),
-              )
-              .toList() ??
-          [],
+      items: _podCtr.vimeoOrVideoUrls
+          .map(
+            (e) => PopupMenuItem(
+              child: ListTile(
+                title: Text('${e.quality}p'),
+              ),
+              onTap: () {
+                _podCtr.changeVideoQuality(
+                  e.quality,
+                );
+              },
+            ),
+          )
+          .toList(),
       position: RelativeRect.fromSize(
         details.globalPosition & Size.zero,
         // ignore: use_build_context_synchronously

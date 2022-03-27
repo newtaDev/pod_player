@@ -10,7 +10,7 @@ String podErrorString(String val) {
 }
 
 class VimeoVideoApi {
-  static Future<List<VimeoVideoQalityUrls>?> getvideoQualityLink(
+  static Future<List<VideoQalityUrls>?> getvideoQualityLink(
     String videoId,
   ) async {
     try {
@@ -21,7 +21,7 @@ class VimeoVideoApi {
           jsonDecode(response.body)['request']['files']['progressive'];
       return List.generate(
         jsonData.length,
-        (index) => VimeoVideoQalityUrls(
+        (index) => VideoQalityUrls(
           quality: int.parse(
             (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
           ),

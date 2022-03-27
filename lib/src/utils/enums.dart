@@ -7,6 +7,7 @@ enum PodVideoState {
 
 enum PodVideoPlayerType {
   network,
+  networkQualityUrls,
   file,
   asset,
   vimeo,

@@ -1,28 +1,26 @@
-import 'dart:io';
-
 import '../../pod_player.dart';
 
 class PlayVideoFrom {
   final String? dataSource;
-  final List<VimeoVideoQalityUrls>? vimeoUrls;
   final PodVideoPlayerType playerType;
   final VideoFormat? formatHint;
   final String? package;
-  final File? file;
+  final dynamic file;
+  final List<VideoQalityUrls>? videoQualityUrls;
   final Future<ClosedCaptionFile>? closedCaptionFile;
   final VideoPlayerOptions? videoPlayerOptions;
   final Map<String, String> httpHeaders;
 
   const PlayVideoFrom({
     this.dataSource,
-    this.vimeoUrls,
+    required this.playerType,
     this.formatHint,
     this.package,
     this.file,
+    this.videoQualityUrls,
     this.closedCaptionFile,
     this.videoPlayerOptions,
     this.httpHeaders = const {},
-    required this.playerType,
   });
 
   factory PlayVideoFrom.network(
@@ -57,8 +55,10 @@ class PlayVideoFrom {
     );
   }
 
+  ///File Doesnot support web apps
+  ///Datatype [file] is `File` inport it from `dart:io`
   factory PlayVideoFrom.file(
-    File file, {
+    dynamic file, {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   }) {
@@ -70,7 +70,7 @@ class PlayVideoFrom {
     );
   }
 
-  factory PlayVideoFrom.vimeoId(
+  factory PlayVideoFrom.vimeo(
     String dataSource, {
     VideoFormat? formatHint,
     Future<ClosedCaptionFile>? closedCaptionFile,
@@ -86,17 +86,16 @@ class PlayVideoFrom {
       httpHeaders: httpHeaders,
     );
   }
-
-  factory PlayVideoFrom.vimeoUrls({
-    required List<VimeoVideoQalityUrls> vimeoUrls,
+  factory PlayVideoFrom.networkQualityUrls({
+    required List<VideoQalityUrls> videoUrls,
     VideoFormat? formatHint,
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
   }) {
     return PlayVideoFrom(
-      playerType: PodVideoPlayerType.vimeo,
-      vimeoUrls: vimeoUrls,
+      playerType: PodVideoPlayerType.networkQualityUrls,
+      videoQualityUrls: videoUrls,
       formatHint: formatHint,
       closedCaptionFile: closedCaptionFile,
       videoPlayerOptions: videoPlayerOptions,

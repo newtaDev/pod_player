@@ -13,7 +13,8 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   @override
   void initState() {
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.vimeoId('518228118'),
+      playVideoFrom: PlayVideoFrom.vimeo('518228118'),
+      enableLogs: true
     )..initialise();
     super.initState();
   }

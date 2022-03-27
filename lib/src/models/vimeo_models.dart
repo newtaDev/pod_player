@@ -1,11 +1,11 @@
-class VimeoVideoQalityUrls {
+class VideoQalityUrls {
   int quality;
-  String? urls;
-  VimeoVideoQalityUrls({
+  String urls;
+  VideoQalityUrls({
     required this.quality,
-    this.urls,
+    required this.urls,
   });
 
   @override
-  String toString() => 'VimeoVideoQalityUrls(quality: $quality, urls: $urls)';
+  String toString() => 'VideoQalityUrls(quality: $quality, urls: $urls)';
 }

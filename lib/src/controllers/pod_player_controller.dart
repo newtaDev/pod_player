@@ -177,7 +177,7 @@ class PodPlayerController {
     if (!_ctr.isWebPopupOverlayOpen) _ctr.disableFullScreen(context, getTag);
   }
 
-  void onVimeoVideoQualityChanged(VoidCallback callback) {
+  void onVideoQualityChanged(VoidCallback callback) {
     _ctr.onVimeoVideoQualityChanged = callback;
   }
 //TODO: support for playlist

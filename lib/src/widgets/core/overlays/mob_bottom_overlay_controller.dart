@@ -26,19 +26,23 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                 tag: tag,
                 id: 'video-progress',
                 builder: (_podCtr) {
-                  return Text(
-                    _podCtr.calculateVideoDuration(_podCtr.videoPosition),
-                    style: const TextStyle(color: itemColor),
+                  return Row(
+                    children: [
+                      Text(
+                        _podCtr.calculateVideoDuration(_podCtr.videoPosition),
+                        style: const TextStyle(color: itemColor),
+                      ),
+                      const Text(
+                        ' / ',
+                        style: durationTextStyle,
+                      ),
+                      Text(
+                        _podCtr.calculateVideoDuration(_podCtr.videoDuration),
+                        style: durationTextStyle,
+                      ),
+                    ],
                   );
                 },
-              ),
-              const Text(
-                ' / ',
-                style: durationTextStyle,
-              ),
-              Text(
-                _podCtr.calculateVideoDuration(_podCtr.videoDuration),
-                style: durationTextStyle,
               ),
               const Spacer(),
               MaterialIconButton(
@@ -58,7 +62,9 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   }
                 },
                 child: Icon(
-                  _podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                  _podCtr.isFullScreen
+                      ? Icons.fullscreen_exit
+                      : Icons.fullscreen,
                 ),
               ),
             ],

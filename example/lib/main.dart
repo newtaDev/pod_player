@@ -1,5 +1,6 @@
 import 'package:example/screens/from_asset.dart';
 import 'package:example/screens/from_network.dart';
+import 'package:example/screens/from_network_urls.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/cutom_video_controllers.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         '/fromVimeoId': (context) => const PlayVideoFromVimeoId(),
         '/fromAsset': (context) => const PlayVideoFromAsset(),
         '/fromNetwork': (context) => const PlayVideoFromNetwork(),
+        '/fromNetworkQualityUrls': (context) => const PlayVideoFromNetworkQualityUrls(),
         '/customVideo': (context) => const CustomVideoControlls(),
       },
       home: const MainPage(),
@@ -50,6 +52,10 @@ class _MainPageState extends State<MainPage> {
             _button(
               'Play video from Network',
               onPressed: () => Navigator.of(context).pushNamed('/fromNetwork'),
+            ),
+            _button(
+              'Play video from Network quality urls',
+              onPressed: () => Navigator.of(context).pushNamed('/fromNetworkQualityUrls'),
             ),
             _button(
               'Play video from Vimeo video id',
