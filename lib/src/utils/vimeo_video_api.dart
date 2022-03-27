@@ -25,7 +25,7 @@ class VimeoVideoApi {
           quality: int.parse(
             (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
           ),
-          urls: jsonData[index]['url'],
+          url: jsonData[index]['url'],
         ),
       );
     } catch (error) {

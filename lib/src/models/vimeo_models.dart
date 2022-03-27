@@ -1,11 +1,11 @@
 class VideoQalityUrls {
   int quality;
-  String urls;
+  String url;
   VideoQalityUrls({
     required this.quality,
-    required this.urls,
+    required this.url,
   });
 
   @override
-  String toString() => 'VideoQalityUrls(quality: $quality, urls: $urls)';
+  String toString() => 'VideoQalityUrls(quality: $quality, urls: $url)';
 }

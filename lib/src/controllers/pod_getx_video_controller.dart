@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../pod_player.dart';
 import '../utils/logger.dart';
@@ -34,17 +35,14 @@ class PodGetXVideoController extends _PodUiController {
   ///
   Duration get videoPosition => _videoPosition;
 
-  int? _videoQuality;
   bool controllerInitialized = false;
   late PlayVideoFrom playVideoFrom;
   void config({
     required PlayVideoFrom playVideoFrom,
     bool isLooping = false,
     bool autoPlay = true,
-    int? videoQuality,
   }) {
     this.playVideoFrom = playVideoFrom;
-    _videoQuality = videoQuality;
     _videoPlayerType = playVideoFrom.playerType;
     this.autoPlay = autoPlay;
     this.isLooping = isLooping;
@@ -92,9 +90,25 @@ class PodGetXVideoController extends _PodUiController {
 
         break;
       case PodVideoPlayerType.networkQualityUrls:
-        final _url = await videoQualitysInit(
-          quality: _videoQuality,
+        final _url = await getUrlFromVideoQualityUrls(
           videoUrls: playVideoFrom.videoQualityUrls!,
+        );
+
+        ///
+        _videoCtr = VideoPlayerController.network(
+          _url,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          formatHint: playVideoFrom.formatHint,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+          httpHeaders: playVideoFrom.httpHeaders,
+        );
+
+        break;
+      case PodVideoPlayerType.youtube:
+        final _urls = await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
+        final _url = await getUrlFromVideoQualityUrls(
+          quality: 360,
+          videoUrls: _urls,
         );
 
         ///
@@ -110,8 +124,7 @@ class PodGetXVideoController extends _PodUiController {
       case PodVideoPlayerType.vimeo:
 
         ///
-        final _url = await vimeoPlayerInit(
-          quality: _videoQuality,
+        final _url = await getVideoUrlFromVimeoId(
           videoId: playVideoFrom.dataSource,
         );
 
@@ -138,6 +151,7 @@ class PodGetXVideoController extends _PodUiController {
         if (kIsWeb) {
           throw Exception('file doesnt support web');
         }
+
         ///
         _videoCtr = VideoPlayerController.file(
           playVideoFrom.file!,

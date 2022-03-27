@@ -15,8 +15,9 @@ dependencies:
   # 
   video_player: ^2.2.18
   http: any
-  get: ^4.6.1
+  get: any
   universal_html: any
+  youtube_explode_dart: ^1.10.10+2
 
 dev_dependencies:
   flutter_test:
