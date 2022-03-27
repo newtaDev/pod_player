@@ -7,7 +7,6 @@ import 'package:universal_html/html.dart' as _html;
 import '../../pod_player.dart';
 import 'pod_getx_video_controller.dart';
 
-bool enableDevLogs = false;
 
 class PodPlayerController {
   ///
@@ -17,16 +16,13 @@ class PodPlayerController {
 
   final PlayVideoFrom playVideoFrom;
   final PodPlayerConfig podPlayerConfig;
-  bool enableLogs = false;
 
   PodPlayerController({
     required this.playVideoFrom,
     this.podPlayerConfig = const PodPlayerConfig(),
-    this.enableLogs = false,
   }) {
     getTag = UniqueKey().toString();
-    enableDevLogs = enableLogs;
-    Get.config(enableLog: enableLogs);
+    Get.config(enableLog: PodVideoPlayer.enableLogs);
     _ctr = Get.put(PodGetXVideoController(), permanent: true, tag: getTag)
       ..config(
         playVideoFrom: playVideoFrom,

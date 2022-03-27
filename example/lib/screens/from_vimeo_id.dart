@@ -14,7 +14,6 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   void initState() {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.vimeo('518228118'),
-      enableLogs: true
     )..initialise();
     super.initState();
   }

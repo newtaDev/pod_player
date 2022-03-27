@@ -56,7 +56,7 @@ class PlayVideoFrom {
   }
 
   ///File Doesnot support web apps
-  ///Datatype [file] is `File` inport it from `dart:io`
+  ///[file] is `File` Datatype import it from `dart:io`
   factory PlayVideoFrom.file(
     dynamic file, {
     Future<ClosedCaptionFile>? closedCaptionFile,

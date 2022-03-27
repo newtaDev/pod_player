@@ -28,9 +28,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetworkQualityUrls> {
                 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
           ),
         ],
-        
       ),
-enableLogs: true
     )..initialise();
     super.initState();
   }
