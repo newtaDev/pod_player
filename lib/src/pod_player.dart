@@ -32,7 +32,9 @@ class PodVideoPlayer extends StatefulWidget {
   final bool matchFrameAspectRatioToVideo;
   final PodProgressBarConfig podProgressBarConfig;
   final Widget Function(OverLayOptions options)? overlayBuilder;
+  final Widget Function()? onVideoError;
   final Widget? videoTitle;
+  final Color? backgroundColor;
   PodVideoPlayer({
     Key? key,
     required this.controller,
@@ -44,12 +46,14 @@ class PodVideoPlayer extends StatefulWidget {
     this.videoTitle,
     this.matchVideoAspectRatioToFrame = false,
     this.matchFrameAspectRatioToVideo = false,
+    this.onVideoError,
+    this.backgroundColor,
   }) : super(key: key) {
     addToUiController();
   }
 
   static bool enableLogs = false;
-  
+
   void addToUiController() {
     Get.find<PodGetXVideoController>(tag: controller.getTag)
 
@@ -121,27 +125,62 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
     color: Colors.white,
     strokeWidth: 2,
   );
+  double _frameAspectRatio = 16 / 9;
   @override
   Widget build(BuildContext context) {
     _podCtr.mainContext = context;
+
+    final _videoErrorWidget = AspectRatio(
+      aspectRatio: _frameAspectRatio,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(
+              Icons.warning,
+              color: Colors.yellow,
+              size: 32,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Error while playing video',
+              style: TextStyle(color: Colors.red),
+            ),
+          ],
+        ),
+      ),
+    );
     return GetBuilder<PodGetXVideoController>(
       tag: widget.controller.getTag,
       builder: (_) {
-        final _frameAspectRatio = widget.matchFrameAspectRatioToVideo
+        _frameAspectRatio = widget.matchFrameAspectRatioToVideo
             ? _podCtr.videoCtr?.value.aspectRatio ?? widget.frameAspectRatio
             : widget.frameAspectRatio;
         return Center(
           child: ColoredBox(
-            color: Colors.black,
-            child: AspectRatio(
-              aspectRatio: _frameAspectRatio,
-              child: Center(
-                child: _podCtr.videoCtr == null
-                    ? circularProgressIndicator
-                    : _podCtr.videoCtr!.value.isInitialized
-                        ? _buildPlayer()
-                        : circularProgressIndicator,
-              ),
+            color: widget.backgroundColor ?? Colors.black,
+            child: GetBuilder<PodGetXVideoController>(
+              tag: widget.controller.getTag,
+              id: 'errorState',
+              builder: (_podCtr) {
+                /// Check if has any error
+                if (_podCtr.podVideoState == PodVideoState.error) {
+                  if (widget.onVideoError != null) {
+                    return widget.onVideoError!();
+                  }
+                  return _videoErrorWidget;
+                }
+                return AspectRatio(
+                  aspectRatio: _frameAspectRatio,
+                  child: Center(
+                    child: _podCtr.videoCtr == null
+                        ? circularProgressIndicator
+                        : _podCtr.videoCtr!.value.isInitialized
+                            ? _buildPlayer()
+                            : circularProgressIndicator,
+                  ),
+                );
+              },
             ),
           ),
         );

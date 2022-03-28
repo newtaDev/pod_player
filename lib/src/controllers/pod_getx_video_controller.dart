@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -70,6 +71,8 @@ class PodGetXVideoController extends _PodUiController {
       Future.delayed(const Duration(milliseconds: 600))
           .then((value) => _isWebAutoPlayDone = true);
     } catch (e) {
+      podVideoStateChanger(PodVideoState.error);
+      update(['errorState']);
       podLog('ERROR ON POD_PLAYER:  $e');
       rethrow;
     }
@@ -105,7 +108,8 @@ class PodGetXVideoController extends _PodUiController {
 
         break;
       case PodVideoPlayerType.youtube:
-        final _urls = await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
+        final _urls =
+            await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
         final _url = await getUrlFromVideoQualityUrls(
           quality: 360,
           videoUrls: _urls,
