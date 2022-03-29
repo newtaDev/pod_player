@@ -27,6 +27,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromAsset> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Play video from Assets')),
       body: Center(child: PodVideoPlayer(controller: controller)),
     );
   }

@@ -42,6 +42,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetworkQualityUrls> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Play video from Quality urls')),
       body: SafeArea(
         child: Center(
           child: PodVideoPlayer(

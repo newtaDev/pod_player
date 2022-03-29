@@ -11,6 +11,8 @@ class PlayVideoFromNetwork extends StatefulWidget {
 
 class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
   late final PodPlayerController controller;
+  final videoTextFieldCtr = TextEditingController();
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -30,25 +32,85 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Play video from Netwok')),
       body: SafeArea(
         child: Center(
-          child: PodVideoPlayer(
-            controller: controller,
-            podProgressBarConfig: const PodProgressBarConfig(
-              padding: kIsWeb
-                  ? EdgeInsets.zero
-                  : EdgeInsets.only(
-                      bottom: 20,
-                      left: 20,
-                      right: 20,
-                    ),
-              playingBarColor: Colors.blue,
-              circleHandlerColor: Colors.blue,
-              backgroundColor: Colors.blueGrey,
-            ),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              PodVideoPlayer(
+                controller: controller,
+                podProgressBarConfig: const PodProgressBarConfig(
+                  padding: kIsWeb
+                      ? EdgeInsets.zero
+                      : EdgeInsets.only(
+                          bottom: 20,
+                          left: 20,
+                          right: 20,
+                        ),
+                  playingBarColor: Colors.blue,
+                  circleHandlerColor: Colors.blue,
+                  backgroundColor: Colors.blueGrey,
+                ),
+              ),
+              const SizedBox(height: 40),
+              _loadVideoFromUrl()
+            ],
           ),
         ),
       ),
     );
+  }
+
+  Row _loadVideoFromUrl() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: TextField(
+            controller: videoTextFieldCtr,
+            decoration: const InputDecoration(
+              labelText: 'Enter video url',
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        FocusScope(
+          canRequestFocus: false,
+          child: ElevatedButton(
+            onPressed: () async {
+              if (videoTextFieldCtr.text.isEmpty) {
+                snackBar('Please enter the url');
+                return;
+              }
+              try {
+                snackBar('Loading....');
+                FocusScope.of(context).unfocus();
+                await controller.changeVideo(
+                  playVideoFrom: PlayVideoFrom.network(videoTextFieldCtr.text),
+                );
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              } catch (e) {
+                snackBar('Unable to load,\n $e');
+              }
+            },
+            child: const Text('Load Video'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void snackBar(String text) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(text),
+        ),
+      );
   }
 }

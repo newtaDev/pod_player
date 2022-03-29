@@ -68,7 +68,7 @@ class _MainPageState extends State<MainPage> {
               onPressed: () => Navigator.of(context).pushNamed('/fromAsset'),
             ),
             _button(
-              'Play video from Vimeo video id',
+              'Play video from Vimeo',
               onPressed: () => Navigator.of(context).pushNamed('/fromVimeoId'),
             ),
             _button(

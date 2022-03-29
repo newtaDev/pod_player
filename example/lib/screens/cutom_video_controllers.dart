@@ -21,6 +21,9 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
   final vimeoTextFieldCtr = TextEditingController(
     text: '518228118',
   );
+  final youtubeTextFieldCtr = TextEditingController(
+    text: 'https://youtu.be/A3ltMaM6noM',
+  );
 
   bool alwaysShowProgressBar = true;
   @override
@@ -95,89 +98,93 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
       fontWeight: FontWeight.bold,
     );
     return Scaffold(
+      appBar: AppBar(title: const Text('Custom Player')),
       body: SafeArea(
-        child: ListView(
-          children: [
-            sizeH20,
-            PodVideoPlayer(
-              alwaysShowProgressBar: alwaysShowProgressBar,
-              controller: controller,
-              matchFrameAspectRatioToVideo: true,
-              matchVideoAspectRatioToFrame: true,
-              videoTitle: _videoTitle,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text(
-                    'Video state: ${controller.videoState.name}',
-                    style: const TextStyle(color: Colors.red, fontSize: 18),
-                  ),
-                  sizeH20,
-                  Text(
-                    '$_totalHour hour: '
-                    '$_totalMinute minute: '
-                    '$_totalSeconds seconds',
-                    style: textStyle,
-                  ),
-                  sizeH20,
-                  _loadVideoFromUrl(),
-                  sizeH20,
-                  _loadVideoFromVimeo(),
-                  sizeH20,
-                  _iconButton(
-                      'Hide progress bar on overlay hidden', Icons.hide_source,
-                      onPressed: () {
-                    setState(() {
-                      alwaysShowProgressBar = false;
-                    });
-                  }),
-                  sizeH20,
-                  _iconButton('Backward video 5s', Icons.replay_5_rounded,
-                      onPressed: () {
-                    controller.doubleTapVideoBackward(5);
-                  }),
-                  sizeH20,
-                  _iconButton('Forward video 5s', Icons.forward_5_rounded,
-                      onPressed: () {
-                    controller.doubleTapVideoForward(5);
-                  }),
-                  sizeH20,
-                  _iconButton(
-                      'Video Jump to 01:00 minute', Icons.fast_forward_rounded,
-                      onPressed: () {
-                    controller.videoSeekTo(const Duration(minutes: 1));
-                  }),
-                  sizeH20,
-                  _iconButton('Enable full screen', Icons.fullscreen,
-                      onPressed: () {
-                    controller.enableFullScreen();
-                  }),
-                  sizeH20,
-                  _iconButton(controller.isMute ? 'UnMute video' : 'mute video',
-                      controller.isMute ? Icons.volume_up : Icons.volume_off,
-                      onPressed: () {
-                    controller.toggleVolume();
-                  }),
-                  sizeH20,
-                  sizeH20,
-                  Text(
-                    'Is video initialized: ${controller.isInitialised}\n'
-                    'Is video playing: ${controller.isVideoPlaying}\n'
-                    'Is video Buffering: ${controller.isVideoBuffering}\n'
-                    'Is video looping: ${controller.isVideoLooping}',
-                    style: textStyle,
-                  ),
-                  sizeH20,
-                  Text(
-                    'Total Video length: ${controller.totalVideoLength}',
-                    style: textStyle,
-                  )
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              sizeH20,
+              PodVideoPlayer(
+                alwaysShowProgressBar: alwaysShowProgressBar,
+                controller: controller,
+                matchFrameAspectRatioToVideo: true,
+                matchVideoAspectRatioToFrame: true,
+                videoTitle: _videoTitle,
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Text(
+                      'Video state: ${controller.videoState.name}',
+                      style: const TextStyle(color: Colors.red, fontSize: 18),
+                    ),
+                    sizeH20,
+                    Text(
+                      '$_totalHour hour: '
+                      '$_totalMinute minute: '
+                      '$_totalSeconds seconds',
+                      style: textStyle,
+                    ),
+                    sizeH20,
+                    _loadVideoFromUrl(),
+                    sizeH20,
+                    _loadVideoFromVimeo(),
+                    sizeH20,
+                    _loadVideoFromYoutube(),
+                    sizeH20,
+                    _iconButton('Hide progress bar on overlay hidden',
+                        Icons.hide_source, onPressed: () {
+                      setState(() {
+                        alwaysShowProgressBar = false;
+                      });
+                    }),
+                    sizeH20,
+                    _iconButton('Backward video 5s', Icons.replay_5_rounded,
+                        onPressed: () {
+                      controller.doubleTapVideoBackward(5);
+                    }),
+                    sizeH20,
+                    _iconButton('Forward video 5s', Icons.forward_5_rounded,
+                        onPressed: () {
+                      controller.doubleTapVideoForward(5);
+                    }),
+                    sizeH20,
+                    _iconButton('Video Jump to 01:00 minute',
+                        Icons.fast_forward_rounded, onPressed: () {
+                      controller.videoSeekTo(const Duration(minutes: 1));
+                    }),
+                    sizeH20,
+                    _iconButton('Enable full screen', Icons.fullscreen,
+                        onPressed: () {
+                      controller.enableFullScreen();
+                    }),
+                    sizeH20,
+                    _iconButton(
+                        controller.isMute ? 'UnMute video' : 'mute video',
+                        controller.isMute ? Icons.volume_up : Icons.volume_off,
+                        onPressed: () {
+                      controller.toggleVolume();
+                    }),
+                    sizeH20,
+                    sizeH20,
+                    Text(
+                      'Is video initialized: ${controller.isInitialised}\n'
+                      'Is video playing: ${controller.isVideoPlaying}\n'
+                      'Is video Buffering: ${controller.isVideoBuffering}\n'
+                      'Is video looping: ${controller.isVideoLooping}',
+                      style: textStyle,
+                    ),
+                    sizeH20,
+                    Text(
+                      'Total Video length: ${controller.totalVideoLength}',
+                      style: textStyle,
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -231,6 +238,52 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                   controller.addListener(_listner);
                 },
               );
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            } catch (e) {
+              snackBar(
+                  "Unable to load,${kIsWeb ? 'Please enable CORS in web' : ''}  \n$e");
+            }
+          },
+          child: const Text('Load Video'),
+        ),
+      ],
+    );
+  }
+
+  Row _loadVideoFromYoutube() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: TextField(
+            controller: youtubeTextFieldCtr,
+            decoration: const InputDecoration(
+              labelText: 'Enter Youtube id/url',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        ElevatedButton(
+          onPressed: () async {
+            if (youtubeTextFieldCtr.text.isEmpty) {
+              snackBar('Please enter vimeo id');
+              return;
+            }
+            try {
+              snackBar('Loading....');
+              FocusScope.of(context).unfocus();
+              await controller.changeVideo(
+                playVideoFrom: PlayVideoFrom.youtube(youtubeTextFieldCtr.text),
+              );
+              controller.addListener(_listner);
+              controller.onVideoQualityChanged(
+                () {
+                  log('Youtube video quality changed');
+                  controller.addListener(_listner);
+                },
+              );
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
             } catch (e) {
               snackBar(
                   "Unable to load,${kIsWeb ? 'Please enable CORS in web' : ''}  \n$e");
@@ -269,6 +322,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 playVideoFrom: PlayVideoFrom.network(videoTextFieldCtr.text),
               );
               controller.addListener(_listner);
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
             } catch (e) {
               snackBar('Unable to load,\n $e');
             }
