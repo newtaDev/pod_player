@@ -112,6 +112,22 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 videoTitle: _videoTitle,
               ),
               Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    const Text('Video url : '),
+                    Expanded(
+                      child: Text(
+                        controller.videoUrl ?? '',
+                        style: const TextStyle(color: Colors.grey),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [

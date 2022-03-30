@@ -7,7 +7,6 @@ import 'package:universal_html/html.dart' as _html;
 import '../../pod_player.dart';
 import 'pod_getx_video_controller.dart';
 
-
 class PodPlayerController {
   ///
   late PodGetXVideoController _ctr;
@@ -47,6 +46,8 @@ class PodPlayerController {
       await _checkAndWaitTillInitialized();
     }
   }
+
+  String? get videoUrl => _ctr.playingVideoUrl;
 
   bool get isInitialised => _ctr.videoCtr?.value.isInitialized ?? false;
   bool get isVideoPlaying => _ctr.videoCtr?.value.isPlaying ?? false;

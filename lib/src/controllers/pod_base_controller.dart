@@ -32,6 +32,7 @@ class _PodBaseController extends GetxController {
   bool? wasVideoPlayingOnUiDispose;
 
   int doubleTapForwardSeconds = 10;
+  String? playingVideoUrl;
 
   late BuildContext mainContext;
   late BuildContext fullScreenContext;

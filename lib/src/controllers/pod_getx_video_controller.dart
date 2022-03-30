@@ -73,6 +73,7 @@ class PodGetXVideoController extends _PodUiController {
     } catch (e) {
       podVideoStateChanger(PodVideoState.error);
       update(['errorState']);
+      update(['update-all']);
       podLog('ERROR ON POD_PLAYER:  $e');
       rethrow;
     }
@@ -90,7 +91,7 @@ class PodGetXVideoController extends _PodUiController {
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
-
+        playingVideoUrl = playVideoFrom.dataSource;
         break;
       case PodVideoPlayerType.networkQualityUrls:
         final _url = await getUrlFromVideoQualityUrls(
@@ -105,6 +106,7 @@ class PodGetXVideoController extends _PodUiController {
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
+        playingVideoUrl = _url;
 
         break;
       case PodVideoPlayerType.youtube:
@@ -123,6 +125,7 @@ class PodGetXVideoController extends _PodUiController {
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
+        playingVideoUrl = _url;
 
         break;
       case PodVideoPlayerType.vimeo:
@@ -139,6 +142,7 @@ class PodGetXVideoController extends _PodUiController {
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
+        playingVideoUrl = _url;
 
         break;
       case PodVideoPlayerType.asset:
@@ -150,6 +154,8 @@ class PodGetXVideoController extends _PodUiController {
           package: playVideoFrom.package,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
         );
+        playingVideoUrl = playVideoFrom.dataSource;
+
         break;
       case PodVideoPlayerType.file:
         if (kIsWeb) {
