@@ -18,25 +18,24 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ## Features
 
-- Play youtube videos by video URL or ID
-- Play vimeo videos by video ID
+- Play `youtube` videos (using video URL or ID)
+- Play `vimeo` videos (using video ID)
 - Video overlay similar to youtube
-- Can play videos from vimeo id
-- Double tap to seek video.
+- `Double tap` to seek video.
 - On video tap show/hide video overlay.
 - Auto hide overlay
+- Change `playback speed`
 - Custom overlay
 - Custom progress bar
-- Change playback speed
-- Change video quality (for vimeo and youtube)
+- `Change video quality` (for vimeo and youtube)
 - Enable/disable fullscreen player
 - [TODO] support for live youtube video
 - [TODO] support for video playlist
 
 ## Features on web
 
-- Double tap Video player to enable/disable fullscreen
-- mute/unmute volume
+- Double tap on Video player to enable/disable fullscreen
+- `Mute/unmute` volume
 - Video player integration with keyboard
 
   - `SPACE` play/pause video
@@ -57,7 +56,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 ---
 
 <h1 align="center">
-  <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/160654268-8417ad5d-3dc8-4562-9b56-940f3cea5cd9.gif" alt="pod_player"></a>
+  <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/160871693-74b468de-839d-4ae3-9ef0-581066130072.gif" alt="pod_player"></a>
 </h1>
 
 ---
@@ -66,7 +65,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ---
 
-|                                                                                                            |                                                                                                            |
+|                                     Change quality and playback speed                                      |                                        Control video from any where                                        |
 | :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 | ![](https://user-images.githubusercontent.com/85326522/160657119-7295ef4e-851b-42a3-a792-856fb6045b11.gif) | ![](https://user-images.githubusercontent.com/85326522/160657075-a17876c1-680b-472d-b1b9-ab06ba315b96.gif) |
 
@@ -76,7 +75,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ---
 
-|                                               `with overlay`                                               |                              `without overlay` (alwaysShowProgressBar = true)                              |
+|                                                with overlay                                                |                              without overlay `(alwaysShowProgressBar = true)`                              |
 | :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 | ![](https://user-images.githubusercontent.com/85326522/156813671-ba562deb-3607-46a6-800c-d3a731b22cdd.jpg) | ![](https://user-images.githubusercontent.com/85326522/156813681-fad9f1f9-d73c-478f-8477-b42342424b4a.jpg) |
 
@@ -94,7 +93,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ---
 
-|                                              `On Double tap`                                               |                                           `Custom progress bar`                                            |
+|                                               On Double tap                                                |                                            Custom progress bar                                             |
 | :--------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: |
 | ![](https://user-images.githubusercontent.com/85326522/156813691-cd75c638-a4d3-4dda-8a22-eed3e43bd299.jpg) | ![](https://user-images.githubusercontent.com/85326522/156815812-e85bd5bc-2401-42d9-a7ba-c5ad2be494fa.jpg) |
 
@@ -105,6 +104,15 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 ---
 
 ![](https://user-images.githubusercontent.com/85326522/156824569-d1ec705d-c278-4503-81fb-84e9dcb58336.jpg)
+
+---
+
+---
+
+
+<h1 align="center">
+  <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/160885274-41be06af-ae6d-41f3-8cff-21767fde8dad.gif" alt="pod_player"></a>
+</h1>
 
 ## Installation
 
