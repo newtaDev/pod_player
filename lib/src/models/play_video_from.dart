@@ -11,7 +11,7 @@ class PlayVideoFrom {
   final VideoPlayerOptions? videoPlayerOptions;
   final Map<String, String> httpHeaders;
 
-  const PlayVideoFrom({
+  const PlayVideoFrom._({
     this.dataSource,
     required this.playerType,
     this.formatHint,
@@ -30,7 +30,7 @@ class PlayVideoFrom {
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
   }) {
-    return PlayVideoFrom(
+    return PlayVideoFrom._(
       playerType: PodVideoPlayerType.network,
       dataSource: dataSource,
       formatHint: formatHint,
@@ -46,7 +46,7 @@ class PlayVideoFrom {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   }) {
-    return PlayVideoFrom(
+    return PlayVideoFrom._(
       playerType: PodVideoPlayerType.asset,
       dataSource: dataSource,
       package: package,
@@ -62,7 +62,7 @@ class PlayVideoFrom {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   }) {
-    return PlayVideoFrom(
+    return PlayVideoFrom._(
       file: file,
       playerType: PodVideoPlayerType.file,
       closedCaptionFile: closedCaptionFile,
@@ -77,7 +77,7 @@ class PlayVideoFrom {
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
   }) {
-    return PlayVideoFrom(
+    return PlayVideoFrom._(
       playerType: PodVideoPlayerType.vimeo,
       dataSource: dataSource,
       formatHint: formatHint,
@@ -93,7 +93,7 @@ class PlayVideoFrom {
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
   }) {
-    return PlayVideoFrom(
+    return PlayVideoFrom._(
       playerType: PodVideoPlayerType.youtube,
       dataSource: dataSource,
       formatHint: formatHint,
@@ -109,7 +109,7 @@ class PlayVideoFrom {
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
   }) {
-    return PlayVideoFrom(
+    return PlayVideoFrom._(
       playerType: PodVideoPlayerType.networkQualityUrls,
       videoQualityUrls: videoUrls,
       formatHint: formatHint,

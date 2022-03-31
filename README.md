@@ -2,7 +2,7 @@
   <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/159757765-db86f850-fea8-4dc2-bd86-0a27648b24e5.png" alt="pod_player"></a>
 </h1>
 
-Flutter video player for web & mobile, supports playing video from `youtube` and `vimeo`.
+Flutter video player for web & mobile devices, and also supports playing video from `youtube` and `vimeo`.
 
 This is a simple and easy-to-use video player. Its video controls are similar to Youtube player (with customizable controls) and also can play videos from `Youtube` and `Vimeo` (By providing url/video_id).
 
@@ -109,7 +109,6 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ---
 
-
 <h1 align="center">
   <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/160885274-41be06af-ae6d-41f3-8cff-21767fde8dad.gif" alt="pod_player"></a>
 </h1>
@@ -197,7 +196,7 @@ class PlayVideoFromNetwork extends StatefulWidget {
   const PlayVideoFromNetwork({Key? key}) : super(key: key);
 
   @override
-  State<PlayVideoFromNetwork> createState() => _PlayVideoFromAssetState();
+  State<PlayVideoFromNetwork> createState() => _PlayVideoFromNetworkState();
 }
 
 class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
@@ -239,7 +238,7 @@ class PlayVideoFromYoutube extends StatefulWidget {
   const PlayVideoFromYoutube({Key? key}) : super(key: key);
 
   @override
-  State<PlayVideoFromYoutube> createState() => _PlayVideoFromAssetState();
+  State<PlayVideoFromYoutube> createState() => _PlayVideoFromYoutubeState();
 }
 
 class _PlayVideoFromYoutubeState extends State<PlayVideoFromYoutube> {
@@ -279,7 +278,7 @@ class PlayVideoFromVimeo extends StatefulWidget {
   const PlayVideoFromVimeo({Key? key}) : super(key: key);
 
   @override
-  State<PlayVideoFromVimeo> createState() => _PlayVideoFromAssetState();
+  State<PlayVideoFromVimeo> createState() => _PlayVideoFromVimeoState();
 }
 
 class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
