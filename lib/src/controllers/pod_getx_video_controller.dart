@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
+import 'package:wakelock/wakelock.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../pod_player.dart';
@@ -37,16 +38,17 @@ class PodGetXVideoController extends _PodUiController {
   Duration get videoPosition => _videoPosition;
 
   bool controllerInitialized = false;
+  late PodPlayerConfig podPlayerConfig;
   late PlayVideoFrom playVideoFrom;
   void config({
     required PlayVideoFrom playVideoFrom,
-    bool isLooping = false,
-    bool autoPlay = true,
+    required PodPlayerConfig playerConfig,
   }) {
     this.playVideoFrom = playVideoFrom;
     _videoPlayerType = playVideoFrom.playerType;
-    this.autoPlay = autoPlay;
-    this.isLooping = isLooping;
+    podPlayerConfig = playerConfig;
+    autoPlay = playerConfig.autoPlay;
+    isLooping = playerConfig.isLooping;
   }
 
   ///*init
@@ -226,15 +228,18 @@ class PodGetXVideoController extends _PodUiController {
     podLog(_podVideoState.toString());
     switch (_podVideoState) {
       case PodVideoState.playing:
+        if (podPlayerConfig.wakelockEnabled) Wakelock.enable();
         playVideo(true);
         break;
       case PodVideoState.paused:
+        if (podPlayerConfig.wakelockEnabled) Wakelock.disable();
         playVideo(false);
         break;
       case PodVideoState.loading:
         isShowOverlay(true);
         break;
       case PodVideoState.error:
+        if (podPlayerConfig.wakelockEnabled) Wakelock.disable();
         playVideo(false);
         break;
     }
@@ -262,11 +267,7 @@ class PodGetXVideoController extends _PodUiController {
     keyboardFocusWeb?.removeListener(keyboadListner);
     removeListenerId('podVideoState', podStateListner);
     _isWebAutoPlayDone = false;
-    config(
-      playVideoFrom: playVideoFrom,
-      autoPlay: playerConfig.autoPlay,
-      isLooping: playerConfig.isLooping,
-    );
+    config(playVideoFrom: playVideoFrom, playerConfig: playerConfig);
     keyboardFocusWeb?.requestFocus();
     keyboardFocusWeb?.addListener(keyboadListner);
     await videoInit();

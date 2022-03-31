@@ -2,10 +2,12 @@ class PodPlayerConfig {
   final bool autoPlay;
   final bool isLooping;
   final bool forcedVideoFocus;
+  final bool wakelockEnabled;
   const PodPlayerConfig({
     this.autoPlay = true,
     this.isLooping = false,
     this.forcedVideoFocus = false,
+    this.wakelockEnabled = true,
   });
 
   PodPlayerConfig copyWith({

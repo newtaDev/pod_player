@@ -11,13 +11,14 @@ dependencies:
   flutter:
     sdk: flutter
   # ui
-  lottie: any
-  # 
-  video_player: ^2.2.18
-  http: any
-  get: any
-  universal_html: any
-  youtube_explode_dart: ^1.10.10+2
+  lottie:
+  # services
+  video_player: ^2.3.0
+  http:
+  get:
+  wakelock: ^0.6.1+2
+  universal_html:
+  youtube_explode_dart: 
 
 dev_dependencies:
   flutter_test:

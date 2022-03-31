@@ -2,7 +2,7 @@
   <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/159757765-db86f850-fea8-4dc2-bd86-0a27648b24e5.png" alt="pod_player"></a>
 </h1>
 
-Flutter video player for web & mobile, controls similar to `YouTube player` and also supports playing video from `youtube` and `vimeo`
+Flutter video player for web & mobile, supports playing video from `youtube` and `vimeo`.
 
 This is a simple and easy-to-use video player. Its video controls are similar to Youtube player (with customizable controls) and also can play videos from `Youtube` and `Vimeo` (By providing url/video_id).
 
