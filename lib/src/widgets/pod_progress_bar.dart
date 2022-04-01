@@ -160,7 +160,8 @@ class _ProgressBarPainter extends CustomPainter {
     final double height = podProgressBarConfig!.height;
     final double width = size.width;
     final double curveRadius = podProgressBarConfig!.curveRadius;
-    final double circleHandlerRadius = podProgressBarConfig!.circleHandlerRadius;
+    final double circleHandlerRadius =
+        podProgressBarConfig!.circleHandlerRadius;
     final Paint backgroundPaint =
         podProgressBarConfig!.getBackgroundPaint != null
             ? podProgressBarConfig!.getBackgroundPaint!(
@@ -238,15 +239,16 @@ class _ProgressBarPainter extends CustomPainter {
       playedPaint,
     );
 
-    final Paint handlePaint = podProgressBarConfig!.getCircleHandlerPaint != null
-        ? podProgressBarConfig!.getCircleHandlerPaint!(
-            width: width,
-            height: height,
-            playedPart: playedPart,
-            circleHandlerRadius: circleHandlerRadius,
-          )
-        : Paint()
-      ..color = podProgressBarConfig!.circleHandlerColor;
+    final Paint handlePaint =
+        podProgressBarConfig!.getCircleHandlerPaint != null
+            ? podProgressBarConfig!.getCircleHandlerPaint!(
+                width: width,
+                height: height,
+                playedPart: playedPart,
+                circleHandlerRadius: circleHandlerRadius,
+              )
+            : Paint()
+          ..color = podProgressBarConfig!.circleHandlerColor;
 
     canvas.drawCircle(
       Offset(playedPart, height / 2),

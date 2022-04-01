@@ -113,6 +113,14 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
   <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/160885274-41be06af-ae6d-41f3-8cff-21767fde8dad.gif" alt="pod_player"></a>
 </h1>
 
+
+## Usage
+- [Install](#installation)
+- [How to use](#how-to-use)
+- [How to play video from youtube](#how-to-play-video-from-youtube)
+- [How to play video from vimeo](#how-to-play-video-from-vimeo)
+- [video player Options](#options)
+- [Example](#example)
 ## Installation
 
 ---
@@ -162,7 +170,7 @@ located in `<project root>/ios/Runner/Info.plist`
 </dict>
 ```
 
-### web
+### web ( Not recommended in production)
 
 ---
 

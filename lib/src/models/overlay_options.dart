@@ -1,4 +1,3 @@
-
 import '../../pod_player.dart';
 
 class OverLayOptions {

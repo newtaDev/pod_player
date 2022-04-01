@@ -33,7 +33,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
       body: SafeArea(
         child: Center(
           child: ListView(
-            shrinkWrap: true, 
+            shrinkWrap: true,
             children: [
               PodVideoPlayer(controller: controller),
               const SizedBox(height: 40),
