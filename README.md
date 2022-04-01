@@ -56,7 +56,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 ---
 
 <h1 align="center">
-  <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/160871693-74b468de-839d-4ae3-9ef0-581066130072.gif" alt="pod_player"></a>
+  <img src="https://user-images.githubusercontent.com/85326522/160871693-74b468de-839d-4ae3-9ef0-581066130072.gif" alt="pod_player">
 </h1>
 
 ---
