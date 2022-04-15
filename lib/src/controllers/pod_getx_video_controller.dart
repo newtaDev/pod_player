@@ -267,7 +267,7 @@ class PodGetXVideoController extends _PodUiController {
     keyboardFocusWeb?.removeListener(keyboadListner);
     removeListenerId('podVideoState', podStateListner);
     _isWebAutoPlayDone = false;
-    vimeoOrVideoUrls=[];
+    vimeoOrVideoUrls = [];
     config(playVideoFrom: playVideoFrom, playerConfig: playerConfig);
     keyboardFocusWeb?.requestFocus();
     keyboardFocusWeb?.addListener(keyboadListner);
