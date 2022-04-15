@@ -2,9 +2,9 @@
   <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/159757765-db86f850-fea8-4dc2-bd86-0a27648b24e5.png" alt="pod_player"></a>
 </h1>
 
-Flutter video player for web & mobile devices, and also supports playing video from `youtube` and `vimeo`.
+Video player for flutter web & mobile devices, pod player supports playing video from `Youtube` and `Vimeo`
 
-This is a simple and easy-to-use video player. Its video controls are similar to Youtube player (with customizable controls) and also can play videos from `Youtube` and `Vimeo` (By providing url/video_id).
+pod player is a simple and easy-to-use video player. Its video controls are similar to Youtube player (with customizable controls) and also can play videos from `Youtube` and `Vimeo` (By providing url/video_id).
 
 This plugin built upon flutter's official [`video_player`](https://pub.dartlang.org/packages/video_player) plugin
 
@@ -110,7 +110,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 ---
 
 <h1 align="center">
-  <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/160885274-41be06af-ae6d-41f3-8cff-21767fde8dad.gif" alt="pod_player"></a>
+  <a><img src="https://user-images.githubusercontent.com/85326522/160885274-41be06af-ae6d-41f3-8cff-21767fde8dad.gif" alt="pod_player"></a>
 </h1>
 
 
