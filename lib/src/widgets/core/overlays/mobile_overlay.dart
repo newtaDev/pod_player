@@ -22,13 +22,13 @@ class _MobileOverlay extends StatelessWidget {
               child: _VideoGestureDetector(
                 tag: tag,
                 onDoubleTap: _isRtl()
-                    ? _podCtr.onLeftDoubleTap
-                    : _podCtr.onRightDoubleTap,
+                    ? _podCtr.onRightDoubleTap
+                    : _podCtr.onLeftDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
                   child: _LeftRightDoubleTapBox(
                     tag: tag,
-                    isLeft: _isRtl(),
+                    isLeft: !_isRtl(),
                   ),
                 ),
               ),
@@ -49,13 +49,13 @@ class _MobileOverlay extends StatelessWidget {
               child: _VideoGestureDetector(
                 tag: tag,
                 onDoubleTap: _isRtl()
-                    ? _podCtr.onRightDoubleTap
-                    : _podCtr.onLeftDoubleTap,
+                    ? _podCtr.onLeftDoubleTap
+                    : _podCtr.onRightDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
                   child: _LeftRightDoubleTapBox(
                     tag: tag,
-                    isLeft: !_isRtl(),
+                    isLeft: _isRtl(),
                   ),
                 ),
               ),
@@ -108,7 +108,7 @@ class _MobileOverlay extends StatelessWidget {
     ];
     for (int i = 0; i < langs.length; i++) {
       var lang = langs[i];
-      if (locale.toString().contains('lang')) {
+      if (locale.toString().contains(lang)) {
         return true;
       }
     }
