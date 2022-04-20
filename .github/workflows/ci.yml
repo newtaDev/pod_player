@@ -6,21 +6,23 @@ on:
 
 jobs:
   check-format:
-      name: Check format using flutter format
-      runs-on: ubuntu-latest
-      container: cirrusci/flutter:stable
-
-      steps:
-          uses: actions/checkout@v2
-        - name: Check format
-          run: flutter format --set-exit-if-changed .
-
-  lint:
-    name: Checking lints
+    name: Check format using flutter format
     runs-on: ubuntu-latest
     container: cirrusci/flutter:stable
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Check format
+        run: flutter format --set-exit-if-changed .
+
+  lint:
+    name: Check lints
+    runs-on: ubuntu-latest
+    container: cirrusci/flutter:stable
+
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v2
       - name: Get dependencies 
         run: flutter pub get
