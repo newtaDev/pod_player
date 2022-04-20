@@ -116,7 +116,7 @@ class PodGetXVideoController extends _PodUiController {
         final _urls =
             await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
         final _url = await getUrlFromVideoQualityUrls(
-          quality: podPlayerConfig.initialVideoQuality??360,
+          quality: podPlayerConfig.initialVideoQuality ?? 360,
           videoUrls: _urls,
         );
 
