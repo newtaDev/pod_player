@@ -99,7 +99,7 @@ class _MobileOverlay extends StatelessWidget {
 
   bool _isRtl() {
     final Locale locale = window.locale;
-    var langs = [
+    final langs = [
       'ar', // Arabic
       'fa', // Farsi
       'he', // Hebrew
@@ -107,7 +107,7 @@ class _MobileOverlay extends StatelessWidget {
       'ur', // Urdu
     ];
     for (int i = 0; i < langs.length; i++) {
-      var lang = langs[i];
+      final lang = langs[i];
       if (locale.toString().contains(lang)) {
         return true;
       }
