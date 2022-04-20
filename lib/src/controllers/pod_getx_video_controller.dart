@@ -97,6 +97,7 @@ class PodGetXVideoController extends _PodUiController {
         break;
       case PodVideoPlayerType.networkQualityUrls:
         final _url = await getUrlFromVideoQualityUrls(
+          quality: podPlayerConfig.initialVideoQuality,
           videoUrls: playVideoFrom.videoQualityUrls!,
         );
 
@@ -115,7 +116,7 @@ class PodGetXVideoController extends _PodUiController {
         final _urls =
             await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
         final _url = await getUrlFromVideoQualityUrls(
-          quality: 360,
+          quality: podPlayerConfig.initialVideoQuality??360,
           videoUrls: _urls,
         );
 
@@ -134,6 +135,7 @@ class PodGetXVideoController extends _PodUiController {
 
         ///
         final _url = await getVideoUrlFromVimeoId(
+          quality: podPlayerConfig.initialVideoQuality,
           videoId: playVideoFrom.dataSource,
         );
 

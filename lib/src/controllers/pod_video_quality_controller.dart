@@ -36,7 +36,7 @@ class _PodVideoQualityController extends _PodVideoController {
     ///has issues with 240p
     _urls?.removeWhere((element) => element.quality == 240);
 
-    ///has issues with 144p
+    ///has issues with 144p in web
     if (kIsWeb) {
       _urls?.removeWhere((element) => element.quality == 144);
     }
@@ -49,13 +49,11 @@ class _PodVideoQualityController extends _PodVideoController {
   }
 
   ///get vimeo quality `ex: 1080p` url
-  String? getQualityUrl(int quality) {
-    return vimeoOrVideoUrls
-        .firstWhere(
-          (element) => element.quality == quality,
-          orElse: () => vimeoOrVideoUrls.first,
-        )
-        .url;
+  VideoQalityUrls getQualityUrl(int quality) {
+    return vimeoOrVideoUrls.firstWhere(
+      (element) => element.quality == quality,
+      orElse: () => vimeoOrVideoUrls.first,
+    );
   }
 
   ///config vimeo player
@@ -69,8 +67,9 @@ class _PodVideoQualityController extends _PodVideoController {
       throw Exception('videoQuality cannot be empty');
     }
     final q = quality ?? vimeoOrVideoUrls[0].quality;
-    _videoQualityUrl = getQualityUrl(q).toString();
-    vimeoPlayingVideoQuality = q;
+    final _qualityAndUrl = getQualityUrl(q);
+    _videoQualityUrl = _qualityAndUrl.url;
+    vimeoPlayingVideoQuality = _qualityAndUrl.quality;
     return _videoQualityUrl;
   }
 
@@ -83,8 +82,9 @@ class _PodVideoQualityController extends _PodVideoController {
       throw Exception('videoQuality cannot be empty');
     }
     final q = quality ?? vimeoOrVideoUrls[0].quality;
-    _videoQualityUrl = getQualityUrl(q).toString();
-    vimeoPlayingVideoQuality = q;
+    final _qualityAndUrl = getQualityUrl(q);
+    _videoQualityUrl = _qualityAndUrl.url;
+    vimeoPlayingVideoQuality = _qualityAndUrl.quality;
     return _videoQualityUrl;
   }
 
