@@ -21,12 +21,14 @@ class _MobileOverlay extends StatelessWidget {
             Expanded(
               child: _VideoGestureDetector(
                 tag: tag,
-                onDoubleTap: _podCtr.onLeftDoubleTap,
+                onDoubleTap: _isRtl()
+                    ? _podCtr.onRightDoubleTap
+                    : _podCtr.onLeftDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
                   child: _LeftRightDoubleTapBox(
                     tag: tag,
-                    isLeft: true,
+                    isLeft: !_isRtl(),
                   ),
                 ),
               ),
@@ -46,12 +48,14 @@ class _MobileOverlay extends StatelessWidget {
             Expanded(
               child: _VideoGestureDetector(
                 tag: tag,
-                onDoubleTap: _podCtr.onRightDoubleTap,
+                onDoubleTap: _isRtl()
+                    ? _podCtr.onLeftDoubleTap
+                    : _podCtr.onRightDoubleTap,
                 child: ColoredBox(
                   color: overlayColor,
                   child: _LeftRightDoubleTapBox(
                     tag: tag,
-                    isLeft: false,
+                    isLeft: _isRtl(),
                   ),
                 ),
               ),
@@ -91,6 +95,24 @@ class _MobileOverlay extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  bool _isRtl() {
+    final Locale locale = window.locale;
+    final langs = [
+      'ar', // Arabic
+      'fa', // Farsi
+      'he', // Hebrew
+      'ps', // Pashto
+      'ur', // Urdu
+    ];
+    for (int i = 0; i < langs.length; i++) {
+      final lang = langs[i];
+      if (locale.toString().contains(lang)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void _bottomSheet(BuildContext context) {
