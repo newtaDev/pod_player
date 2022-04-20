@@ -18,7 +18,6 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.network(
         'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-        // videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true),
       ),
     )..initialise();
     super.initState();

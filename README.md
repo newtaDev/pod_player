@@ -117,6 +117,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 ## Usage
 - [Install](#installation)
 - [How to use](#how-to-use)
+- [Configure pod player](#configure-pod-player)
 - [How to play video from youtube](#how-to-play-video-from-youtube)
 - [How to play video from vimeo](#how-to-play-video-from-vimeo)
 - [video player Options](#options)
@@ -232,6 +233,18 @@ class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
   }
 }
 
+```
+## Configure pod player
+```dart 
+controller = PodPlayerController(
+        playVideoFrom: PlayVideoFrom.network(
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+        ),
+        podPlayerConfig: const PodPlayerConfig(
+          autoPlay: true,
+          isLooping: false
+        ))
+      ..initialise();
 ```
 
 ## How to play video from youtube
