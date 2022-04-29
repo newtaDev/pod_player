@@ -12,11 +12,9 @@ import 'utils/logger.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/core/pod_core_player.dart';
-part 'widgets/core/overlays/mob_bottom_overlay_controller.dart';
 part 'widgets/core/overlays/mobile_bottomsheet.dart';
 part 'widgets/core/overlays/mobile_overlay.dart';
 part 'widgets/core/overlays/overlays.dart';
-part 'widgets/core/overlays/web_bottom_overlay_controller.dart';
 part 'widgets/core/overlays/web_dropdown_menu.dart';
 part 'widgets/core/overlays/web_overlay.dart';
 part 'widgets/core/video_gesture_detector.dart';
