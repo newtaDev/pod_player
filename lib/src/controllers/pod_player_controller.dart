@@ -9,7 +9,6 @@ import '../../pod_player.dart';
 import 'pod_getx_video_controller.dart';
 
 class PodPlayerController {
-  ///
   late PodGetXVideoController _ctr;
   late String getTag;
   bool _isInitialised = false;
@@ -17,6 +16,7 @@ class PodPlayerController {
   final PlayVideoFrom playVideoFrom;
   final PodPlayerConfig podPlayerConfig;
 
+  /// controller for pod player
   PodPlayerController({
     required this.playVideoFrom,
     this.podPlayerConfig = const PodPlayerConfig(),
@@ -29,7 +29,8 @@ class PodPlayerController {
         playerConfig: podPlayerConfig,
       );
   }
-  //!init
+
+  /// Initialsing video player
   Future<void> initialise() async {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       await _ctr.videoInit();
@@ -47,12 +48,23 @@ class PodPlayerController {
     }
   }
 
+  /// returns the urll of current playing video
   String? get videoUrl => _ctr.playingVideoUrl;
 
+  /// returns true if video player is initialized
   bool get isInitialised => _ctr.videoCtr?.value.isInitialized ?? false;
+
+  /// returns true if video is playing
   bool get isVideoPlaying => _ctr.videoCtr?.value.isPlaying ?? false;
+
+  /// returns true if video is in bufferubg state
   bool get isVideoBuffering => _ctr.videoCtr?.value.isBuffering ?? false;
+
+  /// retuens true if `loop` is enabled
   bool get isVideoLooping => _ctr.videoCtr?.value.isLooping ?? false;
+
+  /// returns true if video is in fullscreen mode
+  bool get isFullScreen => _ctr.isFullScreen;
 
   bool get isMute => _ctr.isMute;
 
@@ -74,10 +86,13 @@ class PodPlayerController {
 
   //! video play/pause
 
+  /// plays the video
   void play() => _ctr.podVideoStateChanger(PodVideoState.playing);
 
+  /// pauses the video
   void pause() => _ctr.podVideoStateChanger(PodVideoState.paused);
 
+  /// toogle play and pause
   void togglePlayPause() {
     isVideoPlaying ? pause() : play();
   }
@@ -97,15 +112,18 @@ class PodPlayerController {
   }
   //! volume Controllers
 
+  /// mute the volume of the video
   Future<void> mute() async => _ctr.mute();
 
+  /// unmutue the volume of the video
   Future<void> unMute() async => _ctr.unMute();
 
+  /// toggle the volume
   Future<void> toggleVolume() async {
     _ctr.isMute ? await _ctr.unMute() : await _ctr.mute();
   }
 
-  ///Dispose controller
+  ///Dispose pod video player controller
   void dispose() {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
@@ -117,6 +135,7 @@ class PodPlayerController {
     );
   }
 
+  /// used to change the video
   Future<void> changeVideo({
     required PlayVideoFrom playVideoFrom,
     PodPlayerConfig playerConfig = const PodPlayerConfig(),
@@ -165,16 +184,19 @@ class PodPlayerController {
     return _ctr.onLeftDoubleTap(seconds: seconds);
   }
 
+  /// Enables video player to fullscreeen mode
   void enableFullScreen() {
     _html.document.documentElement?.requestFullscreen();
     _ctr.enableFullScreen(getTag);
   }
 
+  /// Disables fullscreeen mode
   void disableFullScreen(BuildContext context) {
     _html.document.exitFullscreen();
     if (!_ctr.isWebPopupOverlayOpen) _ctr.disableFullScreen(context, getTag);
   }
 
+  /// listner for the changes in the qualty of the video
   void onVideoQualityChanged(VoidCallback callback) {
     _ctr.onVimeoVideoQualityChanged = callback;
   }

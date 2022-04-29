@@ -188,7 +188,8 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                       'Is video initialized: ${controller.isInitialised}\n'
                       'Is video playing: ${controller.isVideoPlaying}\n'
                       'Is video Buffering: ${controller.isVideoBuffering}\n'
-                      'Is video looping: ${controller.isVideoLooping}',
+                      'Is video looping: ${controller.isVideoLooping}\n'
+                      'Is video in fullscreeen: ${controller.isFullScreen}',
                       style: textStyle,
                     ),
                     sizeH20,
