@@ -35,6 +35,37 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   child: VideoPlayer(videoPlayerCtr),
                 ),
               ),
+              GetBuilder<PodGetXVideoController>(
+                tag: tag,
+                id: 'podVideoState',
+                builder: (_) => GetBuilder<PodGetXVideoController>(
+                  tag: tag,
+                  id: 'video-progress',
+                  builder: (_podCtr) {
+                    if (_podCtr.videoThumbnail == null) return const SizedBox();
+
+                    if (_podCtr.podVideoState == PodVideoState.paused &&
+                        _podCtr.videoPosition == Duration.zero) {
+                      return SizedBox.expand(
+                        child: TweenAnimationBuilder<double>(
+                          builder: (context, value, child) => Opacity(
+                            opacity: value,
+                            child: child,
+                          ),
+                          tween: Tween<double>(begin: 0.7, end: 1),
+                          duration: const Duration(milliseconds: 400),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              image: _podCtr.videoThumbnail,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              ),
               _VideoOverlays(tag: tag),
               IgnorePointer(
                 child: GetBuilder<PodGetXVideoController>(

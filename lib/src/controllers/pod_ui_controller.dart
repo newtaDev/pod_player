@@ -5,4 +5,5 @@ class _PodUiController extends _PodGesturesController {
   PodProgressBarConfig podProgressBarConfig = const PodProgressBarConfig();
   Widget Function(OverLayOptions options)? overlayBuilder;
   Widget? videoTitle;
+  DecorationImage? videoThumbnail;
 }

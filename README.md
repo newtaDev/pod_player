@@ -115,9 +115,13 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ## Usage
 
-- [Install](#installation)
+- [Installation](#installation)
+  - [Android](#android)
+  - [Ios](#ios)
+  - [Web](#web--not-recommended-in-production)
 - [How to use](#how-to-use)
 - [Configure pod player](#configure-pod-player)
+- [Add Thumbnail](#add-thumbnail)
 - [How to play video from youtube](#how-to-play-video-from-youtube)
 - [How to play video from vimeo](#how-to-play-video-from-vimeo)
 - [video player Options](#options)
@@ -156,7 +160,7 @@ Located inside application tag
 
 ```
 
-### ios
+### Ios
 
 ---
 
@@ -172,7 +176,7 @@ located in `<project root>/ios/Runner/Info.plist`
 </dict>
 ```
 
-### web ( Not recommended in production)
+### Web ( Not recommended in production)
 
 ---
 
@@ -247,6 +251,20 @@ controller = PodPlayerController(
           initialVideoQuality: 360
         )
     )..initialise();
+```
+
+## Add Thumbnail
+
+```dart
+PodVideoPlayer(
+  controller: controller,
+  videoThumbnail: const DecorationImage(
+    /// load from asset: AssetImage('asset_path')
+    image: NetworkImage('https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dW5zcGxhc2h8ZW58MHx8MHx8&w=1000&q=80',
+    ),
+    fit: BoxFit.cover,
+  ),
+),
 ```
 
 ## How to play video from youtube

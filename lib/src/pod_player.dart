@@ -33,6 +33,7 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget Function()? onVideoError;
   final Widget? videoTitle;
   final Color? backgroundColor;
+  final DecorationImage? videoThumbnail;
   PodVideoPlayer({
     Key? key,
     required this.controller,
@@ -46,6 +47,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.matchFrameAspectRatioToVideo = false,
     this.onVideoError,
     this.backgroundColor,
+    this.videoThumbnail,
   }) : super(key: key) {
     addToUiController();
   }
@@ -59,7 +61,8 @@ class PodVideoPlayer extends StatefulWidget {
       ..alwaysShowProgressBar = alwaysShowProgressBar
       ..podProgressBarConfig = podProgressBarConfig
       ..overlayBuilder = overlayBuilder
-      ..videoTitle = videoTitle;
+      ..videoTitle = videoTitle
+      ..videoThumbnail = videoThumbnail;
   }
 
   @override
@@ -118,14 +121,10 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
   }
 
   ///
-  final circularProgressIndicator = const CircularProgressIndicator(
-    backgroundColor: Colors.black87,
-    color: Colors.white,
-    strokeWidth: 2,
-  );
   double _frameAspectRatio = 16 / 9;
   @override
   Widget build(BuildContext context) {
+    final circularProgressIndicator = _thumbnailAndLoadingWidget();
     _podCtr.mainContext = context;
 
     final _videoErrorWidget = AspectRatio(
@@ -186,6 +185,35 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
     );
   }
 
+  Widget _thumbnailAndLoadingWidget() {
+    return widget.videoThumbnail == null
+        ? const CircularProgressIndicator(
+            backgroundColor: Colors.black87,
+            color: Colors.white,
+            strokeWidth: 2,
+          )
+        : SizedBox.expand(
+            child: TweenAnimationBuilder<double>(
+              builder: (context, value, child) => Opacity(
+                opacity: value,
+                child: child,
+              ),
+              tween: Tween<double>(begin: 0.2, end: 0.7),
+              duration: const Duration(milliseconds: 400),
+              child: DecoratedBox(
+                decoration: BoxDecoration(image: widget.videoThumbnail),
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.black87,
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ),
+                ),
+              ),
+            ),
+          );
+  }
+
   Widget _buildPlayer() {
     final _videoAspectRatio = widget.matchVideoAspectRatioToFrame
         ? _podCtr.videoCtr?.value.aspectRatio ?? widget.videoAspectRatio
@@ -195,7 +223,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
         tag: widget.controller.getTag,
         id: 'full-screen',
         builder: (_podCtr) {
-          if (_podCtr.isFullScreen) return circularProgressIndicator;
+          if (_podCtr.isFullScreen) return _thumbnailAndLoadingWidget();
           return _PodCoreVideoPlayer(
             videoPlayerCtr: _podCtr.videoCtr!,
             videoAspectRatio: _videoAspectRatio,
