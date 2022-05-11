@@ -1,8 +1,15 @@
+## 0.0.5
+
+* features
+  - Added support for thumbnails
+  - Added `isFullScreen` getter to controller
+* updated docs
 ## 0.0.4
 
-* - bug fixes
+* features
   - support for RTL (by @karbalaidev)
   - initialVideoQuality added
+* bug fixes
 
 ## 0.0.3
 
