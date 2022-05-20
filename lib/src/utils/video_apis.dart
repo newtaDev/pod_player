@@ -3,14 +3,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import '../models/vimeo_models.dart';
 
 String podErrorString(String val) {
   return '*\n------error------\n\n$val\n\n------end------\n*';
 }
 
-class VimeoVideoApi {
-  static Future<List<VideoQalityUrls>?> getvideoQualityLink(
+class VideoApis {
+  static Future<List<VideoQalityUrls>?> getVimeoVideoQualityUrls(
     String videoId,
   ) async {
     try {
@@ -37,6 +38,37 @@ class VimeoVideoApi {
         );
       }
       debugPrint('===== VIMEO API ERROR: $error ==========');
+      rethrow;
+    }
+  }
+
+  static Future<List<VideoQalityUrls>?> getYoutubeVideoQualityUrls(
+    String youtubeIdOrUrl,
+  ) async {
+    try {
+      final yt = YoutubeExplode();
+      final muxed =
+          (await yt.videos.streamsClient.getManifest(youtubeIdOrUrl)).muxed;
+      final _urls = muxed
+          .map(
+            (element) => VideoQalityUrls(
+              quality: int.parse(element.qualityLabel.split('p')[0]),
+              url: element.url.toString(),
+            ),
+          )
+          .toList();
+      // Close the YoutubeExplode's http client.
+      yt.close();
+      return _urls;
+    } catch (error) {
+      if (error.toString().contains('XMLHttpRequest')) {
+        log(
+          podErrorString(
+            '(INFO) To play youtube video in WEB, Please enable CORS in your browser',
+          ),
+        );
+      }
+      debugPrint('===== YOUTUBE API ERROR: $error ==========');
       rethrow;
     }
   }

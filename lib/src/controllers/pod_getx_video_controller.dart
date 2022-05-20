@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -7,11 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
 import 'package:wakelock/wakelock.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../../pod_player.dart';
 import '../utils/logger.dart';
-import '../utils/vimeo_video_api.dart';
+import '../utils/video_apis.dart';
 
 part 'pod_base_controller.dart';
 part 'pod_gestures_controller.dart';

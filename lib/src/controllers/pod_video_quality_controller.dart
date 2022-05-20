@@ -19,7 +19,8 @@ class _PodVideoQualityController extends _PodVideoController {
   }) async {
     try {
       podVideoStateChanger(PodVideoState.loading);
-      final _vimeoVideoUrls = await VimeoVideoApi.getvideoQualityLink(videoId!);
+      final _vimeoVideoUrls =
+          await VideoApis.getVimeoVideoQualityUrls(videoId!);
 
       ///
       vimeoOrVideoUrls = _vimeoVideoUrls ?? [];
@@ -91,33 +92,7 @@ class _PodVideoQualityController extends _PodVideoController {
   Future<List<VideoQalityUrls>> getVideoQualityUrlsFromYoutube(
     String youtubeIdOrUrl,
   ) async {
-    try {
-      final yt = YoutubeExplode();
-      final muxed =
-          (await yt.videos.streamsClient.getManifest(youtubeIdOrUrl)).muxed;
-      final _urls = muxed
-          .map(
-            (element) => VideoQalityUrls(
-              quality: int.parse(element.qualityLabel.split('p')[0]),
-              url: element.url.toString(),
-            ),
-          )
-          .toList();
-
-      // Close the YoutubeExplode's http client.
-      yt.close();
-      return _urls;
-    } catch (error) {
-      if (error.toString().contains('XMLHttpRequest')) {
-        log(
-          podErrorString(
-            '(INFO) To play youtube video in WEB, Please enable CORS in your browser',
-          ),
-        );
-      }
-      debugPrint('===== YOUTUBE API ERROR: $error ==========');
-      rethrow;
-    }
+    return await VideoApis.getYoutubeVideoQualityUrls(youtubeIdOrUrl) ?? [];
   }
 
   Future<void> changeVideoQuality(int? quality) async {

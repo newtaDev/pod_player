@@ -6,6 +6,7 @@ import 'package:universal_html/html.dart' as _html;
 import 'package:wakelock/wakelock.dart';
 
 import '../../pod_player.dart';
+import '../utils/video_apis.dart';
 import 'pod_getx_video_controller.dart';
 
 class PodPlayerController {
@@ -199,6 +200,14 @@ class PodPlayerController {
   /// listner for the changes in the qualty of the video
   void onVideoQualityChanged(VoidCallback callback) {
     _ctr.onVimeoVideoQualityChanged = callback;
+  }
+
+  static Future<List<VideoQalityUrls>?> getYoutubeUrls(String youtubeIdOrUrl) {
+    return VideoApis.getYoutubeVideoQualityUrls(youtubeIdOrUrl);
+  }
+
+  static Future<List<VideoQalityUrls>?> getVimeoUrls(String videoId) {
+    return VideoApis.getVimeoVideoQualityUrls(videoId);
   }
 // TODO(any): support for playlist
 }
