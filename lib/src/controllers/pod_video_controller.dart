@@ -174,7 +174,7 @@ class _PodVideoController extends _PodBaseController {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       _enableFullScreenView(tag);
       isFullScreen = true;
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         update(['full-screen']);
         update(['update-all']);
       });
@@ -216,7 +216,6 @@ class _PodVideoController extends _PodBaseController {
       Navigator.push(
         mainContext,
         PageRouteBuilder(
-          opaque: true,
           fullscreenDialog: true,
           pageBuilder: (BuildContext context, _, __) => FullScreenView(
             tag: tag,

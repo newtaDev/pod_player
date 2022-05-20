@@ -33,7 +33,7 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
   }
 
   void playPauseListner() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (_podCtr.podVideoState == PodVideoState.playing) {
         if (mounted) _payCtr.forward();
       }

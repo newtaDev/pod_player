@@ -32,7 +32,7 @@ class PodPlayerController {
 
   /// Initialsing video player
   Future<void> initialise() async {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await _ctr.videoInit();
     });
     await _checkAndWaitTillInitialized();
