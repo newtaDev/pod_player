@@ -1,3 +1,7 @@
+## 0.0.6
+ - upgraded to Dart 2.17.0
+ - bug fixes
+ - Added some examples
 ## 0.0.5
 
 * features
