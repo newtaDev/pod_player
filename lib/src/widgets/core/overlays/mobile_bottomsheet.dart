@@ -25,7 +25,10 @@ class _MobileBottomSheet extends StatelessWidget {
                 Timer(const Duration(milliseconds: 100), () {
                   showModalBottomSheet(
                     context: context,
-                    builder: (context) => _VideoQualitySelectorMob(tag: tag),
+                    builder: (context) => _VideoQualitySelectorMob(
+                      tag: tag,
+                      onTap: null,
+                    ),
                   );
                 });
                 // await Future.delayed(
@@ -52,7 +55,10 @@ class _MobileBottomSheet extends StatelessWidget {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
-                  builder: (context) => _VideoPlaybackSelectorMob(tag: tag),
+                  builder: (context) => _VideoPlaybackSelectorMob(
+                    tag: tag,
+                    onTap: null,
+                  ),
                 );
               });
             },
@@ -110,7 +116,7 @@ class _VideoQualitySelectorMob extends StatelessWidget {
 
   const _VideoQualitySelectorMob({
     Key? key,
-    this.onTap,
+    required this.onTap,
     required this.tag,
   }) : super(key: key);
 
@@ -143,7 +149,7 @@ class _VideoPlaybackSelectorMob extends StatelessWidget {
 
   const _VideoPlaybackSelectorMob({
     Key? key,
-    this.onTap,
+    required this.onTap,
     required this.tag,
   }) : super(key: key);
 
