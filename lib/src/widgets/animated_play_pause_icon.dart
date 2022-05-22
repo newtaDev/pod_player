@@ -45,7 +45,7 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
 
   @override
   void dispose() {
-    podLog('Play-pause-controller-disposed');
+    // podLog('Play-pause-controller-disposed');
     _payCtr.dispose();
     super.dispose();
   }

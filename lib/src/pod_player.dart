@@ -53,6 +53,7 @@ class PodVideoPlayer extends StatefulWidget {
   }
 
   static bool enableLogs = false;
+  static bool enableGetxLogs = false;
 
   void addToUiController() {
     Get.find<PodGetXVideoController>(tag: controller.getTag)
@@ -118,6 +119,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
     _podCtr.showOverlayTimer1?.cancel();
     _podCtr.leftDoubleTapTimer?.cancel();
     _podCtr.rightDoubleTapTimer?.cancel();
+    podLog('local PodVideoPlayer disposed');
   }
 
   ///

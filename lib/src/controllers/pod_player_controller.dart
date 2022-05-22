@@ -6,6 +6,7 @@ import 'package:universal_html/html.dart' as _html;
 import 'package:wakelock/wakelock.dart';
 
 import '../../pod_player.dart';
+import '../utils/logger.dart';
 import '../utils/video_apis.dart';
 import 'pod_getx_video_controller.dart';
 
@@ -23,7 +24,7 @@ class PodPlayerController {
     this.podPlayerConfig = const PodPlayerConfig(),
   }) {
     getTag = UniqueKey().toString();
-    Get.config(enableLog: PodVideoPlayer.enableLogs);
+    Get.config(enableLog: PodVideoPlayer.enableGetxLogs);
     _ctr = Get.put(PodGetXVideoController(), permanent: true, tag: getTag)
       ..config(
         playVideoFrom: playVideoFrom,
@@ -34,7 +35,12 @@ class PodPlayerController {
   /// Initialsing video player
   Future<void> initialise() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await _ctr.videoInit();
+      if (!_isInitialised) {
+        await _ctr.videoInit();
+        podLog('$getTag Pod player Initialized');
+      } else {
+        podLog('$getTag Pod Player Controller Already Initialized');
+      }
     });
     await _checkAndWaitTillInitialized();
   }
@@ -134,6 +140,7 @@ class PodPlayerController {
       force: true,
       tag: getTag,
     );
+    podLog('$getTag Pod player Disposed');
   }
 
   /// used to change the video
