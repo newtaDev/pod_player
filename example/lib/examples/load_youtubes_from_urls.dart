@@ -42,19 +42,17 @@ class _YoutubeVideoViewerState extends State<YoutubeVideoViewer> {
     );
     setState(() => isLoading = false);
     controller = PodPlayerController(
-        playVideoFrom: PlayVideoFrom.networkQualityUrls(
-          videoUrls: _urls!,
-        ),
-        podPlayerConfig: const PodPlayerConfig(initialVideoQuality: 360))
-      ..initialise();
+      playVideoFrom: PlayVideoFrom.networkQualityUrls(videoUrls: _urls!),
+      podPlayerConfig: const PodPlayerConfig(
+        initialVideoQuality: 360,
+      ),
+    )..initialise();
   }
 
   @override
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : Center(
-            child: PodVideoPlayer(controller: controller),
-          );
+        : Center(child: PodVideoPlayer(controller: controller));
   }
 }
