@@ -36,10 +36,10 @@ class VimeoVideoViewerState extends State<VimeoVideoViewer> {
   }
 
   void loadVideo() async {
-    final _urls = await PodPlayerController.getVimeoUrls('518228118');
+    final urls = await PodPlayerController.getVimeoUrls('518228118');
     setState(() => isLoading = false);
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.networkQualityUrls(videoUrls: _urls!),
+      playVideoFrom: PlayVideoFrom.networkQualityUrls(videoUrls: urls!),
       podPlayerConfig: const PodPlayerConfig(
         initialVideoQuality: 360,
       ),

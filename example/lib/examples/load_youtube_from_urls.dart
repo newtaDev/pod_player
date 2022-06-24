@@ -37,12 +37,12 @@ class _YoutubeVideoViewerState extends State<YoutubeVideoViewer> {
   }
 
   void loadVideo() async {
-    final _urls = await PodPlayerController.getYoutubeUrls(
+    final urls = await PodPlayerController.getYoutubeUrls(
       'https://youtu.be/A3ltMaM6noM',
     );
     setState(() => isLoading = false);
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.networkQualityUrls(videoUrls: _urls!),
+      playVideoFrom: PlayVideoFrom.networkQualityUrls(videoUrls: urls!),
       podPlayerConfig: const PodPlayerConfig(
         initialVideoQuality: 360,
       ),

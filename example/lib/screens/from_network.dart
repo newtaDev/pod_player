@@ -93,6 +93,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
                 await controller.changeVideo(
                   playVideoFrom: PlayVideoFrom.network(videoTextFieldCtr.text),
                 );
+                if (!mounted) return;
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               } catch (e) {
                 snackBar('Unable to load,\n $e');

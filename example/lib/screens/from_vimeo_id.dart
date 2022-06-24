@@ -75,6 +75,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
                 await controller.changeVideo(
                   playVideoFrom: PlayVideoFrom.vimeo(videoTextFieldCtr.text),
                 );
+                if (!mounted) return;
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               } catch (e) {
                 snackBar('Unable to load,\n $e');
