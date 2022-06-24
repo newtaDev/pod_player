@@ -1,3 +1,7 @@
+## 0.0.7
+ * dependencies upgraded
+   - video_player: ^2.4.5
+ - code refactor
 ## 0.0.6
  - upgraded to Dart 2.17.0
  - bug fixes
