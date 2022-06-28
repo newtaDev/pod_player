@@ -16,6 +16,7 @@ dependencies:
     path: ../
 
   cupertino_icons: ^1.0.5
+  visibility_detector: ^0.3.3
 
 dev_dependencies:
   flutter_test:

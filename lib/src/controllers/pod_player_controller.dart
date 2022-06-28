@@ -13,7 +13,7 @@ import 'pod_getx_video_controller.dart';
 class PodPlayerController {
   late PodGetXVideoController _ctr;
   late String getTag;
-  bool _isInitialised = false;
+  bool _isCtrInitialised = false;
 
   final PlayVideoFrom playVideoFrom;
   final PodPlayerConfig podPlayerConfig;
@@ -23,6 +23,9 @@ class PodPlayerController {
     required this.playVideoFrom,
     this.podPlayerConfig = const PodPlayerConfig(),
   }) {
+    init();
+  }
+  void init() {
     getTag = UniqueKey().toString();
     Get.config(enableLog: PodVideoPlayer.enableGetxLogs);
     _ctr = Get.put(PodGetXVideoController(), permanent: true, tag: getTag)
@@ -34,8 +37,11 @@ class PodPlayerController {
 
   /// Initialsing video player
   Future<void> initialise() async {
+    if (!_isCtrInitialised) {
+      init();
+    }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (!_isInitialised) {
+      if (!_isCtrInitialised) {
         await _ctr.videoInit();
         podLog('$getTag Pod player Initialized');
       } else {
@@ -47,7 +53,7 @@ class PodPlayerController {
 
   Future<void> _checkAndWaitTillInitialized() async {
     if (_ctr.controllerInitialized) {
-      _isInitialised = true;
+      _isCtrInitialised = true;
       return;
     } else {
       await Future.delayed(const Duration(milliseconds: 500));
@@ -132,6 +138,7 @@ class PodPlayerController {
 
   ///Dispose pod video player controller
   void dispose() {
+    _isCtrInitialised = false;
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
     _ctr.removeListenerId('podVideoState', _ctr.podStateListner);
@@ -160,35 +167,35 @@ class PodPlayerController {
   ///Jumps to specific position of the video
   Future<void> videoSeekTo(Duration moment) async {
     await _checkAndWaitTillInitialized();
-    if (!_isInitialised) return;
+    if (!_isCtrInitialised) return;
     return _ctr.seekTo(moment);
   }
 
   ///Moves video forward from current duration to `_duration`
   Future<void> videoSeekForward(Duration _duration) async {
     await _checkAndWaitTillInitialized();
-    if (!_isInitialised) return;
+    if (!_isCtrInitialised) return;
     return _ctr.seekForward(_duration);
   }
 
   ///Moves video backward from current duration to `_duration`
   Future<void> videoSeekBackward(Duration _duration) async {
     await _checkAndWaitTillInitialized();
-    if (!_isInitialised) return;
+    if (!_isCtrInitialised) return;
     return _ctr.seekBackward(_duration);
   }
 
   ///on right double tap
   Future<void> doubleTapVideoForward(int seconds) async {
     await _checkAndWaitTillInitialized();
-    if (!_isInitialised) return;
+    if (!_isCtrInitialised) return;
     return _ctr.onRightDoubleTap(seconds: seconds);
   }
 
   ///on left double tap
   Future<void> doubleTapVideoBackward(int seconds) async {
     await _checkAndWaitTillInitialized();
-    if (!_isInitialised) return;
+    if (!_isCtrInitialised) return;
     return _ctr.onLeftDoubleTap(seconds: seconds);
   }
 
