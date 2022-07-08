@@ -1,26 +1,29 @@
-## 0.0.6
- - upgraded to Dart 2.17.0
- - bug fixes
- - Added some examples
-## 0.0.5
+## 0.0.8
+* Added `PodPlayerLabels` param to `PodVideoPlayer` widget
+* Added PodPlayerLabels usage example in `from_asset` file
 
-* features
+## 0.0.6
+* Upgraded to Dart 2.17.0
+* Bug fixes
+* Added some examples
+
+## 0.0.5
+* Features
   - Added support for thumbnails
   - Added `isFullScreen` getter to controller
-* updated docs
-## 0.0.4
+* Updated docs
 
-* features
+## 0.0.4
+* Features
   - support for RTL (by @karbalaidev)
   - initialVideoQuality added
-* bug fixes
+* Bug fixes
 
 ## 0.0.3
+* Bug fix #4
 
-*  bug fix #4
 ## 0.0.2
+* Ignored .mp4 video file in pub
 
-* ignored .mp4 video file in pub
 ## 0.0.1
-
-* initial release
+* Initial release

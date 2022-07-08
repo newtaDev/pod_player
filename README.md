@@ -34,6 +34,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 - Change `playback speed`
 - Custom overlay
 - Custom progress bar
+- Custom labels
 - `Change video quality` (for vimeo and youtube)
 - Enable/disable fullscreen player
 - [TODO] support for live youtube video
@@ -222,6 +223,7 @@ class PlayVideoFromNetwork extends StatefulWidget {
 
 class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
   late final PodPlayerController controller;
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -231,6 +233,7 @@ class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
     )..initialise();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -250,14 +253,14 @@ class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
 ## Configure pod player
 
 ```dart
-controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/A3ltMaM6noM'),
-      podPlayerConfig: const PodPlayerConfig(
-          autoPlay: true,
-          isLooping: false,
-          initialVideoQuality: 360
-        )
-    )..initialise();
+  controller = PodPlayerController(
+    playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/A3ltMaM6noM'),
+    podPlayerConfig: const PodPlayerConfig(
+      autoPlay: true,
+      isLooping: false,
+      initialVideoQuality: 360
+    )
+  )..initialise();
 ```
 
 ## Add Thumbnail
@@ -272,6 +275,24 @@ PodVideoPlayer(
     fit: BoxFit.cover,
   ),
 ),
+```
+
+## Add PodPlayerLabels (custom labels)
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: PodVideoPlayer(
+      controller: controller,
+      podPlayerLabels: const PodPlayerLabels(
+        play: "Play label customized",
+        pause: "Pause label customized",
+        ...
+      ),
+    ),
+  );
+}
 ```
 
 ## How to play video from youtube
@@ -291,6 +312,7 @@ class PlayVideoFromYoutube extends StatefulWidget {
 
 class _PlayVideoFromYoutubeState extends State<PlayVideoFromYoutube> {
   late final PodPlayerController controller;
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -298,6 +320,7 @@ class _PlayVideoFromYoutubeState extends State<PlayVideoFromYoutube> {
     )..initialise();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -331,6 +354,7 @@ class PlayVideoFromVimeo extends StatefulWidget {
 
 class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
   late final PodPlayerController controller;
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -338,6 +362,7 @@ class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
     )..initialise();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
