@@ -1,3 +1,7 @@
+## 0.0.9
+* Removed shortcut keys from web mode tooltips
+* Seted `normal` playback speed to `1x`
+
 ## 0.0.8
 * Added `PodPlayerLabels` param to `PodVideoPlayer` widget
 * Added PodPlayerLabels usage example in `from_asset` file
