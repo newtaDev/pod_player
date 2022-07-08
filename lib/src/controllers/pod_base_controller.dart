@@ -28,7 +28,7 @@ class _PodBaseController extends GetxController {
 
   Duration _videoPosition = Duration.zero;
 
-  String _currentPaybackSpeed = 'Normal';
+  String _currentPaybackSpeed = '1x';
 
   bool? isVideoUiBinded;
 
