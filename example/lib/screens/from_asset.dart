@@ -27,8 +27,29 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromAsset> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Play video from Assets')),
-      body: Center(child: PodVideoPlayer(controller: controller)),
+      appBar: AppBar(
+        title: const Text('Play video from Asset (with custom labels)'),
+      ),
+      body: Center(
+        child: PodVideoPlayer(
+          controller: controller,
+          podPlayerLabels: const PodPlayerLabels(
+            play: "PLAY",
+            pause: "PAUSE",
+            error: "ERROR WHILE TRYING TO PLAY VIDEO",
+            exitFullScreen: "EXIT FULL SCREEN",
+            fullscreen: "FULL SCREEN",
+            loopVideo: "LOOP VIDEO",
+            mute: "MUTE",
+            playbackSpeed: "PLAYBACK SPEED",
+            settings: "SETTINGS",
+            unmute: "UNMUTE",
+            optionEnabled: "YES",
+            optionDisabled: "NO",
+            quality: "QUALITY",
+          ),
+        ),
+      ),
     );
   }
 }

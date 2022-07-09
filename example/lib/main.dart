@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
                   Navigator.of(context).pushNamed('/fromNetworkQualityUrls'),
             ),
             _button(
-              'Play video from Asset',
+              'Play video from Asset (with custom labels)',
               onPressed: () => Navigator.of(context).pushNamed('/fromAsset'),
             ),
             _button(

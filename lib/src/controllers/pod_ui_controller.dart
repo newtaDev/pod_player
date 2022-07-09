@@ -6,4 +6,7 @@ class _PodUiController extends _PodGesturesController {
   Widget Function(OverLayOptions options)? overlayBuilder;
   Widget? videoTitle;
   DecorationImage? videoThumbnail;
+
+  ///video player labels
+  PodPlayerLabels podPlayerLabels = const PodPlayerLabels();
 }

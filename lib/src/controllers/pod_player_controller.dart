@@ -23,9 +23,9 @@ class PodPlayerController {
     required this.playVideoFrom,
     this.podPlayerConfig = const PodPlayerConfig(),
   }) {
-    init();
+    _init();
   }
-  void init() {
+  void _init() {
     getTag = UniqueKey().toString();
     Get.config(enableLog: PodVideoPlayer.enableGetxLogs);
     _ctr = Get.put(PodGetXVideoController(), permanent: true, tag: getTag)
@@ -38,7 +38,7 @@ class PodPlayerController {
   /// Initialsing video player
   Future<void> initialise() async {
     if (!_isCtrInitialised) {
-      init();
+      _init();
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (!_isCtrInitialised) {

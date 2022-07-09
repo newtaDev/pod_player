@@ -17,7 +17,7 @@ class _MobileBottomSheet extends StatelessWidget {
         children: [
           if (_podCtr.vimeoOrVideoUrls.isNotEmpty)
             _bottomSheetTiles(
-              title: 'Quality',
+              title: _podCtr.podPlayerLabels.quality,
               icon: Icons.video_settings_rounded,
               subText: '${_podCtr.vimeoPlayingVideoQuality}p',
               onTap: () {
@@ -37,16 +37,18 @@ class _MobileBottomSheet extends StatelessWidget {
               },
             ),
           _bottomSheetTiles(
-            title: 'Loop video',
+            title: _podCtr.podPlayerLabels.loopVideo,
             icon: Icons.loop_rounded,
-            subText: _podCtr.isLooping ? 'On' : 'Off',
+            subText: _podCtr.isLooping
+                ? _podCtr.podPlayerLabels.optionEnabled
+                : _podCtr.podPlayerLabels.optionDisabled,
             onTap: () {
               Navigator.of(context).pop();
               _podCtr.toggleLooping();
             },
           ),
           _bottomSheetTiles(
-            title: 'Playback speed',
+            title: _podCtr.podPlayerLabels.playbackSpeed,
             icon: Icons.slow_motion_video_rounded,
             subText: _podCtr.currentPaybackSpeed,
             onTap: () {
@@ -222,8 +224,10 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               const Spacer(),
               MaterialIconButton(
                 toolTipMesg: _podCtr.isFullScreen
-                    ? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                    : 'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                    ? _podCtr.podPlayerLabels.exitFullScreen ??
+                        'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                    : _podCtr.podPlayerLabels.fullscreen ??
+                        'Fullscreen${kIsWeb ? ' (f)' : ''}',
                 color: itemColor,
                 onPressed: () {
                   if (_podCtr.isOverlayVisible) {

@@ -2,6 +2,13 @@
   <a href="https://github.com/newtaDev"><img src="https://user-images.githubusercontent.com/85326522/159757765-db86f850-fea8-4dc2-bd86-0a27648b24e5.png" alt="pod_player"></a>
 </h1>
 
+<p align="center">
+  <a href="https://pub.dev/packages/pod_player/score"><img src="https://badges.bar/pod_player/likes" alt="pub likes"></a>
+  <a href="https://pub.dev/packages/pod_player"><img src="https://img.shields.io/pub/v/pod_player?style=flat" alt="pub version"></a>
+  <a href="https://pub.dev/packages/pod_player/score"><img src="https://badges.bar/pod_player/popularity" alt="popularity"></a>
+  <a href="https://pub.dev/packages/pod_player/score"><img src="https://badges.bar/pod_player/pub%20points" alt="pub points"></a>
+
+</p>
 Video player for flutter web & mobile devices, pod player supports playing video from `Youtube` and `Vimeo`
 
 pod player is a simple and easy-to-use video player. Its video controls are similar to Youtube player (with customizable controls) and also can play videos from `Youtube` and `Vimeo` (By providing url/video_id).
@@ -27,6 +34,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 - Change `playback speed`
 - Custom overlay
 - Custom progress bar
+- Custom labels
 - `Change video quality` (for vimeo and youtube)
 - Enable/disable fullscreen player
 - [TODO] support for live youtube video
@@ -215,6 +223,7 @@ class PlayVideoFromNetwork extends StatefulWidget {
 
 class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
   late final PodPlayerController controller;
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -224,6 +233,7 @@ class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
     )..initialise();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -243,14 +253,14 @@ class _PlayVideoFromNetworkState extends State<PlayVideoFromNetwork> {
 ## Configure pod player
 
 ```dart
-controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/A3ltMaM6noM'),
-      podPlayerConfig: const PodPlayerConfig(
-          autoPlay: true,
-          isLooping: false,
-          initialVideoQuality: 360
-        )
-    )..initialise();
+  controller = PodPlayerController(
+    playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/A3ltMaM6noM'),
+    podPlayerConfig: const PodPlayerConfig(
+      autoPlay: true,
+      isLooping: false,
+      initialVideoQuality: 360
+    )
+  )..initialise();
 ```
 
 ## Add Thumbnail
@@ -265,6 +275,24 @@ PodVideoPlayer(
     fit: BoxFit.cover,
   ),
 ),
+```
+
+## Add PodPlayerLabels (custom labels)
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: PodVideoPlayer(
+      controller: controller,
+      podPlayerLabels: const PodPlayerLabels(
+        play: "Play label customized",
+        pause: "Pause label customized",
+        ...
+      ),
+    ),
+  );
+}
 ```
 
 ## How to play video from youtube
@@ -284,6 +312,7 @@ class PlayVideoFromYoutube extends StatefulWidget {
 
 class _PlayVideoFromYoutubeState extends State<PlayVideoFromYoutube> {
   late final PodPlayerController controller;
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -291,6 +320,7 @@ class _PlayVideoFromYoutubeState extends State<PlayVideoFromYoutube> {
     )..initialise();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -324,6 +354,7 @@ class PlayVideoFromVimeo extends StatefulWidget {
 
 class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
   late final PodPlayerController controller;
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -331,6 +362,7 @@ class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
     )..initialise();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
