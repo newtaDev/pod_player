@@ -1,15 +1,16 @@
 ## 0.0.8
-- Added `PodPlayerLabels` param to `PodVideoPlayer` widget
-- Added PodPlayerLabels usage example in `from_asset` file
-- Removed shortcut keys from web mode tooltips
-- Seted `normal` playback speed to `1x`
+
+- Merged PR #37 & #38, By [`Jeferson Santos(@Jeferson505)`](https://github.com/Jeferson505)
+  - Added `PodPlayerLabels` param to `PodVideoPlayer` widget
+  - Added PodPlayerLabels usage example in `from_asset` file
+  - Seted `normal` playback speed to `1x`
+- bug fix and added example for  playing videos in list
 
 ## 0.0.7
 
 - dependencies upgraded
   - video_player: ^2.4.5
-
-* code refactor
+- code refactor
 
 ## 0.0.6
 
