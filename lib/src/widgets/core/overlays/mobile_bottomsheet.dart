@@ -224,8 +224,10 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               const Spacer(),
               MaterialIconButton(
                 toolTipMesg: _podCtr.isFullScreen
-                    ? _podCtr.podPlayerLabels.exitFullScreen
-                    : _podCtr.podPlayerLabels.fullscreen,
+                    ? _podCtr.podPlayerLabels.exitFullScreen ??
+                        'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                    : _podCtr.podPlayerLabels.fullscreen ??
+                        'Fullscreen${kIsWeb ? ' (f)' : ''}',
                 color: itemColor,
                 onPressed: () {
                   if (_podCtr.isOverlayVisible) {
