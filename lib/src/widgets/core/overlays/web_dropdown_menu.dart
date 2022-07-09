@@ -24,7 +24,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
         tag: widget.tag,
         builder: (_podCtr) {
           return MaterialIconButton(
-            toolTipMesg: 'Settings',
+            toolTipMesg: _podCtr.podPlayerLabels.settings,
             color: Colors.white,
             child: const Icon(Icons.settings),
             onPressed: () => _podCtr.isFullScreen
@@ -38,7 +38,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
                     PopupMenuItem(
                       value: 'OUALITY',
                       child: _bottomSheetTiles(
-                        title: 'Quality',
+                        title: _podCtr.podPlayerLabels.quality,
                         icon: Icons.video_settings_rounded,
                         subText: '${_podCtr.vimeoPlayingVideoQuality}p',
                       ),
@@ -46,15 +46,17 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
                   PopupMenuItem(
                     value: 'LOOP',
                     child: _bottomSheetTiles(
-                      title: 'Loop video',
+                      title: _podCtr.podPlayerLabels.loopVideo,
                       icon: Icons.loop_rounded,
-                      subText: _podCtr.isLooping ? 'On' : 'Off',
+                      subText: _podCtr.isLooping
+                          ? _podCtr.podPlayerLabels.optionEnabled
+                          : _podCtr.podPlayerLabels.optionDisabled,
                     ),
                   ),
                   PopupMenuItem(
                     value: 'SPEED',
                     child: _bottomSheetTiles(
-                      title: 'Playback speed',
+                      title: _podCtr.podPlayerLabels.playbackSpeed,
                       icon: Icons.slow_motion_video_rounded,
                       subText: _podCtr.currentPaybackSpeed,
                     ),

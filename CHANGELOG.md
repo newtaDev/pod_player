@@ -1,30 +1,44 @@
+## 0.0.8
+- Added `PodPlayerLabels` param to `PodVideoPlayer` widget
+- Added PodPlayerLabels usage example in `from_asset` file
+- Removed shortcut keys from web mode tooltips
+- Seted `normal` playback speed to `1x`
+
 ## 0.0.7
- * dependencies upgraded
-   - video_player: ^2.4.5
- - code refactor
+
+- dependencies upgraded
+  - video_player: ^2.4.5
+
+* code refactor
+
 ## 0.0.6
- - upgraded to Dart 2.17.0
- - bug fixes
- - Added some examples
+
+- Upgraded to Dart 2.17.0
+- Bug fixes
+- Added some examples
+
 ## 0.0.5
 
-* features
+- Features
   - Added support for thumbnails
   - Added `isFullScreen` getter to controller
-* updated docs
+- Updated docs
+
 ## 0.0.4
 
-* features
+- Features
   - support for RTL (by @karbalaidev)
   - initialVideoQuality added
-* bug fixes
+- Bug fixes
 
 ## 0.0.3
 
-*  bug fix #4
+- Bug fix #4
+
 ## 0.0.2
 
-* ignored .mp4 video file in pub
+- Ignored .mp4 video file in pub
+
 ## 0.0.1
 
-* initial release
+- Initial release

@@ -29,6 +29,7 @@ class PodVideoPlayer extends StatefulWidget {
   final bool matchVideoAspectRatioToFrame;
   final bool matchFrameAspectRatioToVideo;
   final PodProgressBarConfig podProgressBarConfig;
+  final PodPlayerLabels podPlayerLabels;
   final Widget Function(OverLayOptions options)? overlayBuilder;
   final Widget Function()? onVideoError;
   final Widget? videoTitle;
@@ -41,6 +42,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.videoAspectRatio = 16 / 9,
     this.alwaysShowProgressBar = true,
     this.podProgressBarConfig = const PodProgressBarConfig(),
+    this.podPlayerLabels = const PodPlayerLabels(),
     this.overlayBuilder,
     this.videoTitle,
     this.matchVideoAspectRatioToFrame = false,
@@ -59,6 +61,7 @@ class PodVideoPlayer extends StatefulWidget {
     Get.find<PodGetXVideoController>(tag: controller.getTag)
 
       ///add to ui
+      ..podPlayerLabels = podPlayerLabels
       ..alwaysShowProgressBar = alwaysShowProgressBar
       ..podProgressBarConfig = podProgressBarConfig
       ..overlayBuilder = overlayBuilder
@@ -134,16 +137,16 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(
+          children: [
+            const Icon(
               Icons.warning,
               color: Colors.yellow,
               size: 32,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
-              'Error while playing video',
-              style: TextStyle(color: Colors.red),
+              widget.podPlayerLabels.error,
+              style: const TextStyle(color: Colors.red),
             ),
           ],
         ),
