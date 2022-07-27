@@ -15,6 +15,9 @@ class PodPlayerController {
   late String getTag;
   bool _isCtrInitialised = false;
 
+  //ignore: prefer_typing_uninitialized_variables
+  var _initializationError;
+
   final PlayVideoFrom playVideoFrom;
   final PodPlayerConfig podPlayerConfig;
 
@@ -25,6 +28,7 @@ class PodPlayerController {
   }) {
     _init();
   }
+
   void _init() {
     getTag = UniqueKey().toString();
     Get.config(enableLog: PodVideoPlayer.enableGetxLogs);
@@ -35,17 +39,24 @@ class PodPlayerController {
       );
   }
 
-  /// Initialsing video player
+  /// Initializes the video player.
+  ///
+  /// If the provided video cannot be loaded, an exception could be thrown.
   Future<void> initialise() async {
     if (!_isCtrInitialised) {
       _init();
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (!_isCtrInitialised) {
-        await _ctr.videoInit();
-        podLog('$getTag Pod player Initialized');
-      } else {
-        podLog('$getTag Pod Player Controller Already Initialized');
+      try {
+        if (!_isCtrInitialised) {
+          await _ctr.videoInit();
+          podLog('$getTag Pod player Initialized');
+        } else {
+          podLog('$getTag Pod Player Controller Already Initialized');
+        }
+      } catch (error) {
+        podLog('$getTag Pod Player Controller failed to initialize');
+        _initializationError = error;
       }
     });
     await _checkAndWaitTillInitialized();
@@ -55,13 +66,18 @@ class PodPlayerController {
     if (_ctr.controllerInitialized) {
       _isCtrInitialised = true;
       return;
-    } else {
-      await Future.delayed(const Duration(milliseconds: 500));
-      await _checkAndWaitTillInitialized();
     }
+
+    /// If a wrong video is passed to the player, it'll never being loaded.
+    if (_initializationError != null) {
+      throw _initializationError!;
+    }
+
+    await Future.delayed(const Duration(milliseconds: 500));
+    await _checkAndWaitTillInitialized();
   }
 
-  /// returns the urll of current playing video
+  /// returns the url of current playing video
   String? get videoUrl => _ctr.playingVideoUrl;
 
   /// returns true if video player is initialized
@@ -70,10 +86,10 @@ class PodPlayerController {
   /// returns true if video is playing
   bool get isVideoPlaying => _ctr.videoCtr?.value.isPlaying ?? false;
 
-  /// returns true if video is in bufferubg state
+  /// returns true if video is in buffering state
   bool get isVideoBuffering => _ctr.videoCtr?.value.isBuffering ?? false;
 
-  /// retuens true if `loop` is enabled
+  /// returns true if `loop` is enabled
   bool get isVideoLooping => _ctr.videoCtr?.value.isLooping ?? false;
 
   /// returns true if video is in fullscreen mode
@@ -91,10 +107,10 @@ class PodPlayerController {
 
   //! video positions
 
-  ///return total length of the video
+  /// Returns the video total duration
   Duration get totalVideoLength => _ctr.videoDuration;
 
-  ///return current position/duration of the video
+  /// Returns the current position of the video
   Duration get currentVideoPosition => _ctr.videoPosition;
 
   //! video play/pause
@@ -110,25 +126,28 @@ class PodPlayerController {
     isVideoPlaying ? pause() : play();
   }
 
-  ///Listen to changes in video
-  void addListener(void Function() listner) {
+  /// Listen to changes in video.
+  ///
+  /// It only adds a listener if the player is successfully initialized
+  void addListener(VoidCallback listener) {
     _checkAndWaitTillInitialized().then(
-      (value) => _ctr.videoCtr?.addListener(listner),
+      (value) => _ctr.videoCtr?.addListener(listener),
     );
   }
 
-  ///remove registred listners
-  void removeListener(void Function() listner) {
+  /// Remove registered listeners
+  void removeListener(VoidCallback listener) {
     _checkAndWaitTillInitialized().then(
-      (value) => _ctr.videoCtr?.removeListener(listner),
+      (value) => _ctr.videoCtr?.removeListener(listener),
     );
   }
+
   //! volume Controllers
 
   /// mute the volume of the video
   Future<void> mute() async => _ctr.mute();
 
-  /// unmutue the volume of the video
+  /// unmute the volume of the video
   Future<void> unMute() async => _ctr.unMute();
 
   /// toggle the volume
@@ -199,19 +218,19 @@ class PodPlayerController {
     return _ctr.onLeftDoubleTap(seconds: seconds);
   }
 
-  /// Enables video player to fullscreeen mode
+  /// Enables video player to fullscreen mode
   void enableFullScreen() {
     _html.document.documentElement?.requestFullscreen();
     _ctr.enableFullScreen(getTag);
   }
 
-  /// Disables fullscreeen mode
+  /// Disables fullscreen mode
   void disableFullScreen(BuildContext context) {
     _html.document.exitFullscreen();
     if (!_ctr.isWebPopupOverlayOpen) _ctr.disableFullScreen(context, getTag);
   }
 
-  /// listner for the changes in the qualty of the video
+  /// listener for the changes in the quality of the video
   void onVideoQualityChanged(VoidCallback callback) {
     _ctr.onVimeoVideoQualityChanged = callback;
   }
