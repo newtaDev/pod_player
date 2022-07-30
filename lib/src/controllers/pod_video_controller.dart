@@ -159,19 +159,26 @@ class _PodVideoController extends _PodBaseController {
     update(['update-all']);
   }
 
-  void enableFullScreen(String tag) {
+  Future<void> enableFullScreen(
+    String tag, {
+    AsyncCallback? onEnterFullscreen,
+  }) async {
     podLog('-full-screen-enable-entred');
     if (!isFullScreen) {
-      if (kIsWeb) {
-        SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.landscapeRight],
-        );
+      if (onEnterFullscreen != null) {
+        await onEnterFullscreen();
       } else {
-        SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight],
-        );
+        await Future.wait([
+          SystemChrome.setPreferredOrientations(
+            [
+              if (!kIsWeb) DeviceOrientation.landscapeLeft,
+              DeviceOrientation.landscapeRight,
+            ],
+          ),
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),
+        ]);
       }
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
       _enableFullScreenView(tag);
       isFullScreen = true;
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -181,22 +188,30 @@ class _PodVideoController extends _PodBaseController {
     }
   }
 
-  void disableFullScreen(
+  Future<void> disableFullScreen(
     BuildContext context,
     String tag, {
+    AsyncCallback? onExitFullscreen,
     bool enablePop = true,
-  }) {
+  }) async {
     podLog('-full-screen-disable-entred');
     if (isFullScreen) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown
-      ]); //for ios
-      SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-      SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual,
-        overlays: SystemUiOverlay.values,
-      );
+      if (onExitFullscreen != null) {
+        await onExitFullscreen();
+      } else {
+        await Future.wait([
+          SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+          ]),
+          SystemChrome.setPreferredOrientations(DeviceOrientation.values),
+          SystemChrome.setEnabledSystemUIMode(
+            SystemUiMode.manual,
+            overlays: SystemUiOverlay.values,
+          ),
+        ]);
+      }
+
       if (enablePop) _exitFullScreenView(context, tag);
       isFullScreen = false;
       update(['full-screen']);

@@ -218,16 +218,32 @@ class PodPlayerController {
     return _ctr.onLeftDoubleTap(seconds: seconds);
   }
 
-  /// Enables video player to fullscreen mode
+  /// Enables video player to fullscreen mode.
+  ///
+  /// If [PodPlayerConfig.onEnterFullscreen] is set, you must handle the device
+  /// orientation by yourself.
   void enableFullScreen() {
     _html.document.documentElement?.requestFullscreen();
-    _ctr.enableFullScreen(getTag);
+    _ctr.enableFullScreen(
+      getTag,
+      onEnterFullscreen: podPlayerConfig.onEnterFullscreen,
+    );
   }
 
-  /// Disables fullscreen mode
+  /// Disables fullscreen mode.
+  ///
+  /// If [PodPlayerConfig.onExitFullscreen] is set, you must handle the device
+  /// orientation by yourself.
   void disableFullScreen(BuildContext context) {
     _html.document.exitFullscreen();
-    if (!_ctr.isWebPopupOverlayOpen) _ctr.disableFullScreen(context, getTag);
+
+    if (!_ctr.isWebPopupOverlayOpen) {
+      _ctr.disableFullScreen(
+        context,
+        getTag,
+        onExitFullscreen: podPlayerConfig.onExitFullscreen,
+      );
+    }
   }
 
   /// listener for the changes in the quality of the video

@@ -41,7 +41,7 @@ class VimeoVideoViewerState extends State<VimeoVideoViewer> {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.networkQualityUrls(videoUrls: urls!),
       podPlayerConfig: const PodPlayerConfig(
-        initialVideoQuality: 360,
+        videoQualityPriority: [360],
       ),
     )..initialise();
   }

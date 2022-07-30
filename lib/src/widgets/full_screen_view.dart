@@ -32,21 +32,23 @@ class _FullScreenViewState extends State<FullScreenView>
 
   @override
   Widget build(BuildContext context) {
-    const circularProgressIndicator = CircularProgressIndicator(
-      backgroundColor: Colors.black87,
-      color: Colors.white,
-      strokeWidth: 2,
-    );
+    final loadingWidget = _podCtr.podPlayerConfig.onLoading?.call() ??
+        const CircularProgressIndicator(
+          backgroundColor: Colors.black87,
+          color: Colors.white,
+          strokeWidth: 2,
+        );
+
     return WillPopScope(
       onWillPop: () async {
         if (kIsWeb) {
-          _podCtr.disableFullScreen(
+          await _podCtr.disableFullScreen(
             context,
             widget.tag,
             enablePop: false,
           );
         }
-        if (!kIsWeb) _podCtr.disableFullScreen(context, widget.tag);
+        if (!kIsWeb) await _podCtr.disableFullScreen(context, widget.tag);
         return true;
       },
       child: Scaffold(
@@ -61,7 +63,7 @@ class _FullScreenViewState extends State<FullScreenView>
                 width: MediaQuery.of(context).size.width,
                 child: Center(
                   child: _podCtr.videoCtr == null
-                      ? circularProgressIndicator
+                      ? loadingWidget
                       : _podCtr.videoCtr!.value.isInitialized
                           ? _PodCoreVideoPlayer(
                               tag: widget.tag,
@@ -69,7 +71,7 @@ class _FullScreenViewState extends State<FullScreenView>
                               videoAspectRatio:
                                   _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
                             )
-                          : circularProgressIndicator,
+                          : loadingWidget,
                 ),
               ),
             ),

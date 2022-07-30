@@ -95,7 +95,7 @@ class PodGetXVideoController extends _PodUiController {
         break;
       case PodVideoPlayerType.networkQualityUrls:
         final _url = await getUrlFromVideoQualityUrls(
-          quality: podPlayerConfig.initialVideoQuality,
+          qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: playVideoFrom.videoQualityUrls!,
         );
 
@@ -113,8 +113,9 @@ class PodGetXVideoController extends _PodUiController {
       case PodVideoPlayerType.youtube:
         final _urls =
             await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
+
         final _url = await getUrlFromVideoQualityUrls(
-          quality: podPlayerConfig.initialVideoQuality ?? 360,
+          qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: _urls,
         );
 
@@ -130,11 +131,10 @@ class PodGetXVideoController extends _PodUiController {
 
         break;
       case PodVideoPlayerType.vimeo:
-
-        ///
-        final _url = await getVideoUrlFromVimeoId(
-          quality: podPlayerConfig.initialVideoQuality,
-          videoId: playVideoFrom.dataSource,
+        await getQualityUrlsFromVimeoId(playVideoFrom.dataSource!);
+        final _url = await getUrlFromVideoQualityUrls(
+          qualityList: podPlayerConfig.videoQualityPriority,
+          videoUrls: vimeoOrVideoUrls,
         );
 
         _videoCtr = VideoPlayerController.network(
@@ -205,7 +205,13 @@ class PodGetXVideoController extends _PodUiController {
       if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
         if (isFullScreen) {
           _html.document.exitFullscreen();
-          if (!isWebPopupOverlayOpen) disableFullScreen(appContext, tag);
+          if (!isWebPopupOverlayOpen) {
+            disableFullScreen(
+              appContext,
+              tag,
+              onExitFullscreen: podPlayerConfig.onExitFullscreen,
+            );
+          }
         }
       }
 
@@ -216,10 +222,19 @@ class PodGetXVideoController extends _PodUiController {
   void toggleFullScreenOnWeb(BuildContext context, String tag) {
     if (isFullScreen) {
       _html.document.exitFullscreen();
-      if (!isWebPopupOverlayOpen) disableFullScreen(context, tag);
+      if (!isWebPopupOverlayOpen) {
+        disableFullScreen(
+          context,
+          tag,
+          onExitFullscreen: podPlayerConfig.onExitFullscreen,
+        );
+      }
     } else {
       _html.document.documentElement?.requestFullscreen();
-      enableFullScreen(tag);
+      enableFullScreen(
+        tag,
+        onEnterFullscreen: podPlayerConfig.onEnterFullscreen,
+      );
     }
   }
 
