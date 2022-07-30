@@ -34,23 +34,8 @@ class _VideoOverlays extends StatelessWidget {
             videoPlayerType: _podCtr.videoPlayerType,
             podProgresssBar: _progressBar,
           );
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: _VideoGestureDetector(
-                  tag: tag,
-                  onTap: _podCtr.togglePlayPauseVideo,
-                  onDoubleTap: () =>
-                      _podCtr.toggleFullScreenOnWeb(context, tag),
-                  child: const ColoredBox(
-                    color: Colors.black38,
-                    child: SizedBox.expand(),
-                  ),
-                ),
-              ),
-              _podCtr.overlayBuilder?.call(overlayOptions) ?? const SizedBox(),
-            ],
-          );
+          return _podCtr.overlayBuilder?.call(overlayOptions) ??
+              const SizedBox();
         },
       );
     } else {
