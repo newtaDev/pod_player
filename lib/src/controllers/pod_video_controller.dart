@@ -159,14 +159,11 @@ class _PodVideoController extends _PodUiController {
     update(['update-all']);
   }
 
-  Future<void> enableFullScreen(
-    String tag, {
-    AsyncCallback? onEnterFullscreen,
-  }) async {
+  Future<void> enableFullScreen(String tag) async {
     podLog('-full-screen-enable-entred');
     if (!isFullScreen) {
-      if (onEnterFullscreen != null) {
-        await onEnterFullscreen();
+      if (onToggleFullScreen != null) {
+        await onToggleFullScreen!(true);
       } else {
         await Future.wait([
           SystemChrome.setPreferredOrientations(
@@ -181,7 +178,6 @@ class _PodVideoController extends _PodUiController {
 
       _enableFullScreenView(tag);
       isFullScreen = true;
-      onFullScreenToggle?.call(isFullScreen);
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         update(['full-screen']);
         update(['update-all']);
@@ -192,13 +188,12 @@ class _PodVideoController extends _PodUiController {
   Future<void> disableFullScreen(
     BuildContext context,
     String tag, {
-    AsyncCallback? onExitFullscreen,
     bool enablePop = true,
   }) async {
     podLog('-full-screen-disable-entred');
     if (isFullScreen) {
-      if (onExitFullscreen != null) {
-        await onExitFullscreen();
+      if (onToggleFullScreen != null) {
+        await onToggleFullScreen!(false);
       } else {
         await Future.wait([
           SystemChrome.setPreferredOrientations([
@@ -215,7 +210,6 @@ class _PodVideoController extends _PodUiController {
 
       if (enablePop) _exitFullScreenView(context, tag);
       isFullScreen = false;
-      onFullScreenToggle?.call(isFullScreen);
       update(['full-screen']);
       update(['update-all']);
     }
@@ -248,7 +242,7 @@ class _PodVideoController extends _PodUiController {
     }
   }
 
-  ///claculates video `position` or `duration`
+  /// Calculates video `position` or `duration`
   String calculateVideoDuration(Duration _duration) {
     final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
     final _totalMinute = _duration.toString().split(':')[1];

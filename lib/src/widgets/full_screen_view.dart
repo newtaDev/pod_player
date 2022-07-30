@@ -32,7 +32,7 @@ class _FullScreenViewState extends State<FullScreenView>
 
   @override
   Widget build(BuildContext context) {
-    final loadingWidget = _podCtr.podPlayerConfig.onLoading?.call() ??
+    final loadingWidget = _podCtr.onLoading?.call(context) ??
         const CircularProgressIndicator(
           backgroundColor: Colors.black87,
           color: Colors.white,

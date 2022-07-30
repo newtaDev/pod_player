@@ -76,7 +76,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   id: 'podVideoState',
                   builder: (_podCtr) {
                     final loadingWidget =
-                        _podCtr.podPlayerConfig.onLoading?.call() ??
+                        _podCtr.onLoading?.call(context) ??
                             const Center(
                               child: CircularProgressIndicator(
                                 backgroundColor: Colors.transparent,

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
@@ -206,11 +207,7 @@ class PodGetXVideoController extends _PodGesturesController {
         if (isFullScreen) {
           _html.document.exitFullscreen();
           if (!isWebPopupOverlayOpen) {
-            disableFullScreen(
-              appContext,
-              tag,
-              onExitFullscreen: podPlayerConfig.onExitFullscreen,
-            );
+            disableFullScreen(appContext, tag);
           }
         }
       }
@@ -223,18 +220,11 @@ class PodGetXVideoController extends _PodGesturesController {
     if (isFullScreen) {
       _html.document.exitFullscreen();
       if (!isWebPopupOverlayOpen) {
-        disableFullScreen(
-          context,
-          tag,
-          onExitFullscreen: podPlayerConfig.onExitFullscreen,
-        );
+        disableFullScreen(context, tag);
       }
     } else {
       _html.document.documentElement?.requestFullscreen();
-      enableFullScreen(
-        tag,
-        onEnterFullscreen: podPlayerConfig.onEnterFullscreen,
-      );
+      enableFullScreen(tag);
     }
   }
 

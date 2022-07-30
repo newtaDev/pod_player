@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:universal_html/html.dart' as _html;
@@ -44,7 +45,16 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
-  final void Function(bool isFullScreen)? onFullScreenToggle;
+
+  /// Optional callback, fired when full screen mode toggles.
+  ///
+  /// Important: If this method is set, the configuration of [DeviceOrientation]
+  /// and [SystemUiMode] is up to you.
+  final Future Function(bool isFullScreen)? onToggleFullScreen;
+
+  /// Sets a custom loading widget.
+  /// If no widget is informed, a default [CircularProgressIndicator] will be shown.
+  final WidgetBuilder? onLoading;
 
   PodVideoPlayer({
     Key? key,
@@ -61,7 +71,8 @@ class PodVideoPlayer extends StatefulWidget {
     this.onVideoError,
     this.backgroundColor,
     this.videoThumbnail,
-    this.onFullScreenToggle,
+    this.onToggleFullScreen,
+    this.onLoading,
   }) : super(key: key) {
     addToUiController();
   }
@@ -72,13 +83,14 @@ class PodVideoPlayer extends StatefulWidget {
   void addToUiController() {
     Get.find<PodGetXVideoController>(tag: controller.getTag)
 
-      ///add to ui controller
+    ///add to ui controller
       ..podPlayerLabels = podPlayerLabels
       ..alwaysShowProgressBar = alwaysShowProgressBar
       ..podProgressBarConfig = podProgressBarConfig
       ..overlayBuilder = overlayBuilder
       ..videoTitle = videoTitle
-      ..onFullScreenToggle = onFullScreenToggle
+      ..onToggleFullScreen = onToggleFullScreen
+      ..onLoading = onLoading
       ..videoThumbnail = videoThumbnail;
   }
 
@@ -201,7 +213,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
   }
 
   Widget _buildLoading() {
-    return widget.controller.podPlayerConfig.onLoading?.call() ??
+    return widget.onLoading?.call(context) ??
         const CircularProgressIndicator(
           backgroundColor: Colors.black87,
           color: Colors.white,
