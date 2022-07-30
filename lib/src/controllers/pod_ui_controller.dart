@@ -6,6 +6,8 @@ class _PodUiController extends _PodBaseController {
   Widget Function(OverLayOptions options)? overlayBuilder;
   Widget? videoTitle;
   DecorationImage? videoThumbnail;
+
+  /// Callback when fullscreen mode changes
   void Function(bool isFullScreen)? onFullScreenToggle;
 
   ///video player labels
