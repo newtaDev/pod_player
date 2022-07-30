@@ -10,8 +10,10 @@ class PlayVideoFrom {
   final Future<ClosedCaptionFile>? closedCaptionFile;
   final VideoPlayerOptions? videoPlayerOptions;
   final Map<String, String> httpHeaders;
+  final bool live;
 
   const PlayVideoFrom._({
+    this.live = false,
     this.dataSource,
     required this.playerType,
     this.formatHint,
@@ -88,12 +90,14 @@ class PlayVideoFrom {
   }
   factory PlayVideoFrom.youtube(
     String dataSource, {
+    bool live = false,
     VideoFormat? formatHint,
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
   }) {
     return PlayVideoFrom._(
+      live: live,
       playerType: PodVideoPlayerType.youtube,
       dataSource: dataSource,
       formatHint: formatHint,

@@ -44,22 +44,35 @@ class VideoApis {
 
   static Future<List<VideoQalityUrls>?> getYoutubeVideoQualityUrls(
     String youtubeIdOrUrl,
+    bool live,
   ) async {
     try {
       final yt = YoutubeExplode();
-      final muxed =
-          (await yt.videos.streamsClient.getManifest(youtubeIdOrUrl)).muxed;
-      final _urls = muxed
-          .map(
+      final urls = <VideoQalityUrls>[];
+      if (live) {
+        final url = await yt.videos.streamsClient.getHttpLiveStreamUrl(
+          VideoId(youtubeIdOrUrl),
+        );
+        urls.add(
+          VideoQalityUrls(
+            quality: 360,
+            url: url,
+          ),
+        );
+      } else {
+        final manifest = await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
+        urls.addAll(
+          manifest.muxed.map(
             (element) => VideoQalityUrls(
               quality: int.parse(element.qualityLabel.split('p')[0]),
               url: element.url.toString(),
             ),
-          )
-          .toList();
+          ),
+        );
+      }
       // Close the YoutubeExplode's http client.
       yt.close();
-      return _urls;
+      return urls;
     } catch (error) {
       if (error.toString().contains('XMLHttpRequest')) {
         log(
