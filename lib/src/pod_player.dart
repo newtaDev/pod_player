@@ -44,6 +44,7 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
+  final void Function(bool isFullScreen)? onFullScreenToggle;
 
   PodVideoPlayer({
     Key? key,
@@ -60,6 +61,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.onVideoError,
     this.backgroundColor,
     this.videoThumbnail,
+    this.onFullScreenToggle,
   }) : super(key: key) {
     addToUiController();
   }
@@ -70,12 +72,13 @@ class PodVideoPlayer extends StatefulWidget {
   void addToUiController() {
     Get.find<PodGetXVideoController>(tag: controller.getTag)
 
-    ///add to ui controller
+      ///add to ui controller
       ..podPlayerLabels = podPlayerLabels
       ..alwaysShowProgressBar = alwaysShowProgressBar
       ..podProgressBarConfig = podProgressBarConfig
       ..overlayBuilder = overlayBuilder
       ..videoTitle = videoTitle
+      ..onFullScreenToggle = onFullScreenToggle
       ..videoThumbnail = videoThumbnail;
   }
 

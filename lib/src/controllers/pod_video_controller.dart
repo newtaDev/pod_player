@@ -1,6 +1,6 @@
 part of 'pod_getx_video_controller.dart';
 
-class _PodVideoController extends _PodBaseController {
+class _PodVideoController extends _PodUiController {
   Timer? showOverlayTimer;
   Timer? showOverlayTimer1;
 
@@ -181,6 +181,7 @@ class _PodVideoController extends _PodBaseController {
 
       _enableFullScreenView(tag);
       isFullScreen = true;
+      onFullScreenToggle?.call(isFullScreen);
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         update(['full-screen']);
         update(['update-all']);
@@ -214,6 +215,7 @@ class _PodVideoController extends _PodBaseController {
 
       if (enablePop) _exitFullScreenView(context, tag);
       isFullScreen = false;
+      onFullScreenToggle?.call(isFullScreen);
       update(['full-screen']);
       update(['update-all']);
     }

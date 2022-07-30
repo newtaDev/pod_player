@@ -258,5 +258,11 @@ class PodPlayerController {
   static Future<List<VideoQalityUrls>?> getVimeoUrls(String videoId) {
     return VideoApis.getVimeoVideoQualityUrls(videoId);
   }
+
+  /// Hide overlay of video
+  void hideOverlay() => _ctr.isShowOverlay(false);
+
+  /// Show overlay of video
+  void showOverlay() => _ctr.isShowOverlay(true);
 // TODO(any): support for playlist
 }

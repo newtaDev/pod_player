@@ -156,6 +156,15 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                       });
                     }),
                     sizeH20,
+                    _iconButton('Show Overlay', Icons.slideshow_outlined,
+                        onPressed: () {
+                      controller.showOverlay();
+                    }),
+                    sizeH20,
+                    _iconButton('Hide Overlay', Icons.hide_image,
+                        onPressed: () {
+                      controller.hideOverlay();
+                    }),
                     _iconButton('Backward video 5s', Icons.replay_5_rounded,
                         onPressed: () {
                       controller.doubleTapVideoBackward(5);
