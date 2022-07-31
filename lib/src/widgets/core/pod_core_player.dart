@@ -4,6 +4,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
   final double videoAspectRatio;
   final String tag;
+
   const _PodCoreVideoPlayer({
     Key? key,
     required this.videoPlayerCtr,
@@ -42,7 +43,9 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   tag: tag,
                   id: 'video-progress',
                   builder: (_podCtr) {
-                    if (_podCtr.videoThumbnail == null) return const SizedBox();
+                    if (_podCtr.videoThumbnail == null) {
+                      return const SizedBox();
+                    }
 
                     if (_podCtr.podVideoState == PodVideoState.paused &&
                         _podCtr.videoPosition == Duration.zero) {
@@ -72,13 +75,15 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   tag: tag,
                   id: 'podVideoState',
                   builder: (_podCtr) {
-                    const loadingWidget = Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.transparent,
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    );
+                    final loadingWidget = _podCtr.onLoading?.call(context) ??
+                        const Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.transparent,
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        );
+
                     if (kIsWeb) {
                       switch (_podCtr.podVideoState) {
                         case PodVideoState.loading:

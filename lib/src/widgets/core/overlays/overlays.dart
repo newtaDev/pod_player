@@ -2,6 +2,7 @@ part of 'package:pod_player/src/pod_player.dart';
 
 class _VideoOverlays extends StatelessWidget {
   final String tag;
+
   const _VideoOverlays({
     Key? key,
     required this.tag,
@@ -34,8 +35,10 @@ class _VideoOverlays extends StatelessWidget {
             videoPlayerType: _podCtr.videoPlayerType,
             podProgresssBar: _progressBar,
           );
-          return _podCtr.overlayBuilder?.call(overlayOptions) ??
-              const SizedBox();
+
+          /// Returns the custom overlay, otherwise returns the default
+          /// overlay with gesture detector
+          return _podCtr.overlayBuilder!(overlayOptions);
         },
       );
     } else {
