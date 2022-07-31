@@ -50,7 +50,7 @@ class PodVideoPlayer extends StatefulWidget {
   ///
   /// Important: If this method is set, the configuration of [DeviceOrientation]
   /// and [SystemUiMode] is up to you.
-  final Future Function(bool isFullScreen)? onToggleFullScreen;
+  final Future<void> Function(bool isFullScreen)? onToggleFullScreen;
 
   /// Sets a custom loading widget.
   /// If no widget is informed, a default [CircularProgressIndicator] will be shown.

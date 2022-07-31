@@ -15,8 +15,7 @@ class PodPlayerController {
   late String getTag;
   bool _isCtrInitialised = false;
 
-  //ignore: prefer_typing_uninitialized_variables
-  var _initializationError;
+  Object? _initializationError;
 
   final PlayVideoFrom playVideoFrom;
   final PodPlayerConfig podPlayerConfig;
@@ -70,7 +69,13 @@ class PodPlayerController {
 
     /// If a wrong video is passed to the player, it'll never being loaded.
     if (_initializationError != null) {
-      throw _initializationError!;
+      if (_initializationError! is Exception) {
+        throw _initializationError! as Exception;
+      }
+      if (_initializationError! is Error) {
+        throw _initializationError! as Error;
+      }
+      throw Exception(_initializationError.toString());
     }
 
     await Future.delayed(const Duration(milliseconds: 500));
@@ -244,8 +249,11 @@ class PodPlayerController {
     _ctr.onVimeoVideoQualityChanged = callback;
   }
 
-  static Future<List<VideoQalityUrls>?> getYoutubeUrls(String youtubeIdOrUrl) {
-    return VideoApis.getYoutubeVideoQualityUrls(youtubeIdOrUrl);
+  static Future<List<VideoQalityUrls>?> getYoutubeUrls(
+    String youtubeIdOrUrl, {
+    bool live = false,
+  }) {
+    return VideoApis.getYoutubeVideoQualityUrls(youtubeIdOrUrl, live);
   }
 
   static Future<List<VideoQalityUrls>?> getVimeoUrls(String videoId) {
@@ -257,5 +265,4 @@ class PodPlayerController {
 
   /// Show overlay of video
   void showOverlay() => _ctr.isShowOverlay(true);
-// TODO(any): support for playlist
 }

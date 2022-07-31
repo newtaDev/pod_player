@@ -8,7 +8,7 @@ class _PodUiController extends _PodBaseController {
   DecorationImage? videoThumbnail;
 
   /// Callback when fullscreen mode changes
-  Future Function(bool isFullScreen)? onToggleFullScreen;
+  Future<void> Function(bool isFullScreen)? onToggleFullScreen;
 
   /// Builder for custom loading widget
   WidgetBuilder? onLoading;

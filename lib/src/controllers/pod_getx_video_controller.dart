@@ -112,9 +112,10 @@ class PodGetXVideoController extends _PodGesturesController {
 
         break;
       case PodVideoPlayerType.youtube:
-        final _urls =
-            await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
-
+        final _urls = await getVideoQualityUrlsFromYoutube(
+          playVideoFrom.dataSource!,
+          playVideoFrom.live,
+        );
         final _url = await getUrlFromVideoQualityUrls(
           qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: _urls,
