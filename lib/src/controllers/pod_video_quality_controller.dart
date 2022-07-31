@@ -14,13 +14,10 @@ class _PodVideoQualityController extends _PodVideoController {
   ///*vimeo player configs
   ///
   ///get all  `quality urls`
-  Future<void> getQualityUrlsFromVimeoId({
-    String? videoId,
-  }) async {
+  Future<void> getQualityUrlsFromVimeoId(String videoId) async {
     try {
       podVideoStateChanger(PodVideoState.loading);
-      final _vimeoVideoUrls =
-          await VideoApis.getVimeoVideoQualityUrls(videoId!);
+      final _vimeoVideoUrls = await VideoApis.getVimeoVideoQualityUrls(videoId);
 
       ///
       vimeoOrVideoUrls = _vimeoVideoUrls ?? [];
@@ -57,35 +54,31 @@ class _PodVideoQualityController extends _PodVideoController {
     );
   }
 
-  ///config vimeo player
-  Future<String> getVideoUrlFromVimeoId({
-    String? videoId,
-    int? quality,
-  }) async {
-    await getQualityUrlsFromVimeoId(videoId: videoId);
-    sortQualityVideoUrls(vimeoOrVideoUrls);
-    if (vimeoOrVideoUrls.isEmpty) {
-      throw Exception('videoQuality cannot be empty');
-    }
-    final q = quality ?? vimeoOrVideoUrls[0].quality;
-    final _qualityAndUrl = getQualityUrl(q);
-    _videoQualityUrl = _qualityAndUrl.url;
-    vimeoPlayingVideoQuality = _qualityAndUrl.quality;
-    return _videoQualityUrl;
-  }
-
   Future<String> getUrlFromVideoQualityUrls({
-    int? quality,
+    required List<int> qualityList,
     required List<VideoQalityUrls> videoUrls,
   }) async {
     sortQualityVideoUrls(videoUrls);
     if (vimeoOrVideoUrls.isEmpty) {
       throw Exception('videoQuality cannot be empty');
     }
-    final q = quality ?? vimeoOrVideoUrls[0].quality;
-    final _qualityAndUrl = getQualityUrl(q);
-    _videoQualityUrl = _qualityAndUrl.url;
-    vimeoPlayingVideoQuality = _qualityAndUrl.quality;
+
+    final fallback = vimeoOrVideoUrls[0];
+    VideoQalityUrls? urlWithQuality;
+    for (final quality in qualityList) {
+      urlWithQuality = vimeoOrVideoUrls.firstWhere(
+        (url) => url.quality == quality,
+        orElse: () => fallback,
+      );
+
+      if (urlWithQuality != fallback) {
+        break;
+      }
+    }
+
+    urlWithQuality ??= fallback;
+    _videoQualityUrl = urlWithQuality.url;
+    vimeoPlayingVideoQuality = urlWithQuality.quality;
     return _videoQualityUrl;
   }
 

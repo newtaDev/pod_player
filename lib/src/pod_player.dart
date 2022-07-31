@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:universal_html/html.dart' as _html;
@@ -11,15 +13,23 @@ import 'controllers/pod_getx_video_controller.dart';
 import 'utils/logger.dart';
 import 'widgets/material_icon_button.dart';
 
-part 'widgets/core/pod_core_player.dart';
-part 'widgets/core/overlays/mobile_bottomsheet.dart';
-part 'widgets/core/overlays/mobile_overlay.dart';
-part 'widgets/core/overlays/overlays.dart';
-part 'widgets/core/overlays/web_dropdown_menu.dart';
-part 'widgets/core/overlays/web_overlay.dart';
-part 'widgets/core/video_gesture_detector.dart';
-part 'widgets/full_screen_view.dart';
 part 'widgets/animated_play_pause_icon.dart';
+
+part 'widgets/core/overlays/mobile_bottomsheet.dart';
+
+part 'widgets/core/overlays/mobile_overlay.dart';
+
+part 'widgets/core/overlays/overlays.dart';
+
+part 'widgets/core/overlays/web_dropdown_menu.dart';
+
+part 'widgets/core/overlays/web_overlay.dart';
+
+part 'widgets/core/pod_core_player.dart';
+
+part 'widgets/core/video_gesture_detector.dart';
+
+part 'widgets/full_screen_view.dart';
 
 class PodVideoPlayer extends StatefulWidget {
   final PodPlayerController controller;
@@ -35,7 +45,17 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
-  final void Function(bool isFullScreen)? onFullScreenToggle;
+
+  /// Optional callback, fired when full screen mode toggles.
+  ///
+  /// Important: If this method is set, the configuration of [DeviceOrientation]
+  /// and [SystemUiMode] is up to you.
+  final Future<void> Function(bool isFullScreen)? onToggleFullScreen;
+
+  /// Sets a custom loading widget.
+  /// If no widget is informed, a default [CircularProgressIndicator] will be shown.
+  final WidgetBuilder? onLoading;
+
   PodVideoPlayer({
     Key? key,
     required this.controller,
@@ -51,7 +71,8 @@ class PodVideoPlayer extends StatefulWidget {
     this.onVideoError,
     this.backgroundColor,
     this.videoThumbnail,
-    this.onFullScreenToggle,
+    this.onToggleFullScreen,
+    this.onLoading,
   }) : super(key: key) {
     addToUiController();
   }
@@ -68,7 +89,8 @@ class PodVideoPlayer extends StatefulWidget {
       ..podProgressBarConfig = podProgressBarConfig
       ..overlayBuilder = overlayBuilder
       ..videoTitle = videoTitle
-      ..onFullScreenToggle = onFullScreenToggle
+      ..onToggleFullScreen = onToggleFullScreen
+      ..onLoading = onLoading
       ..videoThumbnail = videoThumbnail;
   }
 
@@ -79,6 +101,7 @@ class PodVideoPlayer extends StatefulWidget {
 class _PodVideoPlayerState extends State<PodVideoPlayer>
     with TickerProviderStateMixin {
   late PodGetXVideoController _podCtr;
+
   // late String tag;
   @override
   void initState() {
@@ -130,6 +153,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
 
   ///
   double _frameAspectRatio = 16 / 9;
+
   @override
   Widget build(BuildContext context) {
     final circularProgressIndicator = _thumbnailAndLoadingWidget();
@@ -170,20 +194,14 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
               builder: (_podCtr) {
                 /// Check if has any error
                 if (_podCtr.podVideoState == PodVideoState.error) {
-                  if (widget.onVideoError != null) {
-                    return widget.onVideoError!();
-                  }
-                  return _videoErrorWidget;
+                  return widget.onVideoError?.call() ?? _videoErrorWidget;
                 }
+
                 return AspectRatio(
                   aspectRatio: _frameAspectRatio,
-                  child: Center(
-                    child: _podCtr.videoCtr == null
-                        ? circularProgressIndicator
-                        : _podCtr.videoCtr!.value.isInitialized
-                            ? _buildPlayer()
-                            : circularProgressIndicator,
-                  ),
+                  child: _podCtr.videoCtr?.value.isInitialized ?? false
+                      ? _buildPlayer()
+                      : Center(child: circularProgressIndicator),
                 );
               },
             ),
@@ -193,33 +211,36 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
     );
   }
 
+  Widget _buildLoading() {
+    return widget.onLoading?.call(context) ??
+        const CircularProgressIndicator(
+          backgroundColor: Colors.black87,
+          color: Colors.white,
+          strokeWidth: 2,
+        );
+  }
+
   Widget _thumbnailAndLoadingWidget() {
-    return widget.videoThumbnail == null
-        ? const CircularProgressIndicator(
-            backgroundColor: Colors.black87,
-            color: Colors.white,
-            strokeWidth: 2,
-          )
-        : SizedBox.expand(
-            child: TweenAnimationBuilder<double>(
-              builder: (context, value, child) => Opacity(
-                opacity: value,
-                child: child,
-              ),
-              tween: Tween<double>(begin: 0.2, end: 0.7),
-              duration: const Duration(milliseconds: 400),
-              child: DecoratedBox(
-                decoration: BoxDecoration(image: widget.videoThumbnail),
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.black87,
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ),
-                ),
-              ),
-            ),
-          );
+    if (widget.videoThumbnail == null) {
+      return _buildLoading();
+    }
+
+    return SizedBox.expand(
+      child: TweenAnimationBuilder<double>(
+        builder: (context, value, child) => Opacity(
+          opacity: value,
+          child: child,
+        ),
+        tween: Tween<double>(begin: 0.2, end: 0.7),
+        duration: const Duration(milliseconds: 400),
+        child: DecoratedBox(
+          decoration: BoxDecoration(image: widget.videoThumbnail),
+          child: Center(
+            child: _buildLoading(),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildPlayer() {

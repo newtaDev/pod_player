@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
@@ -95,7 +96,7 @@ class PodGetXVideoController extends _PodGesturesController {
         break;
       case PodVideoPlayerType.networkQualityUrls:
         final _url = await getUrlFromVideoQualityUrls(
-          quality: podPlayerConfig.initialVideoQuality,
+          qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: playVideoFrom.videoQualityUrls!,
         );
 
@@ -113,8 +114,9 @@ class PodGetXVideoController extends _PodGesturesController {
       case PodVideoPlayerType.youtube:
         final _urls =
             await getVideoQualityUrlsFromYoutube(playVideoFrom.dataSource!);
+
         final _url = await getUrlFromVideoQualityUrls(
-          quality: podPlayerConfig.initialVideoQuality ?? 360,
+          qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: _urls,
         );
 
@@ -130,11 +132,10 @@ class PodGetXVideoController extends _PodGesturesController {
 
         break;
       case PodVideoPlayerType.vimeo:
-
-        ///
-        final _url = await getVideoUrlFromVimeoId(
-          quality: podPlayerConfig.initialVideoQuality,
-          videoId: playVideoFrom.dataSource,
+        await getQualityUrlsFromVimeoId(playVideoFrom.dataSource!);
+        final _url = await getUrlFromVideoQualityUrls(
+          qualityList: podPlayerConfig.videoQualityPriority,
+          videoUrls: vimeoOrVideoUrls,
         );
 
         _videoCtr = VideoPlayerController.network(
@@ -205,7 +206,9 @@ class PodGetXVideoController extends _PodGesturesController {
       if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
         if (isFullScreen) {
           _html.document.exitFullscreen();
-          if (!isWebPopupOverlayOpen) disableFullScreen(appContext, tag);
+          if (!isWebPopupOverlayOpen) {
+            disableFullScreen(appContext, tag);
+          }
         }
       }
 
@@ -216,7 +219,9 @@ class PodGetXVideoController extends _PodGesturesController {
   void toggleFullScreenOnWeb(BuildContext context, String tag) {
     if (isFullScreen) {
       _html.document.exitFullscreen();
-      if (!isWebPopupOverlayOpen) disableFullScreen(context, tag);
+      if (!isWebPopupOverlayOpen) {
+        disableFullScreen(context, tag);
+      }
     } else {
       _html.document.documentElement?.requestFullscreen();
       enableFullScreen(tag);
