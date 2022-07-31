@@ -83,7 +83,7 @@ class PodVideoPlayer extends StatefulWidget {
   void addToUiController() {
     Get.find<PodGetXVideoController>(tag: controller.getTag)
 
-    ///add to ui controller
+      ///add to ui controller
       ..podPlayerLabels = podPlayerLabels
       ..alwaysShowProgressBar = alwaysShowProgressBar
       ..podProgressBarConfig = podProgressBarConfig
@@ -111,8 +111,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
       PodGetXVideoController(),
       permanent: true,
       tag: widget.controller.getTag,
-    )
-      ..isVideoUiBinded = true;
+    )..isVideoUiBinded = true;
     if (_podCtr.wasVideoPlayingOnUiDispose ?? false) {
       _podCtr.podVideoStateChanger(PodVideoState.playing, updateUi: false);
     }
@@ -228,11 +227,10 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
 
     return SizedBox.expand(
       child: TweenAnimationBuilder<double>(
-        builder: (context, value, child) =>
-            Opacity(
-              opacity: value,
-              child: child,
-            ),
+        builder: (context, value, child) => Opacity(
+          opacity: value,
+          child: child,
+        ),
         tween: Tween<double>(begin: 0.2, end: 0.7),
         duration: const Duration(milliseconds: 400),
         child: DecoratedBox(
