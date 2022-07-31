@@ -93,7 +93,8 @@ class _PodVideoQualityController extends _PodVideoController {
     String youtubeIdOrUrl,
     bool live,
   ) async {
-    return await VideoApis.getYoutubeVideoQualityUrls(youtubeIdOrUrl, live) ?? [];
+    return await VideoApis.getYoutubeVideoQualityUrls(youtubeIdOrUrl, live) ??
+        [];
   }
 
   Future<void> changeVideoQuality(int? quality) async {
