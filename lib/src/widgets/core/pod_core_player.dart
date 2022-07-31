@@ -75,15 +75,14 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   tag: tag,
                   id: 'podVideoState',
                   builder: (_podCtr) {
-                    final loadingWidget =
-                        _podCtr.onLoading?.call(context) ??
-                            const Center(
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.transparent,
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            );
+                    final loadingWidget = _podCtr.onLoading?.call(context) ??
+                        const Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.transparent,
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        );
 
                     if (kIsWeb) {
                       switch (_podCtr.podVideoState) {
