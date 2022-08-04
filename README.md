@@ -37,7 +37,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 - Custom labels
 - `Change video quality` (for vimeo and youtube)
 - Enable/disable fullscreen player
-- [TODO] support for live youtube video
+- support for live youtube video
 - [TODO] support for video playlist
 
 ## Features on web

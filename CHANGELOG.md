@@ -1,10 +1,37 @@
+## 0.1.0
+
+- Breaking change:
+
+  - In `PodPlayerConfig` `initialVideoQuality` changed to `videoQualityPriority` to support priority of video qualities
+
+  ```dart
+  controller = PodPlayerController(
+  podPlayerConfig: const PodPlayerConfig(
+    videoQualityPriority: [1080, 720, 360],
+  ),
+  )..initialise()
+  ```
+
+- Features
+
+  - Support for youtube live videos By [`(@vodino)`](https://github.com/vodino)
+  - Added: `videoQualityPriority` to `PodPlayerConfig` By [`(@emersonsiega)`](https://github.com/emersonsiega)
+  - Added: callback `onToggleFullScreen` when changes in fullscreen mode [#48](https://github.com/newtaDev/pod_player/issues/48)
+  - Added: `hideOverlay` and `showOverlay` functions to controller
+
+- Bug Fixes
+  - Merged PR #54 By [`(@emersonsiega)`](https://github.com/emersonsiega)
+    - Fix unhandled exception on initialization [#49](https://github.com/newtaDev/pod_player/issues/49)
+    - Add video quality priority list
+    - Changes in `onToggleFullScreen`
+
 ## 0.0.8
 
-- Merged PR #37 & #38, By [`Jeferson Santos(@Jeferson505)`](https://github.com/Jeferson505)
+- Merged PR #37 & #38, By [`(@Jeferson505)`](https://github.com/Jeferson505)
   - Added `PodPlayerLabels` param to `PodVideoPlayer` widget
   - Added PodPlayerLabels usage example in `from_asset` file
   - Seted `normal` playback speed to `1x`
-- bug fix and added example for  playing videos in list
+- bug fix and added example for playing videos in list
 
 ## 0.0.7
 
