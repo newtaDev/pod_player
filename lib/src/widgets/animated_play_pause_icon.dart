@@ -62,9 +62,9 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
           builder: (_f) => MaterialIconButton(
             toolTipMesg: _f.isvideoPlaying
                 ? _podCtr.podPlayerLabels.pause ??
-                    'Pause${kIsWeb ? ' (space)' : ''}'
+                    'Pause${isWebDesktop ? ' (space)' : ''}'
                 : _podCtr.podPlayerLabels.play ??
-                    'Play${kIsWeb ? ' (space)' : ''}',
+                    'Play${isWebDesktop ? ' (space)' : ''}',
             onPressed:
                 _podCtr.isOverlayVisible ? _podCtr.togglePlayPauseVideo : null,
             child: onStateChange(_podCtr),
@@ -75,7 +75,7 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
   }
 
   Widget onStateChange(PodGetXVideoController _podCtr) {
-    if (kIsWeb) return _playPause(_podCtr);
+    if (isWebDesktop) return _playPause(_podCtr);
     if (_podCtr.podVideoState == PodVideoState.loading) {
       return const SizedBox();
     } else {

@@ -41,14 +41,8 @@ class _FullScreenViewState extends State<FullScreenView>
 
     return WillPopScope(
       onWillPop: () async {
-        if (kIsWeb) {
-          await _podCtr.disableFullScreen(
-            context,
-            widget.tag,
-            enablePop: false,
-          );
-        }
-        if (!kIsWeb) await _podCtr.disableFullScreen(context, widget.tag);
+        _podCtr.fullScreenExitUpdateUi();
+        await _podCtr.removePreferredOrientations();
         return true;
       },
       child: Scaffold(

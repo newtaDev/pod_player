@@ -53,8 +53,8 @@ class _VideoOverlays extends StatelessWidget {
             child: Stack(
               fit: StackFit.passthrough,
               children: [
-                if (!kIsWeb) _MobileOverlay(tag: tag),
-                if (kIsWeb) _WebOverlay(tag: tag),
+                if (!isWebDesktop) _MobileOverlay(tag: tag),
+                if (isWebDesktop) _WebOverlay(tag: tag),
               ],
             ),
           );

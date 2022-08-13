@@ -162,9 +162,32 @@ class _PodVideoController extends _PodUiController {
   Future<void> enableFullScreen(String tag) async {
     podLog('-full-screen-enable-entred');
     if (!isFullScreen) {
-      if (onToggleFullScreen != null) {
-        await onToggleFullScreen!(true);
-      } else {
+      if (kIsWeb) {
+        // ignore: unawaited_futures
+        _html.document.documentElement?.requestFullscreen();
+        await Future.delayed(const Duration(microseconds: 500));
+      }
+
+      // if (onToggleFullScreen != null) {
+      //   await onToggleFullScreen!(true);
+      // } else {
+      // ignore: unawaited_futures
+      //  await Future.wait([
+      //   SystemChrome.setPreferredOrientations(
+      //     [
+      //       if (!kIsWeb) DeviceOrientation.landscapeLeft,
+      //       DeviceOrientation.landscapeRight,
+      //     ],
+      //   ),
+      //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),
+      // ]);
+      isFullScreen = true;
+      update(['full-screen']);
+      update(['update-all']);
+      // }
+      _enableFullScreenView(tag);
+
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
         await Future.wait([
           SystemChrome.setPreferredOrientations(
             [
@@ -174,13 +197,6 @@ class _PodVideoController extends _PodUiController {
           ),
           SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),
         ]);
-      }
-
-      _enableFullScreenView(tag);
-      isFullScreen = true;
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        update(['full-screen']);
-        update(['update-all']);
       });
     }
   }
@@ -192,27 +208,37 @@ class _PodVideoController extends _PodUiController {
   }) async {
     podLog('-full-screen-disable-entred');
     if (isFullScreen) {
-      if (onToggleFullScreen != null) {
-        await onToggleFullScreen!(false);
-      } else {
-        await Future.wait([
-          SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
-          ]),
-          SystemChrome.setPreferredOrientations(DeviceOrientation.values),
-          SystemChrome.setEnabledSystemUIMode(
-            SystemUiMode.manual,
-            overlays: SystemUiOverlay.values,
-          ),
-        ]);
-      }
-
+      // if (onToggleFullScreen != null) {
+      //   await onToggleFullScreen!(false);
+      // } else {
+      if (kIsWeb) _html.document.exitFullscreen();
+      fullScreenExitUpdateUi();
+      await removePreferredOrientations();
       if (enablePop) _exitFullScreenView(context, tag);
       isFullScreen = false;
       update(['full-screen']);
       update(['update-all']);
     }
+  }
+
+  Future<void> removePreferredOrientations() async {
+    await Future.wait([
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]),
+      SystemChrome.setPreferredOrientations(DeviceOrientation.values),
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: SystemUiOverlay.values,
+      ),
+    ]);
+  }
+
+  void fullScreenExitUpdateUi() {
+    isFullScreen = false;
+    update(['full-screen']);
+    update(['update-all']);
   }
 
   void _exitFullScreenView(BuildContext context, String tag) {
@@ -221,25 +247,23 @@ class _PodVideoController extends _PodUiController {
   }
 
   void _enableFullScreenView(String tag) {
-    if (!isFullScreen) {
-      podLog('full-screen-enabled');
+    podLog('full-screen-enabled');
 
-      Navigator.push(
-        mainContext,
-        PageRouteBuilder(
-          fullscreenDialog: true,
-          pageBuilder: (BuildContext context, _, __) => FullScreenView(
-            tag: tag,
-          ),
-          reverseTransitionDuration: const Duration(milliseconds: 400),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
+    Navigator.push(
+      mainContext,
+      PageRouteBuilder(
+        fullscreenDialog: true,
+        pageBuilder: (BuildContext context, _, __) => FullScreenView(
+          tag: tag,
         ),
-      );
-    }
+        reverseTransitionDuration: const Duration(milliseconds: 400),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+      ),
+    );
   }
 
   /// Calculates video `position` or `duration`

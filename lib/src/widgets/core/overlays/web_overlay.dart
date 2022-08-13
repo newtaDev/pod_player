@@ -183,21 +183,9 @@ class _WebOverlayBottomControlles extends StatelessWidget {
   ) {
     if (_podCtr.isOverlayVisible) {
       if (_podCtr.isFullScreen) {
-        if (kIsWeb) {
-          _html.document.exitFullscreen();
-          _podCtr.disableFullScreen(context, tag);
-          return;
-        } else {
-          _podCtr.disableFullScreen(context, tag);
-        }
+        _podCtr.disableFullScreen(context, tag);
       } else {
-        if (kIsWeb) {
-          _html.document.documentElement?.requestFullscreen();
-          _podCtr.enableFullScreen(tag);
-          return;
-        } else {
-          _podCtr.enableFullScreen(tag);
-        }
+        _podCtr.enableFullScreen(tag);
       }
     } else {
       _podCtr.toggleVideoOverlay();

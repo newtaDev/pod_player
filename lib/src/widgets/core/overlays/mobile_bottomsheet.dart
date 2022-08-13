@@ -225,9 +225,9 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               MaterialIconButton(
                 toolTipMesg: _podCtr.isFullScreen
                     ? _podCtr.podPlayerLabels.exitFullScreen ??
-                        'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                        'Exit full screen${isWebDesktop ? ' (f)' : ''}'
                     : _podCtr.podPlayerLabels.fullscreen ??
-                        'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                        'Fullscreen${isWebDesktop ? ' (f)' : ''}',
                 color: itemColor,
                 onPressed: () {
                   if (_podCtr.isOverlayVisible) {

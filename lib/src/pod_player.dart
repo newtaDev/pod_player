@@ -10,6 +10,7 @@ import 'package:universal_html/html.dart' as _html;
 
 import '../pod_player.dart';
 import 'controllers/pod_getx_video_controller.dart';
+import 'utils/global.dart';
 import 'utils/logger.dart';
 import 'widgets/material_icon_button.dart';
 

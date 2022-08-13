@@ -237,8 +237,6 @@ class PodPlayerController {
   /// If onToggleFullScreen is set, you must handle the device
   /// orientation by yourself.
   void disableFullScreen(BuildContext context) {
-    _html.document.exitFullscreen();
-
     if (!_ctr.isWebPopupOverlayOpen) {
       _ctr.disableFullScreen(context, getTag);
     }

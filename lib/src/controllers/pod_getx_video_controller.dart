@@ -206,7 +206,7 @@ class PodGetXVideoController extends _PodGesturesController {
       }
       if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
         if (isFullScreen) {
-          _html.document.exitFullscreen();
+          // _html.document.exitFullscreen();
           if (!isWebPopupOverlayOpen) {
             disableFullScreen(appContext, tag);
           }
@@ -219,12 +219,10 @@ class PodGetXVideoController extends _PodGesturesController {
 
   void toggleFullScreenOnWeb(BuildContext context, String tag) {
     if (isFullScreen) {
-      _html.document.exitFullscreen();
       if (!isWebPopupOverlayOpen) {
         disableFullScreen(context, tag);
       }
     } else {
-      _html.document.documentElement?.requestFullscreen();
       enableFullScreen(tag);
     }
   }

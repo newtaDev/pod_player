@@ -84,7 +84,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                           ),
                         );
 
-                    if (kIsWeb) {
+                    if (isWebDesktop) {
                       switch (_podCtr.podVideoState) {
                         case PodVideoState.loading:
                           return loadingWidget;
@@ -124,7 +124,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   },
                 ),
               ),
-              if (!kIsWeb)
+              if (isWebMobile || !kIsWeb)
                 GetBuilder<PodGetXVideoController>(
                   tag: tag,
                   id: 'full-screen',
