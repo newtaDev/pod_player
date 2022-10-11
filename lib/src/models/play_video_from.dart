@@ -88,6 +88,23 @@ class PlayVideoFrom {
       httpHeaders: httpHeaders,
     );
   }
+
+  factory PlayVideoFrom.vimeoPrivateVideos(
+    String dataSource, {
+    VideoFormat? formatHint,
+    Future<ClosedCaptionFile>? closedCaptionFile,
+    VideoPlayerOptions? videoPlayerOptions,
+    Map<String, String> httpHeaders = const {},
+  }) {
+    return PlayVideoFrom._(
+      playerType: PodVideoPlayerType.vimeoPrivateVideos,
+      dataSource: dataSource,
+      formatHint: formatHint,
+      closedCaptionFile: closedCaptionFile,
+      videoPlayerOptions: videoPlayerOptions,
+      httpHeaders: httpHeaders,
+    );
+  }
   factory PlayVideoFrom.youtube(
     String dataSource, {
     bool live = false,
