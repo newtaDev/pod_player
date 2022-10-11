@@ -27,7 +27,9 @@ class _PodVideoQualityController extends _PodVideoController {
   }
 
   Future<void> getQualityUrlsFromVimeoPrivateId(
-      String videoId, Map<String, String> httpHeader) async {
+    String videoId,
+    Map<String, String> httpHeader,
+  ) async {
     try {
       podVideoStateChanger(PodVideoState.loading);
       final _vimeoVideoUrls =
