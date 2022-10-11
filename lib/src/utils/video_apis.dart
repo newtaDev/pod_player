@@ -43,24 +43,22 @@ class VideoApis {
   }
 
   static Future<List<VideoQalityUrls>?> getVimeoPrivateVideoQualityUrls(
-      String videoId,
-      Map<String, String> httpHeader,
+    String videoId,
+    Map<String, String> httpHeader,
   ) async {
     try {
       final response = await http.get(
-          Uri.parse('https://api.vimeo.com/videos/$videoId'),
-          headers: httpHeader,
+        Uri.parse('https://api.vimeo.com/videos/$videoId'),
+        headers: httpHeader,
       );
-      final jsonData =
-      jsonDecode(response.body)['files'];
+      final jsonData = jsonDecode(response.body)['files'];
 
       final List<VideoQalityUrls> list = [];
       for (int i = 0; i < jsonData.length; i++) {
-        final String quality = (jsonData[i]['rendition'] as String?)
-            ?.split('p')
-            .first ?? '0';
+        final String quality =
+            (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
         final int? number = int.tryParse(quality);
-        if (number != null && number!= 0) {
+        if (number != null && number != 0) {
           list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link']));
         }
       }
