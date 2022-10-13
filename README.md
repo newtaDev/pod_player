@@ -27,6 +27,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 - Play `youtube` videos (using video URL or ID)
 - Play `vimeo` videos (using video ID)
+- Play `vimeo` private videos (using video ID, access token)
 - Video overlay similar to youtube
 - `Double tap` to seek video.
 - On video tap show/hide video overlay.
@@ -132,6 +133,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 - [Add Thumbnail](#add-thumbnail)
 - [How to play video from youtube](#how-to-play-video-from-youtube)
 - [How to play video from vimeo](#how-to-play-video-from-vimeo)
+- [How to play video from vimeo private videos](#How-to-play-video-from-vimeo-private-videos)
 - [video player Options](#options)
 - [Example](#example)
 
