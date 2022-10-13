@@ -378,6 +378,57 @@ class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
 }
 
 ```
+## How to play video from vimeo private videos
+
+---
+
+```dart
+import 'package:pod_player/pod_player.dart';
+import 'package:flutter/material.dart';
+
+class PlayVideoFromVimeoPrivateVideo extends StatefulWidget {
+  const PlayVideoFromVimeoPrivateVideo({Key? key}) : super(key: key);
+
+  @override
+  State<PlayVideoFromVimeoPrivateVideo> createState() =>
+          _PlayVideoFromVimeoPrivateVideoState();
+}
+
+class _PlayVideoFromVimeoPrivateVideoState 
+    extends State<PlayVideoFromVimeoPrivateVideo> {
+  late final PodPlayerController controller;
+
+  @override
+  void initState() {
+    String videoId = 'your private video id'; 
+    String token = 'your access token'; 
+    final Map<String, String> headers = <String, String>{};
+    headers['Authorization'] = 'Bearer ${token}';
+
+    controller = PodPlayerController(
+      playVideoFrom: PlayVideoFrom.vimeoPrivateVideos(
+        videoId,
+        httpHeaders: headers
+      ),
+    )..initialise();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PodVideoPlayer(controller: controller),
+    );
+  }
+}
+
+```
 
 ## Options
 
