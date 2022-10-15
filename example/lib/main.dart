@@ -1,6 +1,7 @@
 import 'package:example/screens/from_asset.dart';
 import 'package:example/screens/from_network.dart';
 import 'package:example/screens/from_network_urls.dart';
+import 'package:example/screens/from_vimeo_private_id.dart';
 import 'package:example/screens/from_youtube.dart';
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       routes: {
         '/fromVimeoId': (context) => const PlayVideoFromVimeoId(),
+        '/fromVimeoPrivateId': (context) => const PlayVideoFromVimeoPrivateId(),
         '/fromYoutube': (context) => const PlayVideoFromYoutube(),
         '/fromAsset': (context) => const PlayVideoFromAsset(),
         '/fromNetwork': (context) => const PlayVideoFromNetwork(),
@@ -70,6 +72,11 @@ class _MainPageState extends State<MainPage> {
             _button(
               'Play video from Vimeo',
               onPressed: () => Navigator.of(context).pushNamed('/fromVimeoId'),
+            ),
+            _button(
+              'Play private video from Vimeo',
+              onPressed: () =>
+                  Navigator.of(context).pushNamed('/fromVimeoPrivateId'),
             ),
             _button(
               'Custom Video player',

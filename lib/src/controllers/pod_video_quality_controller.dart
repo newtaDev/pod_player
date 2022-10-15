@@ -26,6 +26,22 @@ class _PodVideoQualityController extends _PodVideoController {
     }
   }
 
+  Future<void> getQualityUrlsFromVimeoPrivateId(
+    String videoId,
+    Map<String, String> httpHeader,
+  ) async {
+    try {
+      podVideoStateChanger(PodVideoState.loading);
+      final _vimeoVideoUrls =
+          await VideoApis.getVimeoPrivateVideoQualityUrls(videoId, httpHeader);
+
+      ///
+      vimeoOrVideoUrls = _vimeoVideoUrls ?? [];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   void sortQualityVideoUrls(
     List<VideoQalityUrls>? urls,
   ) {

@@ -12,4 +12,5 @@ enum PodVideoPlayerType {
   asset,
   vimeo,
   youtube,
+  vimeoPrivateVideos,
 }

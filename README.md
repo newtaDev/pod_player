@@ -27,6 +27,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 - Play `youtube` videos (using video URL or ID)
 - Play `vimeo` videos (using video ID)
+- Play `vimeo` private videos (using video ID, access token)
 - Video overlay similar to youtube
 - `Double tap` to seek video.
 - On video tap show/hide video overlay.
@@ -132,6 +133,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 - [Add Thumbnail](#add-thumbnail)
 - [How to play video from youtube](#how-to-play-video-from-youtube)
 - [How to play video from vimeo](#how-to-play-video-from-vimeo)
+- [How to play video from vimeo private videos](#How-to-play-video-from-vimeo-private-videos)
 - [video player Options](#options)
 - [Example](#example)
 
@@ -359,6 +361,57 @@ class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
   void initState() {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.vimeo('518228118'),
+    )..initialise();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PodVideoPlayer(controller: controller),
+    );
+  }
+}
+
+```
+## How to play video from vimeo private videos
+
+---
+
+```dart
+import 'package:pod_player/pod_player.dart';
+import 'package:flutter/material.dart';
+
+class PlayVideoFromVimeoPrivateVideo extends StatefulWidget {
+  const PlayVideoFromVimeoPrivateVideo({Key? key}) : super(key: key);
+
+  @override
+  State<PlayVideoFromVimeoPrivateVideo> createState() =>
+          _PlayVideoFromVimeoPrivateVideoState();
+}
+
+class _PlayVideoFromVimeoPrivateVideoState 
+    extends State<PlayVideoFromVimeoPrivateVideo> {
+  late final PodPlayerController controller;
+
+  @override
+  void initState() {
+    String videoId = 'your private video id'; 
+    String token = 'your access token'; 
+    final Map<String, String> headers = <String, String>{};
+    headers['Authorization'] = 'Bearer ${token}';
+
+    controller = PodPlayerController(
+      playVideoFrom: PlayVideoFrom.vimeoPrivateVideos(
+        videoId,
+        httpHeaders: headers
+      ),
     )..initialise();
     super.initState();
   }
