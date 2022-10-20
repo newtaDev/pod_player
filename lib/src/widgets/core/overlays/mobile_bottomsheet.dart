@@ -25,9 +25,11 @@ class _MobileBottomSheet extends StatelessWidget {
                 Timer(const Duration(milliseconds: 100), () {
                   showModalBottomSheet(
                     context: context,
-                    builder: (context) => _VideoQualitySelectorMob(
-                      tag: tag,
-                      onTap: null,
+                    builder: (context) => SafeArea(
+                      child: _VideoQualitySelectorMob(
+                        tag: tag,
+                        onTap: null,
+                      ),
                     ),
                   );
                 });
@@ -57,9 +59,11 @@ class _MobileBottomSheet extends StatelessWidget {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
-                  builder: (context) => _VideoPlaybackSelectorMob(
-                    tag: tag,
-                    onTap: null,
+                  builder: (context) => SafeArea(
+                    child: _VideoPlaybackSelectorMob(
+                      tag: tag,
+                      onTap: null,
+                    ),
                   ),
                 );
               });
