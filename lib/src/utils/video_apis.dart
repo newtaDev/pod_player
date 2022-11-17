@@ -11,6 +11,31 @@ String podErrorString(String val) {
 }
 
 class VideoApis {
+  static Future<List<VideoQalityUrls>?> getVimeoVideoQualityUrlsFromCustomLink(
+    String videoLink, {
+    Map<String, String>? headers,
+  }) async {
+    try {
+      final response = await http.get(
+        Uri.parse(videoLink),
+        headers: {'Accept': 'application/json', 'Content-type': 'application/json', ...headers ?? {}},
+      );
+      final jsonData = jsonDecode(response.body)['files'];
+
+      return _parseVimeoPrivateUrlResponse(jsonData);
+    } catch (error) {
+      if (error.toString().contains('XMLHttpRequest')) {
+        log(
+          podErrorString(
+            '(INFO) To play vimeo video in WEB, Please enable CORS in your browser',
+          ),
+        );
+      }
+      debugPrint('===== VIMEO API ERROR: $error ==========');
+      rethrow;
+    }
+  }
+
   static Future<List<VideoQalityUrls>?> getVimeoVideoQualityUrls(
     String videoId,
   ) async {
@@ -18,8 +43,7 @@ class VideoApis {
       final response = await http.get(
         Uri.parse('https://player.vimeo.com/video/$videoId/config'),
       );
-      final jsonData =
-          jsonDecode(response.body)['request']['files']['progressive'];
+      final jsonData = jsonDecode(response.body)['request']['files']['progressive'];
       return List.generate(
         jsonData.length,
         (index) => VideoQalityUrls(
@@ -53,16 +77,7 @@ class VideoApis {
       );
       final jsonData = jsonDecode(response.body)['files'];
 
-      final List<VideoQalityUrls> list = [];
-      for (int i = 0; i < jsonData.length; i++) {
-        final String quality =
-            (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
-        final int? number = int.tryParse(quality);
-        if (number != null && number != 0) {
-          list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link']));
-        }
-      }
-      return list;
+      return _parseVimeoPrivateUrlResponse(jsonData);
     } catch (error) {
       if (error.toString().contains('XMLHttpRequest')) {
         log(
@@ -94,8 +109,7 @@ class VideoApis {
           ),
         );
       } else {
-        final manifest =
-            await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
+        final manifest = await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
         urls.addAll(
           manifest.muxed.map(
             (element) => VideoQalityUrls(
@@ -119,5 +133,17 @@ class VideoApis {
       debugPrint('===== YOUTUBE API ERROR: $error ==========');
       rethrow;
     }
+  }
+
+  static List<VideoQalityUrls> _parseVimeoPrivateUrlResponse(jsonData) {
+    final List<VideoQalityUrls> list = [];
+    for (int i = 0; i < jsonData.length; i++) {
+      final String quality = (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
+      final int? number = int.tryParse(quality);
+      if (number != null && number != 0) {
+        list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link']));
+      }
+    }
+    return list;
   }
 }

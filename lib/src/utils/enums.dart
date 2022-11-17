@@ -13,4 +13,5 @@ enum PodVideoPlayerType {
   vimeo,
   youtube,
   vimeoPrivateVideos,
+  vimeoCustomUrl,
 }

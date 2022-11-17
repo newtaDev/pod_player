@@ -149,6 +149,24 @@ class PodGetXVideoController extends _PodGesturesController {
         playingVideoUrl = _url;
 
         break;
+      case PodVideoPlayerType.vimeoCustomUrl:
+        await getQualityUrlsFromVimeoUrl(playVideoFrom.dataSource!);
+        final _url = await getUrlFromVideoQualityUrls(
+          qualityList: podPlayerConfig.videoQualityPriority,
+          videoUrls: vimeoOrVideoUrls,
+        );
+
+        _videoCtr = VideoPlayerController.network(
+          _url,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          formatHint: playVideoFrom.formatHint,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+          httpHeaders: playVideoFrom.httpHeaders,
+        );
+        playingVideoUrl = _url;
+
+        break;
+
       case PodVideoPlayerType.asset:
 
         ///
