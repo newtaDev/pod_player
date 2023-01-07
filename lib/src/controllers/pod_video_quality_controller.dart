@@ -106,9 +106,12 @@ class _PodVideoQualityController extends _PodVideoController {
         [];
   }
 
-  Future<void> changeVideoQuality(int? quality) async {
+  Future<void> changeVideoQuality(int? quality, {PlayVideoFrom? playVideoFromParam}) async {
     if (vimeoOrVideoUrls.isEmpty) {
       throw Exception('videoQuality cannot be empty');
+    }
+    if (playVideoFromParam == null) {
+      throw Exception('playVideoFrom cannot be null');
     }
     if (vimeoPlayingVideoQuality != quality) {
       _videoQualityUrl = vimeoOrVideoUrls
@@ -121,7 +124,13 @@ class _PodVideoQualityController extends _PodVideoController {
       podVideoStateChanger(PodVideoState.paused);
       podVideoStateChanger(PodVideoState.loading);
       playingVideoUrl = _videoQualityUrl;
-      _videoCtr = VideoPlayerController.network(_videoQualityUrl);
+      _videoCtr = VideoPlayerController.network(
+        _videoQualityUrl,
+        videoPlayerOptions: playVideoFromParam.videoPlayerOptions,
+        closedCaptionFile: playVideoFromParam.closedCaptionFile,
+        formatHint: playVideoFromParam.formatHint,
+        httpHeaders: playVideoFromParam.httpHeaders,
+      );
       await _videoCtr?.initialize();
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
       _videoCtr?.addListener(videoListner);

@@ -304,4 +304,9 @@ class PodGetXVideoController extends _PodGesturesController {
     keyboardFocusWeb?.addListener(keyboadListner);
     await videoInit();
   }
+
+  @override
+  Future<void> changeVideoQuality(int? quality, {PlayVideoFrom? playVideoFromParam}) async {
+    return super.changeVideoQuality(quality, playVideoFromParam: playVideoFromParam ?? playVideoFrom);
+  }
 }
