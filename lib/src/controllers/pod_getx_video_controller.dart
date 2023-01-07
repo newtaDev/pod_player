@@ -19,6 +19,8 @@ part 'pod_video_controller.dart';
 part 'pod_video_quality_controller.dart';
 
 class PodGetXVideoController extends _PodGesturesController {
+
+
   ///main videoplayer controller
   VideoPlayerController? get videoCtr => _videoCtr;
 
@@ -35,6 +37,9 @@ class PodGetXVideoController extends _PodGesturesController {
 
   ///
   Duration get videoPosition => _videoPosition;
+
+  ///Core video player ui directionality
+  TextDirection uiDirectionality = TextDirection.ltr;
 
   bool controllerInitialized = false;
   late PodPlayerConfig podPlayerConfig;

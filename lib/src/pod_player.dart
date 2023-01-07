@@ -45,6 +45,7 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
+  final TextDirection uiDirectionality;
 
   /// Optional callback, fired when full screen mode toggles.
   ///
@@ -73,6 +74,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.videoThumbnail,
     this.onToggleFullScreen,
     this.onLoading,
+    this.uiDirectionality = TextDirection.ltr,
   }) : super(key: key) {
     addToUiController();
   }
@@ -91,7 +93,8 @@ class PodVideoPlayer extends StatefulWidget {
       ..videoTitle = videoTitle
       ..onToggleFullScreen = onToggleFullScreen
       ..onLoading = onLoading
-      ..videoThumbnail = videoThumbnail;
+      ..videoThumbnail = videoThumbnail
+      ..uiDirectionality = uiDirectionality;
   }
 
   @override
