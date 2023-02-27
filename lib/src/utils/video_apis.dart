@@ -18,15 +18,14 @@ class VideoApis {
       final response = await http.get(
         Uri.parse('https://player.vimeo.com/video/$videoId/config'),
       );
-      final jsonData =
-          jsonDecode(response.body)['request']['files']['progressive'];
+      final jsonData = jsonDecode(response.body)['request']['files']['progressive'];
       return List.generate(
-        jsonData.length,
+        int.parse(jsonData.length.toString()),
         (index) => VideoQalityUrls(
           quality: int.parse(
             (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
           ),
-          url: jsonData[index]['url'],
+          url: jsonData[index]['url'].toString(),
         ),
       );
     } catch (error) {
@@ -51,15 +50,14 @@ class VideoApis {
         Uri.parse('https://api.vimeo.com/videos/$videoId'),
         headers: httpHeader,
       );
-      final jsonData = jsonDecode(response.body)['files'];
+      final jsonData = jsonDecode(response.body)['files'] as List;
 
       final List<VideoQalityUrls> list = [];
       for (int i = 0; i < jsonData.length; i++) {
-        final String quality =
-            (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
+        final String quality = (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
         final int? number = int.tryParse(quality);
         if (number != null && number != 0) {
-          list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link']));
+          list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link'].toString()));
         }
       }
       return list;
@@ -94,8 +92,7 @@ class VideoApis {
           ),
         );
       } else {
-        final manifest =
-            await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
+        final manifest = await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
         urls.addAll(
           manifest.muxed.map(
             (element) => VideoQalityUrls(

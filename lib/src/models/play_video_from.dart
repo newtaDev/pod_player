@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../pod_player.dart';
 
 class PlayVideoFrom {
@@ -5,7 +7,7 @@ class PlayVideoFrom {
   final PodVideoPlayerType playerType;
   final VideoFormat? formatHint;
   final String? package;
-  final dynamic file;
+  final File? file;
   final List<VideoQalityUrls>? videoQualityUrls;
   final Future<ClosedCaptionFile>? closedCaptionFile;
   final VideoPlayerOptions? videoPlayerOptions;
@@ -13,9 +15,9 @@ class PlayVideoFrom {
   final bool live;
 
   const PlayVideoFrom._({
+    required this.playerType,
     this.live = false,
     this.dataSource,
-    required this.playerType,
     this.formatHint,
     this.package,
     this.file,
@@ -60,7 +62,7 @@ class PlayVideoFrom {
   ///File Doesnot support web apps
   ///[file] is `File` Datatype import it from `dart:io`
   factory PlayVideoFrom.file(
-    dynamic file, {
+    File file, {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   }) {

@@ -9,21 +9,19 @@ import '../models/pod_progress_bar_config.dart';
 /// Renders progress bar for the video using custom paint.
 class PodProgressBar extends StatefulWidget {
   const PodProgressBar({
-    Key? key,
+    required this.tag,
+    super.key,
     PodProgressBarConfig? podProgressBarConfig,
     this.onDragStart,
     this.onDragEnd,
     this.onDragUpdate,
     this.alignment = Alignment.center,
-    required this.tag,
-  })  : podProgressBarConfig =
-            podProgressBarConfig ?? const PodProgressBarConfig(),
-        super(key: key);
+  }) : podProgressBarConfig = podProgressBarConfig ?? const PodProgressBarConfig();
 
   final PodProgressBarConfig podProgressBarConfig;
-  final Function()? onDragStart;
-  final Function()? onDragEnd;
-  final Function()? onDragUpdate;
+  final void Function()? onDragStart;
+  final void Function()? onDragEnd;
+  final void Function()? onDragUpdate;
   final Alignment alignment;
   final String tag;
 
@@ -41,8 +39,7 @@ class _PodProgressBarState extends State<PodProgressBar> {
     if (box != null) {
       final Offset tapPos = box.globalToLocal(globalPosition);
       final double relative = tapPos.dx / box.size.width;
-      final Duration position =
-          (videoPlayerValue?.duration ?? Duration.zero) * relative;
+      final Duration position = (videoPlayerValue?.duration ?? Duration.zero) * relative;
       _podCtr.seekTo(position);
     }
   }
@@ -54,8 +51,8 @@ class _PodProgressBarState extends State<PodProgressBar> {
     return GetBuilder<PodGetXVideoController>(
       tag: widget.tag,
       id: 'video-progress',
-      builder: (_podCtr) {
-        videoPlayerValue = _podCtr.videoCtr?.value;
+      builder: (podCtr) {
+        videoPlayerValue = podCtr.videoCtr?.value;
         return LayoutBuilder(
           builder: (context, size) {
             return GestureDetector(
@@ -65,10 +62,9 @@ class _PodProgressBarState extends State<PodProgressBar> {
                 if (!videoPlayerValue!.isInitialized) {
                   return;
                 }
-                _controllerWasPlaying =
-                    _podCtr.videoCtr?.value.isPlaying ?? false;
+                _controllerWasPlaying = podCtr.videoCtr?.value.isPlaying ?? false;
                 if (_controllerWasPlaying) {
-                  _podCtr.videoCtr?.pause();
+                  podCtr.videoCtr?.pause();
                 }
 
                 if (widget.onDragStart != null) {
@@ -79,16 +75,16 @@ class _PodProgressBarState extends State<PodProgressBar> {
                 if (!videoPlayerValue!.isInitialized) {
                   return;
                 }
-                _podCtr.isShowOverlay(true);
+                podCtr.isShowOverlay(true);
                 seekToRelativePosition(details.globalPosition);
 
                 widget.onDragUpdate?.call();
               },
               onHorizontalDragEnd: (DragEndDetails details) {
                 if (_controllerWasPlaying) {
-                  _podCtr.videoCtr?.play();
+                  podCtr.videoCtr?.play();
                 }
-                _podCtr.toggleVideoOverlay();
+                podCtr.toggleVideoOverlay();
 
                 if (widget.onDragEnd != null) {
                   widget.onDragEnd?.call();
@@ -120,15 +116,11 @@ class _PodProgressBarState extends State<PodProgressBar> {
             child: GetBuilder<PodGetXVideoController>(
               tag: widget.tag,
               id: 'overlay',
-              builder: (_podCtr) => CustomPaint(
+              builder: (podCtr) => CustomPaint(
                 painter: _ProgressBarPainter(
                   videoPlayerValue!,
                   podProgressBarConfig: widget.podProgressBarConfig.copyWith(
-                    circleHandlerRadius: _podCtr.isOverlayVisible ||
-                            widget
-                                .podProgressBarConfig.alwaysVisibleCircleHandler
-                        ? widget.podProgressBarConfig.circleHandlerRadius
-                        : 0,
+                    circleHandlerRadius: podCtr.isOverlayVisible || widget.podProgressBarConfig.alwaysVisibleCircleHandler ? widget.podProgressBarConfig.circleHandlerRadius : 0,
                   ),
                 ),
                 size: Size(
@@ -160,17 +152,15 @@ class _ProgressBarPainter extends CustomPainter {
     final double height = podProgressBarConfig!.height;
     final double width = size.width;
     final double curveRadius = podProgressBarConfig!.curveRadius;
-    final double circleHandlerRadius =
-        podProgressBarConfig!.circleHandlerRadius;
-    final Paint backgroundPaint =
-        podProgressBarConfig!.getBackgroundPaint != null
-            ? podProgressBarConfig!.getBackgroundPaint!(
-                width: width,
-                height: height,
-                circleHandlerRadius: circleHandlerRadius,
-              )
-            : Paint()
-          ..color = podProgressBarConfig!.backgroundColor;
+    final double circleHandlerRadius = podProgressBarConfig!.circleHandlerRadius;
+    final Paint backgroundPaint = podProgressBarConfig!.getBackgroundPaint != null
+        ? podProgressBarConfig!.getBackgroundPaint!(
+            width: width,
+            height: height,
+            circleHandlerRadius: circleHandlerRadius,
+          )
+        : Paint()
+      ..color = podProgressBarConfig!.backgroundColor;
 
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -186,10 +176,8 @@ class _ProgressBarPainter extends CustomPainter {
       return;
     }
 
-    final double playedPartPercent =
-        value.position.inMilliseconds / value.duration.inMilliseconds;
-    final double playedPart =
-        playedPartPercent > 1 ? width : playedPartPercent * width;
+    final double playedPartPercent = value.position.inMilliseconds / value.duration.inMilliseconds;
+    final double playedPart = playedPartPercent > 1 ? width : playedPartPercent * width;
 
     for (final DurationRange range in value.buffered) {
       final double start = range.startFraction(value.duration) * width;
@@ -239,16 +227,15 @@ class _ProgressBarPainter extends CustomPainter {
       playedPaint,
     );
 
-    final Paint handlePaint =
-        podProgressBarConfig!.getCircleHandlerPaint != null
-            ? podProgressBarConfig!.getCircleHandlerPaint!(
-                width: width,
-                height: height,
-                playedPart: playedPart,
-                circleHandlerRadius: circleHandlerRadius,
-              )
-            : Paint()
-          ..color = podProgressBarConfig!.circleHandlerColor;
+    final Paint handlePaint = podProgressBarConfig!.getCircleHandlerPaint != null
+        ? podProgressBarConfig!.getCircleHandlerPaint!(
+            width: width,
+            height: height,
+            playedPart: playedPart,
+            circleHandlerRadius: circleHandlerRadius,
+          )
+        : Paint()
+      ..color = podProgressBarConfig!.circleHandlerColor;
 
     canvas.drawCircle(
       Offset(playedPart, height / 2),

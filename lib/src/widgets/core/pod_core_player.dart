@@ -6,25 +6,22 @@ class _PodCoreVideoPlayer extends StatelessWidget {
   final String tag;
 
   const _PodCoreVideoPlayer({
-    Key? key,
     required this.videoPlayerCtr,
     required this.videoAspectRatio,
     required this.tag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
+    final podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Builder(
-      builder: (_ctrx) {
+      builder: (ctrx) {
         return RawKeyboardListener(
           autofocus: true,
-          focusNode:
-              (_podCtr.isFullScreen ? FocusNode() : _podCtr.keyboardFocusWeb) ??
-                  FocusNode(),
-          onKey: (value) => _podCtr.onKeyBoardEvents(
+          focusNode: (podCtr.isFullScreen ? FocusNode() : podCtr.keyboardFocusWeb) ?? FocusNode(),
+          onKey: (value) => podCtr.onKeyBoardEvents(
             event: value,
-            appContext: _ctrx,
+            appContext: ctrx,
             tag: tag,
           ),
           child: Stack(
@@ -42,13 +39,12 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                 builder: (_) => GetBuilder<PodGetXVideoController>(
                   tag: tag,
                   id: 'video-progress',
-                  builder: (_podCtr) {
-                    if (_podCtr.videoThumbnail == null) {
+                  builder: (podCtr) {
+                    if (podCtr.videoThumbnail == null) {
                       return const SizedBox();
                     }
 
-                    if (_podCtr.podVideoState == PodVideoState.paused &&
-                        _podCtr.videoPosition == Duration.zero) {
+                    if (podCtr.podVideoState == PodVideoState.paused && podCtr.videoPosition == Duration.zero) {
                       return SizedBox.expand(
                         child: TweenAnimationBuilder<double>(
                           builder: (context, value, child) => Opacity(
@@ -59,7 +55,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                           duration: const Duration(milliseconds: 400),
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              image: _podCtr.videoThumbnail,
+                              image: podCtr.videoThumbnail,
                             ),
                           ),
                         ),
@@ -74,8 +70,8 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                 child: GetBuilder<PodGetXVideoController>(
                   tag: tag,
                   id: 'podVideoState',
-                  builder: (_podCtr) {
-                    final loadingWidget = _podCtr.onLoading?.call(context) ??
+                  builder: (podCtr) {
+                    final loadingWidget = podCtr.onLoading?.call(context) ??
                         const Center(
                           child: CircularProgressIndicator(
                             backgroundColor: Colors.transparent,
@@ -85,7 +81,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                         );
 
                     if (kIsWeb) {
-                      switch (_podCtr.podVideoState) {
+                      switch (podCtr.podVideoState) {
                         case PodVideoState.loading:
                           return loadingWidget;
                         case PodVideoState.paused:
@@ -116,7 +112,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                           return const SizedBox();
                       }
                     } else {
-                      if (_podCtr.podVideoState == PodVideoState.loading) {
+                      if (podCtr.podVideoState == PodVideoState.loading) {
                         return loadingWidget;
                       }
                       return const SizedBox();
@@ -128,21 +124,19 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                 GetBuilder<PodGetXVideoController>(
                   tag: tag,
                   id: 'full-screen',
-                  builder: (_podCtr) => _podCtr.isFullScreen
+                  builder: (podCtr) => podCtr.isFullScreen
                       ? const SizedBox()
                       : GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'overlay',
-                          builder: (_podCtr) => _podCtr.isOverlayVisible ||
-                                  !_podCtr.alwaysShowProgressBar
+                          builder: (podCtr) => podCtr.isOverlayVisible || !podCtr.alwaysShowProgressBar
                               ? const SizedBox()
                               : Align(
                                   alignment: Alignment.bottomCenter,
                                   child: PodProgressBar(
                                     tag: tag,
                                     alignment: Alignment.bottomCenter,
-                                    podProgressBarConfig:
-                                        _podCtr.podProgressBarConfig,
+                                    podProgressBarConfig: podCtr.podProgressBarConfig,
                                   ),
                                 ),
                         ),

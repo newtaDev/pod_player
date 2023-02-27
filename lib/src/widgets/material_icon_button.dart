@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class MaterialIconButton extends StatelessWidget {
   const MaterialIconButton({
-    Key? key,
-    this.color,
     required this.child,
-    this.radius = 12,
     required this.toolTipMesg,
+    super.key,
+    this.color,
+    this.radius = 12,
     this.onPressed,
     this.onHover,
     this.onTapDown,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final Widget child;

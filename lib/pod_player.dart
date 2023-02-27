@@ -1,5 +1,3 @@
-library pod_player;
-
 export 'package:video_player/video_player.dart';
 
 export 'src/controllers/pod_player_controller.dart';
