@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   # ui
-  lottie: ^1.3.0  
+  lottie: ^2.2.0  
   # services
   video_player: ^2.4.5
   http: ^0.13.4  
