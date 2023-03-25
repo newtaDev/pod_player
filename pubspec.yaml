@@ -11,18 +11,15 @@ dependencies:
   flutter:
     sdk: flutter
   # ui
-  lottie: ^1.3.0  
+  lottie: ^2.3.0
   # services
-  video_player: ^2.4.5
-  http: ^0.13.4  
+  video_player: ^2.6.0
+  http: ^0.13.5
   get: ^4.6.5  
-  wakelock: ^0.6.1+2 
-  universal_html: ^2.0.8 
-  youtube_explode_dart: ^1.11.0
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  very_good_analysis: ^2.4.0
+  wakelock: ^0.6.2
+  universal_html: ^2.2.1
+  youtube_explode_dart: ^1.12.4
+  screen_brightness: ^0.2.2
 
 flutter:
   assets:
