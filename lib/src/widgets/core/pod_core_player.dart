@@ -187,6 +187,18 @@ class _PodCoreVideoPlayerState extends State<_PodCoreVideoPlayer> {
                                   ),
                           ),
                   ),
+                ///----- WaterMark-----------
+                GetBuilder<PodGetXVideoController>(
+                    tag: widget.tag,
+                    id: 'watermark',
+                    builder: (controller) {
+                  return AspectRatio(
+                    aspectRatio:
+                    controller.videoCtr?.value.aspectRatio ?? 16 / 9,
+                    child:
+                    controller.waterMark != null ?controller.waterMark!: const SizedBox(),
+                  );
+                }),
               ],
             ),
           );

@@ -37,7 +37,7 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
-
+  final Widget? waterMark;
   /// Optional callback, fired when full screen mode toggles.
   ///
   /// Important: If this method is set, the configuration of [DeviceOrientation]
@@ -51,6 +51,7 @@ class PodVideoPlayer extends StatefulWidget {
   PodVideoPlayer({
     Key? key,
     required this.controller,
+    this.waterMark,
     this.frameAspectRatio = 16 / 9,
     this.videoAspectRatio = 16 / 9,
     this.alwaysShowProgressBar = true,
@@ -83,7 +84,8 @@ class PodVideoPlayer extends StatefulWidget {
       ..videoTitle = videoTitle
       ..onToggleFullScreen = onToggleFullScreen
       ..onLoading = onLoading
-      ..videoThumbnail = videoThumbnail;
+      ..videoThumbnail = videoThumbnail
+      ..waterMark = waterMark;
   }
 
   @override
