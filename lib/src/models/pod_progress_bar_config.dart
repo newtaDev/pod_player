@@ -40,7 +40,7 @@ class PodProgressBarConfig {
     this.getBufferedPaint,
     this.getCircleHandlerPaint,
     this.getBackgroundPaint,
-    this.height = 3.6,
+    this.height = 5,
     this.padding = EdgeInsets.zero,
     this.circleHandlerRadius = 8,
     this.curveRadius = 4,

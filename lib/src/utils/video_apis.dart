@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+
 import '../models/vimeo_models.dart';
 
 String podErrorString(String val) {
@@ -104,7 +105,9 @@ class VideoApis {
             ),
           ),
         );
+        urls.removeWhere((element) => element.quality == 144);
       }
+
       // Close the YoutubeExplode's http client.
       yt.close();
       return urls;

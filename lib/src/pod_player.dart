@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 import 'package:universal_html/html.dart' as _html;
 
 import '../pod_player.dart';
@@ -14,21 +14,13 @@ import 'utils/logger.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/animated_play_pause_icon.dart';
-
 part 'widgets/core/overlays/mobile_bottomsheet.dart';
-
 part 'widgets/core/overlays/mobile_overlay.dart';
-
 part 'widgets/core/overlays/overlays.dart';
-
 part 'widgets/core/overlays/web_dropdown_menu.dart';
-
 part 'widgets/core/overlays/web_overlay.dart';
-
 part 'widgets/core/pod_core_player.dart';
-
 part 'widgets/core/video_gesture_detector.dart';
-
 part 'widgets/full_screen_view.dart';
 
 class PodVideoPlayer extends StatefulWidget {
@@ -45,7 +37,7 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
-
+  final Widget? waterMark;
   /// Optional callback, fired when full screen mode toggles.
   ///
   /// Important: If this method is set, the configuration of [DeviceOrientation]
@@ -59,6 +51,7 @@ class PodVideoPlayer extends StatefulWidget {
   PodVideoPlayer({
     Key? key,
     required this.controller,
+    this.waterMark,
     this.frameAspectRatio = 16 / 9,
     this.videoAspectRatio = 16 / 9,
     this.alwaysShowProgressBar = true,
@@ -91,7 +84,8 @@ class PodVideoPlayer extends StatefulWidget {
       ..videoTitle = videoTitle
       ..onToggleFullScreen = onToggleFullScreen
       ..onLoading = onLoading
-      ..videoThumbnail = videoThumbnail;
+      ..videoThumbnail = videoThumbnail
+      ..waterMark = waterMark;
   }
 
   @override

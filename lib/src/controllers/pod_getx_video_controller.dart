@@ -39,6 +39,7 @@ class PodGetXVideoController extends _PodGesturesController {
   bool controllerInitialized = false;
   late PodPlayerConfig podPlayerConfig;
   late PlayVideoFrom playVideoFrom;
+  Widget? waterMark;
   void config({
     required PlayVideoFrom playVideoFrom,
     required PodPlayerConfig playerConfig,
