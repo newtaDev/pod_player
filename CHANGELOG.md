@@ -1,3 +1,9 @@
+## 0.1.1
+  - Feature
+    - support vimeo private video [ref](https://github.com/newtaDev/pod_player#how-to-play-video-from-vimeo-private-videos)
+    - double tap ripple effect added
+  - upgraded dependencies
+  - merged PR #66 #77 #78
 ## 0.1.0
 
 - Breaking change:

@@ -68,7 +68,13 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
   <img src="https://user-images.githubusercontent.com/85326522/160871693-74b468de-839d-4ae3-9ef0-581066130072.gif" alt="pod_player">
 </h1>
 
+- Video player on web
 ---
+
+<h1 align="center">
+  <a><img src="https://user-images.githubusercontent.com/85326522/160885274-41be06af-ae6d-41f3-8cff-21767fde8dad.gif" alt="pod_player"></a>
+</h1>
+
 
 - Vimeo player and custom video player
 
@@ -116,11 +122,6 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ---
 
----
-
-<h1 align="center">
-  <a><img src="https://user-images.githubusercontent.com/85326522/160885274-41be06af-ae6d-41f3-8cff-21767fde8dad.gif" alt="pod_player"></a>
-</h1>
 
 ## Usage
 
