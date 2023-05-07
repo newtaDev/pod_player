@@ -31,25 +31,35 @@ class _WebOverlay extends StatelessWidget {
           ),
         ),
         Positioned.fill(
-          child: Row(
-            children: [
-              Expanded(
-                child: IgnorePointer(
-                  child: _LeftRightDoubleTapBox(
-                    tag: tag,
-                    isLeft: true,
+          child: GetBuilder<PodGetXVideoController>(
+            tag: tag,
+            id: 'double-tap',
+            builder: (_podCtr) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: IgnorePointer(
+                      child: DoubleTapIcon(
+                        onDoubleTap: () {},
+                        tag: tag,
+                        isForward: false,
+                        iconOnly: true,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: IgnorePointer(
-                  child: _LeftRightDoubleTapBox(
-                    tag: tag,
-                    isLeft: false,
+                  Expanded(
+                    child: IgnorePointer(
+                      child: DoubleTapIcon(
+                        onDoubleTap: () {},
+                        tag: tag,
+                        isForward: true,
+                        iconOnly: true,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ),
         IgnorePointer(child: _podCtr.videoTitle ?? const SizedBox()),

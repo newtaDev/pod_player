@@ -5,12 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:universal_html/html.dart' as _html;
 
 import '../pod_player.dart';
 import 'controllers/pod_getx_video_controller.dart';
 import 'utils/logger.dart';
+import 'widgets/double_tap_icon.dart';
 import 'widgets/material_icon_button.dart';
 
 part 'widgets/animated_play_pause_icon.dart';
