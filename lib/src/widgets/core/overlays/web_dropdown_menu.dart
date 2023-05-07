@@ -18,7 +18,6 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
     return Theme(
       data: Theme.of(context).copyWith(
         focusColor: Colors.white,
-        selectedRowColor: Colors.white,
       ),
       child: GetBuilder<PodGetXVideoController>(
         tag: widget.tag,

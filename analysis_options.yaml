@@ -13,7 +13,6 @@ analyzer:
 linter:
   rules:
     omit_local_variable_types: false
-    missing_required_param: true
     prefer_const_declarations: true
     prefer_const_constructors: true
     public_member_api_docs: false
@@ -22,7 +21,6 @@ linter:
     lines_longer_than_80_chars: false
     prefer_relative_imports: true
     always_use_package_imports: false
-    import_of_legacy_library_into_null_safe: true
     avoid_print: true
     prefer_single_quotes: true
     avoid_redundant_argument_values: true
