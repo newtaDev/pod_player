@@ -1,3 +1,5 @@
+## 0.1.2
+  - fixed #82
 ## 0.1.1
   - Feature
     - support vimeo private video [ref](https://github.com/newtaDev/pod_player#how-to-play-video-from-vimeo-private-videos)
