@@ -20,7 +20,7 @@ class VideoApis {
       );
       final jsonData =
           jsonDecode(response.body)['request']['files']['progressive'];
-      return List.generate(
+      final progressiveUrls = List.generate(
         jsonData.length,
         (index) => VideoQalityUrls(
           quality: int.parse(
@@ -29,6 +29,20 @@ class VideoApis {
           url: jsonData[index]['url'],
         ),
       );
+      if (progressiveUrls.isEmpty) {
+        final jsonRes =
+            jsonDecode(response.body)['request']['files']['hls']['cdns'];
+        for (final element in (jsonRes as Map).entries.toList()) {
+          progressiveUrls.add(
+            VideoQalityUrls(
+              quality: 720,
+              url: element.value['url'],
+            ),
+          );
+          break;
+        }
+      }
+      return progressiveUrls;
     } catch (error) {
       if (error.toString().contains('XMLHttpRequest')) {
         log(
