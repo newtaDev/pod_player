@@ -4,6 +4,7 @@ class _PodVideoController extends _PodUiController {
   Timer? showOverlayTimer;
   Timer? showOverlayTimer1;
 
+  bool showPlaybackSpeed = true;
   bool isOverlayVisible = true;
   bool isLooping = false;
   bool isFullScreen = false;

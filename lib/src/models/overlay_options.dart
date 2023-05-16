@@ -4,6 +4,7 @@ class OverLayOptions {
   final PodVideoState podVideoState;
   final Duration videoDuration;
   final Duration videoPosition;
+  final bool showPlaybackSpeed;
   final bool isFullScreen;
   final bool isLooping;
   final bool isOverlayVisible;
@@ -17,6 +18,7 @@ class OverLayOptions {
     required this.podVideoState,
     required this.videoDuration,
     required this.videoPosition,
+    required this.showPlaybackSpeed,
     required this.isFullScreen,
     required this.isLooping,
     required this.isOverlayVisible,

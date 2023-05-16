@@ -38,6 +38,7 @@ class PodVideoPlayer extends StatefulWidget {
   final bool alwaysShowProgressBar;
   final bool matchVideoAspectRatioToFrame;
   final bool matchFrameAspectRatioToVideo;
+  final bool showPlaybackSpeed;
   final PodProgressBarConfig podProgressBarConfig;
   final PodPlayerLabels podPlayerLabels;
   final Widget Function(OverLayOptions options)? overlayBuilder;
@@ -68,6 +69,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.videoTitle,
     this.matchVideoAspectRatioToFrame = false,
     this.matchFrameAspectRatioToVideo = false,
+    this.showPlaybackSpeed = true,
     this.onVideoError,
     this.backgroundColor,
     this.videoThumbnail,
@@ -111,7 +113,9 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
       PodGetXVideoController(),
       permanent: true,
       tag: widget.controller.getTag,
-    )..isVideoUiBinded = true;
+    )
+      ..isVideoUiBinded = true
+      ..showPlaybackSpeed = widget.showPlaybackSpeed;
     if (_podCtr.wasVideoPlayingOnUiDispose ?? false) {
       _podCtr.podVideoStateChanger(PodVideoState.playing, updateUi: false);
     }

@@ -25,6 +25,7 @@ class _VideoOverlays extends StatelessWidget {
             podVideoState: _podCtr.podVideoState,
             videoDuration: _podCtr.videoDuration,
             videoPosition: _podCtr.videoPosition,
+            showPlaybackSpeed: _podCtr.showPlaybackSpeed,
             isFullScreen: _podCtr.isFullScreen,
             isLooping: _podCtr.isLooping,
             isOverlayVisible: _podCtr.isOverlayVisible,
