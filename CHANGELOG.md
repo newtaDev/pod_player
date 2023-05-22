@@ -1,3 +1,8 @@
+## 0.1.4
+  - added pod player logo to pub.dev
+## 0.1.3
+  - fix: unable to find directory entry in pubspec.yaml #114
+  - merged PR #109 
 ## 0.1.2
   - fixed #82
 ## 0.1.1
