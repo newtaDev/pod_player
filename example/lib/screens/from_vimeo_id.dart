@@ -11,6 +11,7 @@ class PlayVideoFromVimeoId extends StatefulWidget {
 class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   late final PodPlayerController controller;
   final videoTextFieldCtr = TextEditingController();
+  final hashTextFieldCtr = TextEditingController();
 
   @override
   void initState() {
@@ -60,6 +61,18 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
             ),
           ),
         ),
+        Expanded(
+          flex: 2,
+          child: TextField(
+            controller: hashTextFieldCtr,
+            decoration: const InputDecoration(
+              labelText: 'Enter vimeo hash',
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: 'ex: ddefbc',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
         const SizedBox(width: 10),
         FocusScope(
           canRequestFocus: false,
@@ -72,8 +85,12 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
               try {
                 snackBar('Loading....');
                 FocusScope.of(context).unfocus();
+                final vimeoHash = hashTextFieldCtr.text;
                 await controller.changeVideo(
-                  playVideoFrom: PlayVideoFrom.vimeo(videoTextFieldCtr.text),
+                  playVideoFrom: PlayVideoFrom.vimeo(
+                    videoTextFieldCtr.text,
+                    hash: vimeoHash.isNotEmpty ? vimeoHash : null,
+                  ),
                 );
                 if (!mounted) return;
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
