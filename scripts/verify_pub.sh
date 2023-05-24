@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "--------------- Format code ---------------"
-flutter format .
+dart format .
 echo "--------------- --dry-run ---------------"
 dart pub publish --dry-run
 echo "--------------- verify pub score ---------------"
