@@ -5,6 +5,9 @@ class _PodBaseController extends GetxController {
   ///main video controller
   VideoPlayerController? _videoCtr;
 
+  ///pod
+  PodGetXVideoController? _podCtr;
+
   ///
   late PodVideoPlayerType _videoPlayerType;
 

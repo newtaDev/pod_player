@@ -26,7 +26,9 @@ class _PodVideoController extends _PodUiController {
   ///*seek video
   /// Seek video to a duration.
   Future<void> seekTo(Duration moment) async {
-    await _videoCtr!.seekTo(moment);
+    if (_podCtr?.allowFastForward ?? true) {
+      await _videoCtr!.seekTo(moment);
+    }
   }
 
   /// Seek video forward by the duration.

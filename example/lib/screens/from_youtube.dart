@@ -11,6 +11,7 @@ class PlayVideoFromYoutube extends StatefulWidget {
 class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
   late final PodPlayerController controller;
   final videoTextFieldCtr = TextEditingController();
+
   @override
   void initState() {
     controller = PodPlayerController(
@@ -40,6 +41,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
             children: [
               PodVideoPlayer(
                 controller: controller,
+                allowFastForward: false,
                 videoThumbnail: const DecorationImage(
                   image: NetworkImage(
                     'https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dW5zcGxhc2h8ZW58MHx8MHx8&w=1000&q=80',

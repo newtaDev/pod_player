@@ -54,6 +54,7 @@ class PodGetXVideoController extends _PodGesturesController {
   Future<void> videoInit() async {
     ///
     // checkPlayerType();
+    _podCtr = this;
     podLog(_videoPlayerType.toString());
     try {
       await _initializePlayer();
