@@ -36,6 +36,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   child: VideoPlayer(videoPlayerCtr),
                 ),
               ),
+              IgnorePointer(child: overlay),
               GetBuilder<PodGetXVideoController>(
                 tag: tag,
                 id: 'podVideoState',
@@ -123,7 +124,6 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   },
                 ),
               ),
-              IgnorePointer(child: overlay),
               if (!kIsWeb)
                 GetBuilder<PodGetXVideoController>(
                   tag: tag,
