@@ -26,8 +26,8 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 ## Features
 
 - Play `youtube` videos (using video URL or ID)
-- Play `vimeo` videos (using video ID)
-- Play `vimeo` private videos (using video ID, access token)
+- Play `vimeo` videos (using video ID [with ou without hash])
+- Play `vimeo` private videos (using video ID [with ou without hash], access token)
 - Video overlay similar to youtube
 - `Double tap` to seek video.
 - On video tap show/hide video overlay.
@@ -381,6 +381,49 @@ class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
 }
 
 ```
+
+## How to play video from vimeo with hash
+
+---
+
+```dart
+import 'package:pod_player/pod_player.dart';
+import 'package:flutter/material.dart';
+
+class PlayVideoFromVimeo extends StatefulWidget {
+  const PlayVideoFromVimeo({Key? key}) : super(key: key);
+
+  @override
+  State<PlayVideoFromVimeo> createState() => _PlayVideoFromVimeoState();
+}
+
+class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
+  late final PodPlayerController controller;
+
+  @override
+  void initState() {
+    controller = PodPlayerController(
+      playVideoFrom: PlayVideoFrom.vimeo('518228118', hash: '7cc595e1f8'),
+    )..initialise();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PodVideoPlayer(controller: controller),
+    );
+  }
+}
+
+```
+
 ## How to play video from vimeo private videos
 
 ---
