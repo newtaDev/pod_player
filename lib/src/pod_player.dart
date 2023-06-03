@@ -44,6 +44,7 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget Function(OverLayOptions options)? overlayBuilder;
   final Widget Function()? onVideoError;
   final Widget? videoTitle;
+  final Widget? overlay;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
 
@@ -74,6 +75,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.onVideoError,
     this.backgroundColor,
     this.videoThumbnail,
+    this.overlay,
     this.onToggleFullScreen,
     this.onLoading,
   }) : super(key: key) {
@@ -102,8 +104,7 @@ class PodVideoPlayer extends StatefulWidget {
   State<PodVideoPlayer> createState() => _PodVideoPlayerState();
 }
 
-class _PodVideoPlayerState extends State<PodVideoPlayer>
-    with TickerProviderStateMixin {
+class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStateMixin {
   late PodGetXVideoController _podCtr;
 
   // late String tag;
@@ -117,7 +118,8 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
       tag: widget.controller.getTag,
     )
       ..isVideoUiBinded = true
-      ..showPlaybackSpeed = widget.showPlaybackSpeed;
+      ..showPlaybackSpeed = widget.showPlaybackSpeed
+      ..overlay = widget.overlay;
     if (_podCtr.wasVideoPlayingOnUiDispose ?? false) {
       _podCtr.podVideoStateChanger(PodVideoState.playing, updateUi: false);
     }
@@ -263,6 +265,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
             videoPlayerCtr: _podCtr.videoCtr!,
             videoAspectRatio: _videoAspectRatio,
             tag: widget.controller.getTag,
+            overlay: _podCtr.overlay,
           );
         },
       );
@@ -271,6 +274,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
         videoPlayerCtr: _podCtr.videoCtr!,
         videoAspectRatio: _videoAspectRatio,
         tag: widget.controller.getTag,
+        overlay: _podCtr.overlay,
       );
     }
   }

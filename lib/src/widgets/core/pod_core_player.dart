@@ -4,12 +4,14 @@ class _PodCoreVideoPlayer extends StatelessWidget {
   final VideoPlayerController videoPlayerCtr;
   final double videoAspectRatio;
   final String tag;
+  final Widget? overlay;
 
   const _PodCoreVideoPlayer({
     Key? key,
     required this.videoPlayerCtr,
     required this.videoAspectRatio,
     required this.tag,
+    required this.overlay,
   }) : super(key: key);
 
   @override
@@ -19,9 +21,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
       builder: (_ctrx) {
         return RawKeyboardListener(
           autofocus: true,
-          focusNode:
-              (_podCtr.isFullScreen ? FocusNode() : _podCtr.keyboardFocusWeb) ??
-                  FocusNode(),
+          focusNode: (_podCtr.isFullScreen ? FocusNode() : _podCtr.keyboardFocusWeb) ?? FocusNode(),
           onKey: (value) => _podCtr.onKeyBoardEvents(
             event: value,
             appContext: _ctrx,
@@ -47,8 +47,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                       return const SizedBox();
                     }
 
-                    if (_podCtr.podVideoState == PodVideoState.paused &&
-                        _podCtr.videoPosition == Duration.zero) {
+                    if (_podCtr.podVideoState == PodVideoState.paused && _podCtr.videoPosition == Duration.zero) {
                       return SizedBox.expand(
                         child: TweenAnimationBuilder<double>(
                           builder: (context, value, child) => Opacity(
@@ -124,6 +123,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   },
                 ),
               ),
+              IgnorePointer(child: overlay),
               if (!kIsWeb)
                 GetBuilder<PodGetXVideoController>(
                   tag: tag,
@@ -133,16 +133,14 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                       : GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'overlay',
-                          builder: (_podCtr) => _podCtr.isOverlayVisible ||
-                                  !_podCtr.alwaysShowProgressBar
+                          builder: (_podCtr) => _podCtr.isOverlayVisible || !_podCtr.alwaysShowProgressBar
                               ? const SizedBox()
                               : Align(
                                   alignment: Alignment.bottomCenter,
                                   child: PodProgressBar(
                                     tag: tag,
                                     alignment: Alignment.bottomCenter,
-                                    podProgressBarConfig:
-                                        _podCtr.podProgressBarConfig,
+                                    podProgressBarConfig: _podCtr.podProgressBarConfig,
                                   ),
                                 ),
                         ),
