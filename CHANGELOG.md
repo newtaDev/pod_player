@@ -1,3 +1,8 @@
+## 0.1.5
+  - merged PR #103
+    - support unlisted vimeo videos
+  - upgraded dependencies 
+  - Updated Readme file
 ## 0.1.4
   - added pod player logo to pub.dev
 ## 0.1.3
