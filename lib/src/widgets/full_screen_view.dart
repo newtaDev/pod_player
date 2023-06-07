@@ -68,8 +68,7 @@ class _FullScreenViewState extends State<FullScreenView>
                           ? _PodCoreVideoPlayer(
                               tag: widget.tag,
                               videoPlayerCtr: _podCtr.videoCtr!,
-                              videoAspectRatio:
-                                  _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                              videoAspectRatio: 16 / 9,
                             )
                           : loadingWidget,
                 ),

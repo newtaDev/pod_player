@@ -53,9 +53,6 @@ class _PodVideoQualityController extends _PodVideoController {
   ) {
     final _urls = urls;
 
-    ///has issues with 240p
-    _urls?.removeWhere((element) => element.quality == 240);
-
     ///has issues with 144p in web
     if (kIsWeb) {
       _urls?.removeWhere((element) => element.quality == 144);
@@ -112,9 +109,12 @@ class _PodVideoQualityController extends _PodVideoController {
         [];
   }
 
-  Future<void> changeVideoQuality(int? quality) async {
+  Future<void> changeVideoQuality(int? quality, {PlayVideoFrom? playVideoFromParam}) async {
     if (vimeoOrVideoUrls.isEmpty) {
       throw Exception('videoQuality cannot be empty');
+    }
+    if (playVideoFromParam == null) {
+      throw Exception('playVideoFrom cannot be null');
     }
     if (vimeoPlayingVideoQuality != quality) {
       _videoQualityUrl = vimeoOrVideoUrls
@@ -127,7 +127,13 @@ class _PodVideoQualityController extends _PodVideoController {
       podVideoStateChanger(PodVideoState.paused);
       podVideoStateChanger(PodVideoState.loading);
       playingVideoUrl = _videoQualityUrl;
-      _videoCtr = VideoPlayerController.network(_videoQualityUrl);
+      _videoCtr = VideoPlayerController.network(
+        _videoQualityUrl,
+        videoPlayerOptions: playVideoFromParam.videoPlayerOptions,
+        closedCaptionFile: playVideoFromParam.closedCaptionFile,
+        formatHint: playVideoFromParam.formatHint,
+        httpHeaders: playVideoFromParam.httpHeaders,
+      );
       await _videoCtr?.initialize();
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
       _videoCtr?.addListener(videoListner);
