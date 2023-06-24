@@ -8,6 +8,9 @@ class _PodUiController extends _PodBaseController {
   Widget? videoTitle;
   DecorationImage? videoThumbnail;
 
+  /// Callback when trying to seek
+  Future<bool> Function(Duration)? shouldAllowSeeking;
+
   /// Callback when fullscreen mode changes
   Future<void> Function(bool isFullScreen)? onToggleFullScreen;
 

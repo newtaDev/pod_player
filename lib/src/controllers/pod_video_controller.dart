@@ -10,6 +10,8 @@ class _PodVideoController extends _PodUiController {
   bool isFullScreen = false;
   bool isvideoPlaying = false;
 
+  Duration? startAt;
+
   List<String> videoPlaybackSpeeds = [
     '0.25x',
     '0.5x',
@@ -21,13 +23,15 @@ class _PodVideoController extends _PodUiController {
     '2x',
   ];
 
-  ///
-
   ///*seek video
   /// Seek video to a duration.
   Future<void> seekTo(Duration moment) async {
     if (_podCtr?.allowFastForward ?? true) {
       await _videoCtr!.seekTo(moment);
+    } else if (_podCtr?.shouldAllowSeeking != null) {
+      if (await _podCtr?.shouldAllowSeeking!(moment) ?? false) {
+        await _videoCtr!.seekTo(moment);
+      }
     }
   }
 

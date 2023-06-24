@@ -20,7 +20,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
         videoQualityPriority: [720, 360],
         autoPlay: false,
       ),
-    )..initialise();
+    )..initialise(startAt: Duration(seconds: 28));
     super.initState();
   }
 
@@ -42,6 +42,13 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
               PodVideoPlayer(
                 controller: controller,
                 allowFastForward: false,
+                podProgressBarConfig: PodProgressBarConfig(),
+                shouldAllowSeeking: (duration) async {
+                  if (duration < Duration(seconds: 28)) {
+                    return true;
+                  }
+                  return false;
+                },
                 videoThumbnail: const DecorationImage(
                   image: NetworkImage(
                     'https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dW5zcGxhc2h8ZW58MHx8MHx8&w=1000&q=80',

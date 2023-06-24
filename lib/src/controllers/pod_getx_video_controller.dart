@@ -55,7 +55,7 @@ class PodGetXVideoController extends _PodGesturesController {
   }
 
   ///*init
-  Future<void> videoInit() async {
+  Future<void> videoInit({Duration? startAt}) async {
     ///
     // checkPlayerType();
     _podCtr = this;
@@ -64,6 +64,10 @@ class PodGetXVideoController extends _PodGesturesController {
       await _initializePlayer();
       await _videoCtr?.initialize();
       _videoDuration = _videoCtr?.value.duration ?? Duration.zero;
+      if (startAt != null) {
+        podLog('<<<<<----- Seeking to selected duration ----->>>>>');
+        await _videoCtr?.seekTo(startAt!);
+      }
       await setLooping(isLooping);
       _videoCtr?.addListener(videoListner);
       addListenerId('podVideoState', podStateListner);

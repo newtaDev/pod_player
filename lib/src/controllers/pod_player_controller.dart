@@ -41,14 +41,14 @@ class PodPlayerController {
   /// Initializes the video player.
   ///
   /// If the provided video cannot be loaded, an exception could be thrown.
-  Future<void> initialise() async {
+  Future<void> initialise({Duration? startAt}) async {
     if (!_isCtrInitialised) {
       _init();
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       try {
         if (!_isCtrInitialised) {
-          await _ctr.videoInit();
+          await _ctr.videoInit(startAt: startAt);
           podLog('$getTag Pod player Initialized');
         } else {
           podLog('$getTag Pod Player Controller Already Initialized');
