@@ -110,31 +110,28 @@ class _PodProgressBarState extends State<PodProgressBar> {
   MouseRegion _progressBar(BoxConstraints size) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: Padding(
-        padding: widget.podProgressBarConfig.padding,
-        child: SizedBox(
-          width: size.maxWidth,
-          height: widget.podProgressBarConfig.circleHandlerRadius,
-          child: Align(
-            alignment: widget.alignment,
-            child: GetBuilder<PodGetXVideoController>(
-              tag: widget.tag,
-              id: 'overlay',
-              builder: (_podCtr) => CustomPaint(
-                painter: _ProgressBarPainter(
-                  videoPlayerValue!,
-                  podProgressBarConfig: widget.podProgressBarConfig.copyWith(
-                    circleHandlerRadius: _podCtr.isOverlayVisible ||
-                            widget
-                                .podProgressBarConfig.alwaysVisibleCircleHandler
-                        ? widget.podProgressBarConfig.circleHandlerRadius
-                        : 0,
-                  ),
+      child: SizedBox(
+        width: size.maxWidth,
+        height: widget.podProgressBarConfig.circleHandlerRadius,
+        child: Align(
+          alignment: widget.alignment,
+          child: GetBuilder<PodGetXVideoController>(
+            tag: widget.tag,
+            id: 'overlay',
+            builder: (_podCtr) => CustomPaint(
+              painter: _ProgressBarPainter(
+                videoPlayerValue!,
+                podProgressBarConfig: widget.podProgressBarConfig.copyWith(
+                  circleHandlerRadius: _podCtr.isOverlayVisible ||
+                          widget
+                              .podProgressBarConfig.alwaysVisibleCircleHandler
+                      ? widget.podProgressBarConfig.circleHandlerRadius
+                      : 0,
                 ),
-                size: Size(
-                  double.maxFinite,
-                  widget.podProgressBarConfig.height,
-                ),
+              ),
+              size: Size(
+                double.maxFinite,
+                widget.podProgressBarConfig.height,
               ),
             ),
           ),

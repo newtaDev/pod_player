@@ -135,12 +135,15 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                           id: 'overlay',
                           builder: (_podCtr) => _podCtr.isOverlayVisible || !_podCtr.alwaysShowProgressBar
                               ? const SizedBox()
-                              : Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: PodProgressBar(
-                                    tag: tag,
+                              : Padding(
+                                  padding: _podCtr.podProgressBarConfig.padding,
+                                  child: Align(
                                     alignment: Alignment.bottomCenter,
-                                    podProgressBarConfig: _podCtr.podProgressBarConfig,
+                                    child: PodProgressBar(
+                                      tag: tag,
+                                      alignment: Alignment.bottomCenter,
+                                      podProgressBarConfig: _podCtr.podProgressBarConfig,
+                                    ),
                                   ),
                                 ),
                         ),

@@ -2,6 +2,7 @@ part of 'package:pod_player/src/pod_player.dart';
 
 class _WebOverlay extends StatelessWidget {
   final String tag;
+
   const _WebOverlay({
     Key? key,
     required this.tag,
@@ -90,9 +91,12 @@ class _WebOverlayBottomControlles extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PodProgressBar(
-              tag: tag,
-              podProgressBarConfig: _podCtr.podProgressBarConfig,
+            Padding(
+              padding: _podCtr.podProgressBarConfig.padding,
+              child: PodProgressBar(
+                tag: tag,
+                podProgressBarConfig: _podCtr.podProgressBarConfig,
+              ),
             ),
             Row(
               children: [
@@ -109,16 +113,12 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           id: 'volume',
                           builder: (_podCtr) => MaterialIconButton(
                             toolTipMesg: _podCtr.isMute
-                                ? _podCtr.podPlayerLabels.unmute ??
-                                    'Unmute${kIsWeb ? ' (m)' : ''}'
-                                : _podCtr.podPlayerLabels.mute ??
-                                    'Mute${kIsWeb ? ' (m)' : ''}',
+                                ? _podCtr.podPlayerLabels.unmute ?? 'Unmute${kIsWeb ? ' (m)' : ''}'
+                                : _podCtr.podPlayerLabels.mute ?? 'Mute${kIsWeb ? ' (m)' : ''}',
                             color: itemColor,
                             onPressed: _podCtr.toggleMute,
                             child: Icon(
-                              _podCtr.isMute
-                                  ? Icons.volume_off_rounded
-                                  : Icons.volume_up_rounded,
+                              _podCtr.isMute ? Icons.volume_off_rounded : Icons.volume_up_rounded,
                             ),
                           ),
                         ),
@@ -162,17 +162,12 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                         _WebSettingsDropdown(tag: tag),
                         MaterialIconButton(
                           toolTipMesg: _podCtr.isFullScreen
-                              ? _podCtr.podPlayerLabels.exitFullScreen ??
-                                  'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                              : _podCtr.podPlayerLabels.fullscreen ??
-                                  'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                              ? _podCtr.podPlayerLabels.exitFullScreen ?? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                              : _podCtr.podPlayerLabels.fullscreen ?? 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                           color: itemColor,
-                          onPressed: () =>
-                              _onFullScreenToggle(_podCtr, context),
+                          onPressed: () => _onFullScreenToggle(_podCtr, context),
                           child: Icon(
-                            _podCtr.isFullScreen
-                                ? Icons.fullscreen_exit
-                                : Icons.fullscreen,
+                            _podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
                           ),
                         ),
                       ],

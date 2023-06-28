@@ -41,9 +41,7 @@ class _MobileBottomSheet extends StatelessWidget {
           _bottomSheetTiles(
             title: _podCtr.podPlayerLabels.loopVideo,
             icon: Icons.loop_rounded,
-            subText: _podCtr.isLooping
-                ? _podCtr.podPlayerLabels.optionEnabled
-                : _podCtr.podPlayerLabels.optionDisabled,
+            subText: _podCtr.isLooping ? _podCtr.podPlayerLabels.optionEnabled : _podCtr.podPlayerLabels.optionDisabled,
             onTap: () {
               Navigator.of(context).pop();
               _podCtr.toggleLooping();
@@ -229,10 +227,8 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               const Spacer(),
               MaterialIconButton(
                 toolTipMesg: _podCtr.isFullScreen
-                    ? _podCtr.podPlayerLabels.exitFullScreen ??
-                        'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                    : _podCtr.podPlayerLabels.fullscreen ??
-                        'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                    ? _podCtr.podPlayerLabels.exitFullScreen ?? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                    : _podCtr.podPlayerLabels.fullscreen ?? 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                 color: itemColor,
                 onPressed: () {
                   if (_podCtr.isOverlayVisible) {
@@ -246,9 +242,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   }
                 },
                 child: Icon(
-                  _podCtr.isFullScreen
-                      ? Icons.fullscreen_exit
-                      : Icons.fullscreen,
+                  _podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
                 ),
               ),
             ],
@@ -270,10 +264,16 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   ),
                 );
               }
-              return PodProgressBar(
-                tag: tag,
-                alignment: Alignment.bottomCenter,
-                podProgressBarConfig: _podCtr.podProgressBarConfig,
+              return Padding(
+                padding: _podCtr.podProgressBarConfig.padding,
+                child: Padding(
+                  padding: _podCtr.podProgressBarConfig.padding,
+                  child: PodProgressBar(
+                    tag: tag,
+                    alignment: Alignment.bottomCenter,
+                    podProgressBarConfig: _podCtr.podProgressBarConfig,
+                  ),
+                ),
               );
             },
           ),
