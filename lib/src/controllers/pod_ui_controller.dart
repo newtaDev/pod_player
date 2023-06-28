@@ -7,6 +7,7 @@ class _PodUiController extends _PodBaseController {
   Widget Function(OverLayOptions options)? overlayBuilder;
   Widget? videoTitle;
   DecorationImage? videoThumbnail;
+  Duration? lastWatchDuration;
 
   /// Callback when trying to seek
   Future<bool> Function(Duration)? shouldAllowSeeking;

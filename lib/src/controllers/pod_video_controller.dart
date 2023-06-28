@@ -29,8 +29,14 @@ class _PodVideoController extends _PodUiController {
     if (_podCtr?.allowFastForward ?? true) {
       await _videoCtr!.seekTo(moment);
     } else if (_podCtr?.shouldAllowSeeking != null) {
+      /// Checking if the seeking duration is allowed
       if (await _podCtr?.shouldAllowSeeking!(moment) ?? false) {
         await _videoCtr!.seekTo(moment);
+      }
+
+      /// Seeking to last watch duration if user try to seek more that he watched
+      else if (_podCtr?.lastWatchDuration != null) {
+        await _videoCtr!.seekTo(_podCtr!.lastWatchDuration!);
       }
     }
   }
@@ -239,8 +245,7 @@ class _PodVideoController extends _PodUiController {
             tag: tag,
           ),
           reverseTransitionDuration: const Duration(milliseconds: 400),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
             opacity: animation,
             child: child,
           ),
@@ -253,10 +258,7 @@ class _PodVideoController extends _PodUiController {
   String calculateVideoDuration(Duration _duration) {
     final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
     final _totalMinute = _duration.toString().split(':')[1];
-    final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes))
-        .inSeconds
-        .toString()
-        .padLeft(2, '0');
+    final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes)).inSeconds.toString().padLeft(2, '0');
     final String videoLength = '$_totalHour$_totalMinute:$_totalSeconds';
     return videoLength;
   }

@@ -47,6 +47,7 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? overlay;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
+  final Duration? lastWatchDuration;
 
   /// Optional callback, fired when full screen mode toggles.
   ///
@@ -81,6 +82,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.onToggleFullScreen,
     this.onLoading,
     this.shouldAllowSeeking,
+    this.lastWatchDuration,
   }) : super(key: key) {
     addToUiController();
   }
@@ -101,7 +103,8 @@ class PodVideoPlayer extends StatefulWidget {
       ..onToggleFullScreen = onToggleFullScreen
       ..onLoading = onLoading
       ..videoThumbnail = videoThumbnail
-      ..shouldAllowSeeking = shouldAllowSeeking;
+      ..shouldAllowSeeking = shouldAllowSeeking
+      ..lastWatchDuration = lastWatchDuration;
   }
 
   @override
