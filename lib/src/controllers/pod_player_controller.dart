@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:universal_html/html.dart' as _html;
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../pod_player.dart';
 import '../utils/logger.dart';
@@ -166,7 +166,7 @@ class PodPlayerController {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
     _ctr.removeListenerId('podVideoState', _ctr.podStateListner);
-    if (podPlayerConfig.wakelockEnabled) Wakelock.disable();
+    if (podPlayerConfig.wakelockEnabled) WakelockPlus.disable();
     Get.delete<PodGetXVideoController>(
       force: true,
       tag: getTag,
