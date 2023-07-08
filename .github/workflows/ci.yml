@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Check format
-        run: flutter format --set-exit-if-changed .
+        run: dart format --set-exit-if-changed .
 
   lint:
     name: Check lints

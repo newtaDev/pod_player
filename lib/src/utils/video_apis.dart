@@ -77,8 +77,7 @@ class VideoApis {
         Uri.parse('https://api.vimeo.com/videos/$videoId'),
         headers: httpHeader,
       );
-      final jsonData =
-          jsonDecode(response.body)['files'] as List<dynamic>;
+      final jsonData = jsonDecode(response.body)['files'] as List<dynamic>;
 
       final List<VideoQalityUrls> list = [];
       for (int i = 0; i < jsonData.length; i++) {
