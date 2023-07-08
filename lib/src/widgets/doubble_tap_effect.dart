@@ -32,7 +32,7 @@ class DoubleTapRippleEffect extends StatefulWidget {
   final double? height;
 
   const DoubleTapRippleEffect({
-    Key? key,
+    super.key,
     this.child,
     this.wrapper,
     this.rippleColor,
@@ -43,7 +43,7 @@ class DoubleTapRippleEffect extends StatefulWidget {
     this.onDoubleTap,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   State<DoubleTapRippleEffect> createState() => _DoubleTapRippleEffectState();
@@ -105,7 +105,7 @@ class _DoubleTapRippleEffectState extends State<DoubleTapRippleEffect>
   // checking animation status is completed
   void _animStatus() {
     if (_anim.status == AnimationStatus.completed) {
-      Future.delayed(
+      Future<void>.delayed(
         widget.rippleEndingDuraiton ?? const Duration(milliseconds: 600),
       ).then((value) {
         setState(() {

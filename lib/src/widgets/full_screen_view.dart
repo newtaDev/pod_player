@@ -3,9 +3,9 @@ part of 'package:pod_player/src/pod_player.dart';
 class FullScreenView extends StatefulWidget {
   final String tag;
   const FullScreenView({
-    Key? key,
     required this.tag,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<FullScreenView> createState() => _FullScreenViewState();
@@ -55,21 +55,21 @@ class _FullScreenViewState extends State<FullScreenView>
         backgroundColor: Colors.black,
         body: GetBuilder<PodGetXVideoController>(
           tag: widget.tag,
-          builder: (_podCtr) => Center(
+          builder: (podCtr) => Center(
             child: ColoredBox(
               color: Colors.black,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: Center(
-                  child: _podCtr.videoCtr == null
+                  child: podCtr.videoCtr == null
                       ? loadingWidget
-                      : _podCtr.videoCtr!.value.isInitialized
+                      : podCtr.videoCtr!.value.isInitialized
                           ? _PodCoreVideoPlayer(
                               tag: widget.tag,
-                              videoPlayerCtr: _podCtr.videoCtr!,
+                              videoPlayerCtr: podCtr.videoCtr!,
                               videoAspectRatio:
-                                  _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                                  podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
                             )
                           : loadingWidget,
                 ),

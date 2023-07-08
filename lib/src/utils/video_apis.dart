@@ -30,15 +30,15 @@ class VideoApis {
   ) async {
     try {
       final response = await _makeRequestHash(videoId, hash);
-      final jsonData =
-          jsonDecode(response.body)['request']['files']['progressive'];
+      final jsonData = jsonDecode(response.body)['request']['files']
+          ['progressive'] as List<dynamic>;
       final progressiveUrls = List.generate(
         jsonData.length,
         (index) => VideoQalityUrls(
           quality: int.parse(
             (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
           ),
-          url: jsonData[index]['url'],
+          url: jsonData[index]['url'] as String,
         ),
       );
       if (progressiveUrls.isEmpty) {
@@ -48,7 +48,7 @@ class VideoApis {
           progressiveUrls.add(
             VideoQalityUrls(
               quality: 720,
-              url: element.value['url'],
+              url: element.value['url'] as String,
             ),
           );
           break;
@@ -77,7 +77,8 @@ class VideoApis {
         Uri.parse('https://api.vimeo.com/videos/$videoId'),
         headers: httpHeader,
       );
-      final jsonData = jsonDecode(response.body)['files'];
+      final jsonData =
+          jsonDecode(response.body)['files'] as List<dynamic>;
 
       final List<VideoQalityUrls> list = [];
       for (int i = 0; i < jsonData.length; i++) {
@@ -85,7 +86,12 @@ class VideoApis {
             (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
         final int? number = int.tryParse(quality);
         if (number != null && number != 0) {
-          list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link']));
+          list.add(
+            VideoQalityUrls(
+              quality: number,
+              url: jsonData[i]['link'] as String,
+            ),
+          );
         }
       }
       return list;

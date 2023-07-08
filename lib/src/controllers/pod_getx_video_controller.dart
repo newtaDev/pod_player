@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:universal_html/html.dart' as _html;
+import 'package:universal_html/html.dart' as uni_html;
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../pod_player.dart';
@@ -69,8 +69,8 @@ class PodGetXVideoController extends _PodGesturesController {
 
       update(['update-all']);
       // ignore: unawaited_futures
-      Future.delayed(const Duration(milliseconds: 600))
-          .then((value) => _isWebAutoPlayDone = true);
+      Future<void>.delayed(const Duration(milliseconds: 600))
+          .then((_) => _isWebAutoPlayDone = true);
     } catch (e) {
       podVideoStateChanger(PodVideoState.error);
       update(['errorState']);
@@ -85,8 +85,8 @@ class PodGetXVideoController extends _PodGesturesController {
       case PodVideoPlayerType.network:
 
         ///
-        _videoCtr = VideoPlayerController.network(
-          playVideoFrom.dataSource!,
+        _videoCtr = VideoPlayerController.networkUrl(
+          Uri.parse(playVideoFrom.dataSource!),
           closedCaptionFile: playVideoFrom.closedCaptionFile,
           formatHint: playVideoFrom.formatHint,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
@@ -95,41 +95,41 @@ class PodGetXVideoController extends _PodGesturesController {
         playingVideoUrl = playVideoFrom.dataSource;
         break;
       case PodVideoPlayerType.networkQualityUrls:
-        final _url = await getUrlFromVideoQualityUrls(
+        final url = await getUrlFromVideoQualityUrls(
           qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: playVideoFrom.videoQualityUrls!,
         );
 
         ///
-        _videoCtr = VideoPlayerController.network(
-          _url,
+        _videoCtr = VideoPlayerController.networkUrl(
+          Uri.parse(url),
           closedCaptionFile: playVideoFrom.closedCaptionFile,
           formatHint: playVideoFrom.formatHint,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
-        playingVideoUrl = _url;
+        playingVideoUrl = url;
 
         break;
       case PodVideoPlayerType.youtube:
-        final _urls = await getVideoQualityUrlsFromYoutube(
+        final urls = await getVideoQualityUrlsFromYoutube(
           playVideoFrom.dataSource!,
           playVideoFrom.live,
         );
-        final _url = await getUrlFromVideoQualityUrls(
+        final url = await getUrlFromVideoQualityUrls(
           qualityList: podPlayerConfig.videoQualityPriority,
-          videoUrls: _urls,
+          videoUrls: urls,
         );
 
         ///
-        _videoCtr = VideoPlayerController.network(
-          _url,
+        _videoCtr = VideoPlayerController.networkUrl(
+          Uri.parse(url),
           closedCaptionFile: playVideoFrom.closedCaptionFile,
           formatHint: playVideoFrom.formatHint,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
-        playingVideoUrl = _url;
+        playingVideoUrl = url;
 
         break;
       case PodVideoPlayerType.vimeo:
@@ -137,19 +137,19 @@ class PodGetXVideoController extends _PodGesturesController {
           playVideoFrom.dataSource!,
           hash: playVideoFrom.hash,
         );
-        final _url = await getUrlFromVideoQualityUrls(
+        final url = await getUrlFromVideoQualityUrls(
           qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: vimeoOrVideoUrls,
         );
 
-        _videoCtr = VideoPlayerController.network(
-          _url,
+        _videoCtr = VideoPlayerController.networkUrl(
+          Uri.parse(url),
           closedCaptionFile: playVideoFrom.closedCaptionFile,
           formatHint: playVideoFrom.formatHint,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
-        playingVideoUrl = _url;
+        playingVideoUrl = url;
 
         break;
       case PodVideoPlayerType.asset:
@@ -182,19 +182,19 @@ class PodGetXVideoController extends _PodGesturesController {
           playVideoFrom.dataSource!,
           playVideoFrom.httpHeaders,
         );
-        final _url = await getUrlFromVideoQualityUrls(
+        final url = await getUrlFromVideoQualityUrls(
           qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: vimeoOrVideoUrls,
         );
 
-        _videoCtr = VideoPlayerController.network(
-          _url,
+        _videoCtr = VideoPlayerController.networkUrl(
+          Uri.parse(url),
           closedCaptionFile: playVideoFrom.closedCaptionFile,
           formatHint: playVideoFrom.formatHint,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
           httpHeaders: playVideoFrom.httpHeaders,
         );
-        playingVideoUrl = _url;
+        playingVideoUrl = url;
 
         break;
     }
@@ -229,7 +229,7 @@ class PodGetXVideoController extends _PodGesturesController {
       }
       if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
         if (isFullScreen) {
-          _html.document.exitFullscreen();
+          uni_html.document.exitFullscreen();
           if (!isWebPopupOverlayOpen) {
             disableFullScreen(appContext, tag);
           }
@@ -242,12 +242,12 @@ class PodGetXVideoController extends _PodGesturesController {
 
   void toggleFullScreenOnWeb(BuildContext context, String tag) {
     if (isFullScreen) {
-      _html.document.exitFullscreen();
+      uni_html.document.exitFullscreen();
       if (!isWebPopupOverlayOpen) {
         disableFullScreen(context, tag);
       }
     } else {
-      _html.document.documentElement?.requestFullscreen();
+      uni_html.document.documentElement?.requestFullscreen();
       enableFullScreen(tag);
     }
   }
