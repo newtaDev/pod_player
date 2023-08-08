@@ -122,6 +122,14 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                         ),
                         GetBuilder<PodGetXVideoController>(
                           tag: tag,
+                          id: 'volume-setter',
+                          builder: (podCtr) => MaterialSlider(
+                            initialValue: podCtr.videoCtr?.value.volume ?? 0,
+                            onChanged: podCtr.setVolume,
+                          ),
+                        ),
+                        GetBuilder<PodGetXVideoController>(
+                          tag: tag,
                           id: 'video-progress',
                           builder: (podCtr) {
                             return Row(

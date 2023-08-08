@@ -201,6 +201,30 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               const SizedBox(width: 12),
               GetBuilder<PodGetXVideoController>(
                 tag: tag,
+                id: 'volume',
+                builder: (podCtr) => MaterialIconButton(
+                  toolTipMesg: podCtr.isMute
+                      ? podCtr.podPlayerLabels.unmute ?? 'Unmute'
+                      : podCtr.podPlayerLabels.mute ?? 'Mute',
+                  color: itemColor,
+                  onPressed: podCtr.toggleMute,
+                  child: Icon(
+                    podCtr.isMute
+                        ? Icons.volume_off_rounded
+                        : Icons.volume_up_rounded,
+                  ),
+                ),
+              ),
+              GetBuilder<PodGetXVideoController>(
+                tag: tag,
+                id: 'volume-setter',
+                builder: (podCtr) => MaterialSlider(
+                  initialValue: podCtr.videoCtr?.value.volume ?? 0,
+                  onChanged: podCtr.setVolume,
+                ),
+              ),
+              GetBuilder<PodGetXVideoController>(
+                tag: tag,
                 id: 'video-progress',
                 builder: (podCtr) {
                   return Row(
