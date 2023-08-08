@@ -12,6 +12,8 @@ class _WebSettingsDropdown extends StatefulWidget {
 }
 
 class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
+  final double settingsFontSize = 12;
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -99,7 +101,10 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
           .map(
             (e) => PopupMenuItem<dynamic>(
               child: ListTile(
-                title: Text(e),
+                title: Text(
+                  e,
+                  style: TextStyle(fontSize: settingsFontSize),
+                ),
               ),
               onTap: () {
                 podCtr.setVideoPlayBack(e);
@@ -129,7 +134,10 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
           .map(
             (e) => PopupMenuItem<dynamic>(
               child: ListTile(
-                title: Text('${e.quality}p'),
+                title: Text(
+                  '${e.quality}p',
+                  style: TextStyle(fontSize: settingsFontSize),
+                ),
               ),
               onTap: () {
                 podCtr.changeVideoQuality(
@@ -153,38 +161,39 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
     required IconData icon,
     String? subText,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon),
-            const SizedBox(width: 20),
-            Text(
-              title,
-            ),
-            if (subText != null) const SizedBox(width: 10),
-            if (subText != null)
-              const SizedBox(
-                height: 4,
-                width: 4,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    shape: BoxShape.circle,
-                  ),
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 15),
+          const SizedBox(width: 10),
+          Text(
+            title,
+            style: TextStyle(fontSize: settingsFontSize),
+          ),
+          if (subText != null) const SizedBox(width: 10),
+          if (subText != null)
+            const SizedBox(
+              height: 4,
+              width: 4,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
                 ),
               ),
-            if (subText != null) const SizedBox(width: 6),
-            if (subText != null)
-              Text(
-                subText,
-                style: const TextStyle(color: Colors.grey),
+            ),
+          if (subText != null) const SizedBox(width: 6),
+          if (subText != null)
+            Text(
+              subText,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: settingsFontSize,
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
