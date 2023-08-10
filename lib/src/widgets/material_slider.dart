@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MaterialSlider extends StatefulWidget {
+  final bool isVisible;
+
   const MaterialSlider({
+    required this.isVisible,
     required this.onChanged,
     required this.initialValue,
     this.activeTrackColor = Colors.white,
@@ -41,6 +44,8 @@ class _MaterialSliderState extends State<MaterialSlider> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.isVisible) return const SizedBox();
+
     return Material(
       type: MaterialType.transparency,
       color: Colors.orange,

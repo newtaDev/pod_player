@@ -124,6 +124,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           tag: tag,
                           id: 'volume-setter',
                           builder: (podCtr) => MaterialSlider(
+                            isVisible: podCtr.podPlayerConfig.showVolumeBar,
                             initialValue: podCtr.videoCtr?.value.volume ?? 0,
                             onChanged: podCtr.setVolume,
                           ),
