@@ -1,3 +1,8 @@
+## 0.2.1
+- upgraded all dependencies 
+- upgraded `http` lib to `^1.1.0`
+- fix fullscreen issue in IOS
+
 ## 0.2.0
   - upgraded dependencies 
   - migrate from `wakelock` to `wakelock_plus` PR [#129](https://github.com/newtaDev/pod_player/pull/129)
