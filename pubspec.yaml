@@ -15,13 +15,13 @@ dependencies:
   http: ^1.1.0
   get: ^4.6.5
   wakelock_plus: ^1.1.1
-  universal_html: 
+  universal_html: ^2.2.3
   youtube_explode_dart: ^2.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  very_good_analysis: 
+  very_good_analysis: ^5.0.0+1
 
 screenshots:
   - description: Pod video player logo
