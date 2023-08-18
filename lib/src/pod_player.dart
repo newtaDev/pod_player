@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:universal_html/html.dart' as _html;
+import 'package:universal_html/html.dart' as uni_html;
 
 import '../pod_player.dart';
 import 'controllers/pod_getx_video_controller.dart';
@@ -62,8 +62,8 @@ class PodVideoPlayer extends StatefulWidget {
   final WidgetBuilder? onLoading;
 
   PodVideoPlayer({
-    Key? key,
     required this.controller,
+    super.key,
     this.frameAspectRatio = 16 / 9,
     this.videoAspectRatio = 16 / 9,
     this.alwaysShowProgressBar = true,
@@ -84,6 +84,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.shouldAllowSeeking,
     this.lastWatchDuration,
   }) : super(key: key) {
+  }) {
     addToUiController();
   }
 
@@ -136,7 +137,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStat
         _podCtr.keyboardFocusWeb?.addListener(_podCtr.keyboadListner);
       }
       //to disable mouse right click
-      _html.document.onContextMenu.listen((event) => event.preventDefault());
+      uni_html.document.onContextMenu.listen((event) => event.preventDefault());
     }
   }
 
@@ -174,7 +175,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStat
     final circularProgressIndicator = _thumbnailAndLoadingWidget();
     _podCtr.mainContext = context;
 
-    final _videoErrorWidget = AspectRatio(
+    final videoErrorWidget = AspectRatio(
       aspectRatio: _frameAspectRatio,
       child: Center(
         child: Column(
@@ -206,15 +207,15 @@ class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStat
             child: GetBuilder<PodGetXVideoController>(
               tag: widget.controller.getTag,
               id: 'errorState',
-              builder: (_podCtr) {
+              builder: (podCtr) {
                 /// Check if has any error
-                if (_podCtr.podVideoState == PodVideoState.error) {
-                  return widget.onVideoError?.call() ?? _videoErrorWidget;
+                if (podCtr.podVideoState == PodVideoState.error) {
+                  return widget.onVideoError?.call() ?? videoErrorWidget;
                 }
 
                 return AspectRatio(
                   aspectRatio: _frameAspectRatio,
-                  child: _podCtr.videoCtr?.value.isInitialized ?? false
+                  child: podCtr.videoCtr?.value.isInitialized ?? false
                       ? _buildPlayer()
                       : Center(child: circularProgressIndicator),
                 );
@@ -259,18 +260,18 @@ class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStat
   }
 
   Widget _buildPlayer() {
-    final _videoAspectRatio = widget.matchVideoAspectRatioToFrame
+    final videoAspectRatio = widget.matchVideoAspectRatioToFrame
         ? _podCtr.videoCtr?.value.aspectRatio ?? widget.videoAspectRatio
         : widget.videoAspectRatio;
     if (kIsWeb) {
       return GetBuilder<PodGetXVideoController>(
         tag: widget.controller.getTag,
         id: 'full-screen',
-        builder: (_podCtr) {
-          if (_podCtr.isFullScreen) return _thumbnailAndLoadingWidget();
+        builder: (podCtr) {
+          if (podCtr.isFullScreen) return _thumbnailAndLoadingWidget();
           return _PodCoreVideoPlayer(
-            videoPlayerCtr: _podCtr.videoCtr!,
-            videoAspectRatio: _videoAspectRatio,
+            videoPlayerCtr: podCtr.videoCtr!,
+            videoAspectRatio: videoAspectRatio,
             tag: widget.controller.getTag,
             overlay: _podCtr.overlay,
           );
@@ -279,7 +280,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStat
     } else {
       return _PodCoreVideoPlayer(
         videoPlayerCtr: _podCtr.videoCtr!,
-        videoAspectRatio: _videoAspectRatio,
+        videoAspectRatio: videoAspectRatio,
         tag: widget.controller.getTag,
         overlay: _podCtr.overlay,
       );

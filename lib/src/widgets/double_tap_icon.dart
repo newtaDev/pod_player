@@ -13,14 +13,14 @@ class DoubleTapIcon extends StatefulWidget {
   final double? width;
 
   const DoubleTapIcon({
-    Key? key,
     required this.onDoubleTap,
     required this.tag,
-    this.iconOnly = false,
     required this.isForward,
+    super.key,
+    this.iconOnly = false,
     this.height = 50,
     this.width,
-  }) : super(key: key);
+  });
 
   @override
   State<DoubleTapIcon> createState() => _DoubleTapIconState();
@@ -146,13 +146,13 @@ class _DoubleTapIconState extends State<DoubleTapIcon>
                 GetBuilder<PodGetXVideoController>(
                   tag: widget.tag,
                   id: 'double-tap',
-                  builder: (_podCtr) {
-                    if (widget.isForward && _podCtr.isRightDbTapIconVisible) {
+                  builder: (podCtr) {
+                    if (widget.isForward && podCtr.isRightDbTapIconVisible) {
                       return AnimatedOpacity(
                         duration: const Duration(milliseconds: 300),
                         opacity: opacityCtr.value,
                         child: Text(
-                          '${_podCtr.isLeftDbTapIconVisible ? _podCtr.leftDoubleTapduration : _podCtr.rightDubleTapduration} Sec',
+                          '${podCtr.isLeftDbTapIconVisible ? podCtr.leftDoubleTapduration : podCtr.rightDubleTapduration} Sec',
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -160,12 +160,12 @@ class _DoubleTapIconState extends State<DoubleTapIcon>
                         ),
                       );
                     }
-                    if (!widget.isForward && _podCtr.isLeftDbTapIconVisible) {
+                    if (!widget.isForward && podCtr.isLeftDbTapIconVisible) {
                       return AnimatedOpacity(
                         duration: const Duration(milliseconds: 300),
                         opacity: opacityCtr.value,
                         child: Text(
-                          '${_podCtr.isLeftDbTapIconVisible ? _podCtr.leftDoubleTapduration : _podCtr.rightDubleTapduration} Sec',
+                          '${podCtr.isLeftDbTapIconVisible ? podCtr.leftDoubleTapduration : podCtr.rightDubleTapduration} Sec',
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

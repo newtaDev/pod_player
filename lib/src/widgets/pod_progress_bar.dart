@@ -9,21 +9,20 @@ import '../models/pod_progress_bar_config.dart';
 /// Renders progress bar for the video using custom paint.
 class PodProgressBar extends StatefulWidget {
   const PodProgressBar({
-    Key? key,
+    required this.tag,
+    super.key,
     PodProgressBarConfig? podProgressBarConfig,
     this.onDragStart,
     this.onDragEnd,
     this.onDragUpdate,
     this.alignment = Alignment.center,
-    required this.tag,
-  })  : podProgressBarConfig =
-            podProgressBarConfig ?? const PodProgressBarConfig(),
-        super(key: key);
+  }) : podProgressBarConfig =
+            podProgressBarConfig ?? const PodProgressBarConfig();
 
   final PodProgressBarConfig podProgressBarConfig;
-  final Function()? onDragStart;
-  final Function()? onDragEnd;
-  final Function()? onDragUpdate;
+  final void Function()? onDragStart;
+  final void Function()? onDragEnd;
+  final void Function()? onDragUpdate;
   final Alignment alignment;
   final String tag;
 
@@ -54,8 +53,8 @@ class _PodProgressBarState extends State<PodProgressBar> {
     return GetBuilder<PodGetXVideoController>(
       tag: widget.tag,
       id: 'video-progress',
-      builder: (_podCtr) {
-        videoPlayerValue = _podCtr.videoCtr?.value;
+      builder: (podCtr) {
+        videoPlayerValue = podCtr.videoCtr?.value;
         return LayoutBuilder(
           builder: (context, size) {
             return GestureDetector(
@@ -66,9 +65,9 @@ class _PodProgressBarState extends State<PodProgressBar> {
                   return;
                 }
                 _controllerWasPlaying =
-                    _podCtr.videoCtr?.value.isPlaying ?? false;
+                    podCtr.videoCtr?.value.isPlaying ?? false;
                 if (_controllerWasPlaying) {
-                  _podCtr.videoCtr?.pause();
+                  podCtr.videoCtr?.pause();
                 }
 
                 if (widget.onDragStart != null) {
@@ -79,16 +78,16 @@ class _PodProgressBarState extends State<PodProgressBar> {
                 if (!videoPlayerValue!.isInitialized) {
                   return;
                 }
-                _podCtr.isShowOverlay(true);
+                podCtr.isShowOverlay(true);
                 seekToRelativePosition(details.globalPosition);
 
                 widget.onDragUpdate?.call();
               },
               onHorizontalDragEnd: (DragEndDetails details) {
                 if (_controllerWasPlaying) {
-                  _podCtr.videoCtr?.play();
+                  podCtr.videoCtr?.play();
                 }
-                _podCtr.toggleVideoOverlay();
+                podCtr.toggleVideoOverlay();
 
                 if (widget.onDragEnd != null) {
                   widget.onDragEnd?.call();
@@ -127,6 +126,11 @@ class _PodProgressBarState extends State<PodProgressBar> {
                               .podProgressBarConfig.alwaysVisibleCircleHandler
                       ? widget.podProgressBarConfig.circleHandlerRadius
                       : 0,
+                  ),
+                ),
+                size: Size(
+                  double.maxFinite,
+                  widget.podProgressBarConfig.height,
                 ),
               ),
               size: Size(

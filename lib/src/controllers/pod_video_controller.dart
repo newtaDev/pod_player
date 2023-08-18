@@ -147,21 +147,21 @@ class _PodVideoController extends _PodUiController {
     }
   }
 
-  void setVideoPlayBack(String _speed) {
+  void setVideoPlayBack(String speed) {
     late double pickedSpeed;
 
-    if (_speed == 'Normal') {
+    if (speed == 'Normal') {
       pickedSpeed = 1.0;
       _currentPaybackSpeed = 'Normal';
     } else {
-      pickedSpeed = double.parse(_speed.split('x').first);
-      _currentPaybackSpeed = _speed;
+      pickedSpeed = double.parse(speed.split('x').first);
+      _currentPaybackSpeed = speed;
     }
     _videoCtr?.setPlaybackSpeed(pickedSpeed);
   }
 
-  Future<void> setLooping(bool _isLooped) async {
-    isLooping = _isLooped;
+  Future<void> setLooping(bool isLooped) async {
+    isLooping = isLooped;
     await _videoCtr?.setLooping(isLooping);
   }
 
@@ -213,11 +213,13 @@ class _PodVideoController extends _PodUiController {
             DeviceOrientation.portraitUp,
             DeviceOrientation.portraitDown,
           ]),
-          SystemChrome.setPreferredOrientations(DeviceOrientation.values),
-          SystemChrome.setEnabledSystemUIMode(
-            SystemUiMode.manual,
-            overlays: SystemUiOverlay.values,
-          ),
+          if (!(defaultTargetPlatform == TargetPlatform.iOS)) ...[
+            SystemChrome.setPreferredOrientations(DeviceOrientation.values),
+            SystemChrome.setEnabledSystemUIMode(
+              SystemUiMode.manual,
+              overlays: SystemUiOverlay.values,
+            ),
+          ]
         ]);
       }
 
@@ -239,7 +241,7 @@ class _PodVideoController extends _PodUiController {
 
       Navigator.push(
         mainContext,
-        PageRouteBuilder(
+        PageRouteBuilder<dynamic>(
           fullscreenDialog: true,
           pageBuilder: (BuildContext context, _, __) => FullScreenView(
             tag: tag,
@@ -255,11 +257,11 @@ class _PodVideoController extends _PodUiController {
   }
 
   /// Calculates video `position` or `duration`
-  String calculateVideoDuration(Duration _duration) {
-    final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
-    final _totalMinute = _duration.toString().split(':')[1];
-    final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes)).inSeconds.toString().padLeft(2, '0');
-    final String videoLength = '$_totalHour$_totalMinute:$_totalSeconds';
+  String calculateVideoDuration(Duration duration) {
+    final totalHour = duration.inHours == 0 ? '' : '${duration.inHours}:';
+    final totalMinute = duration.toString().split(':')[1];
+    final totalSeconds = (duration - Duration(minutes: duration.inMinutes)).inSeconds.toString().padLeft(2, '0');
+    final String videoLength = '$totalHour$totalMinute:$totalSeconds';
     return videoLength;
   }
 }

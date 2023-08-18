@@ -86,9 +86,9 @@ class _PodBaseController extends GetxController {
   // }
 
   ///updates state with id `_podVideoState`
-  void podVideoStateChanger(PodVideoState? _val, {bool updateUi = true}) {
-    if (_podVideoState != (_val ?? _podVideoState)) {
-      _podVideoState = _val ?? _podVideoState;
+  void podVideoStateChanger(PodVideoState? val, {bool updateUi = true}) {
+    if (_podVideoState != (val ?? _podVideoState)) {
+      _podVideoState = val ?? _podVideoState;
       if (updateUi) {
         update(['podVideoState']);
         update(['update-all']);

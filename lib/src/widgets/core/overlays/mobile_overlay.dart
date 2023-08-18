@@ -4,15 +4,14 @@ class _MobileOverlay extends StatelessWidget {
   final String tag;
 
   const _MobileOverlay({
-    Key? key,
     required this.tag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     const overlayColor = Colors.black38;
     const itemColor = Colors.white;
-    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
+    final podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -28,8 +27,8 @@ class _MobileOverlay extends StatelessWidget {
                     isForward: false,
                     height: double.maxFinite,
                     onDoubleTap: _isRtl()
-                        ? _podCtr.onRightDoubleTap
-                        : _podCtr.onLeftDoubleTap,
+                        ? podCtr.onRightDoubleTap
+                        : podCtr.onLeftDoubleTap,
                   ),
                 ),
                 SizedBox(
@@ -44,8 +43,8 @@ class _MobileOverlay extends StatelessWidget {
                     tag: tag,
                     height: double.maxFinite,
                     onDoubleTap: _isRtl()
-                        ? _podCtr.onLeftDoubleTap
-                        : _podCtr.onRightDoubleTap,
+                        ? podCtr.onLeftDoubleTap
+                        : podCtr.onRightDoubleTap,
                   ),
                 ),
               ],
@@ -59,17 +58,17 @@ class _MobileOverlay extends StatelessWidget {
             children: [
               Expanded(
                 child: IgnorePointer(
-                  child: _podCtr.videoTitle ?? const SizedBox(),
+                  child: podCtr.videoTitle ?? const SizedBox(),
                 ),
               ),
               MaterialIconButton(
-                toolTipMesg: _podCtr.podPlayerLabels.settings,
+                toolTipMesg: podCtr.podPlayerLabels.settings,
                 color: itemColor,
                 onPressed: () {
-                  if (_podCtr.isOverlayVisible) {
+                  if (podCtr.isOverlayVisible) {
                     _bottomSheet(context);
                   } else {
-                    _podCtr.toggleVideoOverlay();
+                    podCtr.toggleVideoOverlay();
                   }
                 },
                 child: const Icon(
@@ -106,7 +105,7 @@ class _MobileOverlay extends StatelessWidget {
   }
 
   void _bottomSheet(BuildContext context) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       builder: (context) => SafeArea(child: _MobileBottomSheet(tag: tag)),
     );

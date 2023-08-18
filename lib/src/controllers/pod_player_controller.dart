@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:universal_html/html.dart' as _html;
-import 'package:wakelock/wakelock.dart';
+import 'package:universal_html/html.dart' as uni_html;
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../pod_player.dart';
 import '../utils/logger.dart';
@@ -78,7 +78,7 @@ class PodPlayerController {
       throw Exception(_initializationError.toString());
     }
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
     await _checkAndWaitTillInitialized();
   }
 
@@ -166,7 +166,7 @@ class PodPlayerController {
     _ctr.videoCtr?.removeListener(_ctr.videoListner);
     _ctr.videoCtr?.dispose();
     _ctr.removeListenerId('podVideoState', _ctr.podStateListner);
-    if (podPlayerConfig.wakelockEnabled) Wakelock.disable();
+    if (podPlayerConfig.wakelockEnabled) WakelockPlus.disable();
     Get.delete<PodGetXVideoController>(
       force: true,
       tag: getTag,
@@ -196,17 +196,17 @@ class PodPlayerController {
   }
 
   ///Moves video forward from current duration to `_duration`
-  Future<void> videoSeekForward(Duration _duration) async {
+  Future<void> videoSeekForward(Duration duration) async {
     await _checkAndWaitTillInitialized();
     if (!_isCtrInitialised) return;
-    return _ctr.seekForward(_duration);
+    return _ctr.seekForward(duration);
   }
 
   ///Moves video backward from current duration to `_duration`
-  Future<void> videoSeekBackward(Duration _duration) async {
+  Future<void> videoSeekBackward(Duration duration) async {
     await _checkAndWaitTillInitialized();
     if (!_isCtrInitialised) return;
-    return _ctr.seekBackward(_duration);
+    return _ctr.seekBackward(duration);
   }
 
   ///on right double tap
@@ -228,7 +228,7 @@ class PodPlayerController {
   /// If onToggleFullScreen is set, you must handle the device
   /// orientation by yourself.
   void enableFullScreen() {
-    _html.document.documentElement?.requestFullscreen();
+    uni_html.document.documentElement?.requestFullscreen();
     _ctr.enableFullScreen(getTag);
   }
 
@@ -237,7 +237,7 @@ class PodPlayerController {
   /// If onToggleFullScreen is set, you must handle the device
   /// orientation by yourself.
   void disableFullScreen(BuildContext context) {
-    _html.document.exitFullscreen();
+    uni_html.document.exitFullscreen();
 
     if (!_ctr.isWebPopupOverlayOpen) {
       _ctr.disableFullScreen(context, getTag);

@@ -4,21 +4,20 @@ class _WebOverlay extends StatelessWidget {
   final String tag;
 
   const _WebOverlay({
-    Key? key,
     required this.tag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     const overlayColor = Colors.black38;
-    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
+    final podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Stack(
       children: [
         Positioned.fill(
           child: _VideoGestureDetector(
             tag: tag,
-            onTap: _podCtr.togglePlayPauseVideo,
-            onDoubleTap: () => _podCtr.toggleFullScreenOnWeb(context, tag),
+            onTap: podCtr.togglePlayPauseVideo,
+            onDoubleTap: () => podCtr.toggleFullScreenOnWeb(context, tag),
             child: const ColoredBox(
               color: overlayColor,
               child: SizedBox.expand(),
@@ -35,7 +34,7 @@ class _WebOverlay extends StatelessWidget {
           child: GetBuilder<PodGetXVideoController>(
             tag: tag,
             id: 'double-tap',
-            builder: (_podCtr) {
+            builder: (podCtr) {
               return Row(
                 children: [
                   Expanded(
@@ -63,7 +62,7 @@ class _WebOverlay extends StatelessWidget {
             },
           ),
         ),
-        IgnorePointer(child: _podCtr.videoTitle ?? const SizedBox()),
+        IgnorePointer(child: podCtr.videoTitle ?? const SizedBox()),
       ],
     );
   }
@@ -73,31 +72,30 @@ class _WebOverlayBottomControlles extends StatelessWidget {
   final String tag;
 
   const _WebOverlayBottomControlles({
-    Key? key,
     required this.tag,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final _podCtr = Get.find<PodGetXVideoController>(tag: tag);
+    final podCtr = Get.find<PodGetXVideoController>(tag: tag);
     const durationTextStyle = TextStyle(color: Colors.white70);
     const itemColor = Colors.white;
 
     return MouseRegion(
-      onHover: (event) => _podCtr.onOverlayHover(),
-      onExit: (event) => _podCtr.onOverlayHoverExit(),
+      onHover: (event) => podCtr.onOverlayHover(),
+      onExit: (event) => podCtr.onOverlayHoverExit(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: _podCtr.podProgressBarConfig.padding,
+              padding: podCtr.podProgressBarConfig.padding,
               child: PodProgressBar(
                 tag: tag,
-                podProgressBarConfig: _podCtr.podProgressBarConfig,
+                podProgressBarConfig: podCtr.podProgressBarConfig,
               ),
-            ),
+
             Row(
               children: [
                 Expanded(
@@ -112,25 +110,27 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           tag: tag,
                           id: 'volume',
                           builder: (_podCtr) => MaterialIconButton(
-                            toolTipMesg: _podCtr.isMute
-                                ? _podCtr.podPlayerLabels.unmute ?? 'Unmute${kIsWeb ? ' (m)' : ''}'
-                                : _podCtr.podPlayerLabels.mute ?? 'Mute${kIsWeb ? ' (m)' : ''}',
+                            toolTipMesg: podCtr.isMute
+                                ? podCtr.podPlayerLabels.unmute ?? 'Unmute${kIsWeb ? ' (m)' : ''}'
+                                : podCtr.podPlayerLabels.mute ?? 'Mute${kIsWeb ? ' (m)' : ''}',
                             color: itemColor,
-                            onPressed: _podCtr.toggleMute,
+                            onPressed: podCtr.toggleMute,
                             child: Icon(
-                              _podCtr.isMute ? Icons.volume_off_rounded : Icons.volume_up_rounded,
+                              podCtr.isMute
+                                  ? Icons.volume_off_rounded
+                                  : Icons.volume_up_rounded,
                             ),
                           ),
                         ),
                         GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'video-progress',
-                          builder: (_podCtr) {
+                          builder: (podCtr) {
                             return Row(
                               children: [
                                 Text(
-                                  _podCtr.calculateVideoDuration(
-                                    _podCtr.videoPosition,
+                                  podCtr.calculateVideoDuration(
+                                    podCtr.videoPosition,
                                   ),
                                   style: durationTextStyle,
                                 ),
@@ -139,8 +139,8 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                                   style: durationTextStyle,
                                 ),
                                 Text(
-                                  _podCtr.calculateVideoDuration(
-                                    _podCtr.videoDuration,
+                                  podCtr.calculateVideoDuration(
+                                    podCtr.videoDuration,
                                   ),
                                   style: durationTextStyle,
                                 ),
@@ -161,13 +161,17 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                       children: [
                         _WebSettingsDropdown(tag: tag),
                         MaterialIconButton(
-                          toolTipMesg: _podCtr.isFullScreen
-                              ? _podCtr.podPlayerLabels.exitFullScreen ?? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                              : _podCtr.podPlayerLabels.fullscreen ?? 'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                          toolTipMesg: podCtr.isFullScreen
+                              ? podCtr.podPlayerLabels.exitFullScreen ??
+                                  'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                              : podCtr.podPlayerLabels.fullscreen ??
+                                  'Fullscreen${kIsWeb ? ' (f)' : ''}',
                           color: itemColor,
-                          onPressed: () => _onFullScreenToggle(_podCtr, context),
+                          onPressed: () => _onFullScreenToggle(podCtr, context),
                           child: Icon(
-                            _podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                            podCtr.isFullScreen
+                                ? Icons.fullscreen_exit
+                                : Icons.fullscreen,
                           ),
                         ),
                       ],
@@ -183,29 +187,29 @@ class _WebOverlayBottomControlles extends StatelessWidget {
   }
 
   void _onFullScreenToggle(
-    PodGetXVideoController _podCtr,
+    PodGetXVideoController podCtr,
     BuildContext context,
   ) {
-    if (_podCtr.isOverlayVisible) {
-      if (_podCtr.isFullScreen) {
+    if (podCtr.isOverlayVisible) {
+      if (podCtr.isFullScreen) {
         if (kIsWeb) {
-          _html.document.exitFullscreen();
-          _podCtr.disableFullScreen(context, tag);
+          uni_html.document.exitFullscreen();
+          podCtr.disableFullScreen(context, tag);
           return;
         } else {
-          _podCtr.disableFullScreen(context, tag);
+          podCtr.disableFullScreen(context, tag);
         }
       } else {
         if (kIsWeb) {
-          _html.document.documentElement?.requestFullscreen();
-          _podCtr.enableFullScreen(tag);
+          uni_html.document.documentElement?.requestFullscreen();
+          podCtr.enableFullScreen(tag);
           return;
         } else {
-          _podCtr.enableFullScreen(tag);
+          podCtr.enableFullScreen(tag);
         }
       }
     } else {
-      _podCtr.toggleVideoOverlay();
+      podCtr.toggleVideoOverlay();
     }
   }
 }

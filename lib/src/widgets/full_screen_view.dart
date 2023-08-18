@@ -4,9 +4,9 @@ class FullScreenView extends StatefulWidget {
   final String tag;
 
   const FullScreenView({
-    Key? key,
     required this.tag,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<FullScreenView> createState() => _FullScreenViewState();
@@ -56,7 +56,7 @@ class _FullScreenViewState extends State<FullScreenView> with TickerProviderStat
         backgroundColor: Colors.black,
         body: GetBuilder<PodGetXVideoController>(
           tag: widget.tag,
-          builder: (_podCtr) => Center(
+          builder: (podCtr) => Center(
             child: ColoredBox(
               color: Colors.black,
               child: SizedBox(
@@ -65,7 +65,7 @@ class _FullScreenViewState extends State<FullScreenView> with TickerProviderStat
                 child: Center(
                   child: _podCtr.videoCtr == null
                       ? loadingWidget
-                      : _podCtr.videoCtr!.value.isInitialized
+                      : podCtr.videoCtr!.value.isInitialized
                           ? _PodCoreVideoPlayer(
                               tag: widget.tag,
                               videoPlayerCtr: _podCtr.videoCtr!,
