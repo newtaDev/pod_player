@@ -9,6 +9,8 @@
   <a href="https://pub.dev/packages/pod_player/score"><img src="https://img.shields.io/badge/popularity-97﹪-critical" alt="pub points"></a>
 
 </p>
+<p align="center"> <img src="https://komarev.com/ghpvc/?username=newtaDev&label=Total%20views&color=0e75b6&style=flat" alt="newta" /> </p>
+
 Video player for flutter web & mobile devices, pod player supports playing video from `Youtube` and `Vimeo`
 
 pod player is a simple and easy-to-use video player. Its video controls are similar to Youtube player (with customizable controls) and also can play videos from `Youtube` and `Vimeo` (By providing url/video_id).
