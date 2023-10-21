@@ -200,11 +200,13 @@ class _PodVideoController extends _PodUiController {
             DeviceOrientation.portraitUp,
             DeviceOrientation.portraitDown,
           ]),
-          SystemChrome.setPreferredOrientations(DeviceOrientation.values),
-          SystemChrome.setEnabledSystemUIMode(
-            SystemUiMode.manual,
-            overlays: SystemUiOverlay.values,
-          ),
+          if (!(defaultTargetPlatform == TargetPlatform.iOS)) ...[
+            SystemChrome.setPreferredOrientations(DeviceOrientation.values),
+            SystemChrome.setEnabledSystemUIMode(
+              SystemUiMode.manual,
+              overlays: SystemUiOverlay.values,
+            ),
+          ]
         ]);
       }
 
