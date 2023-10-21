@@ -11,6 +11,7 @@ import 'controllers/pod_getx_video_controller.dart';
 import 'utils/logger.dart';
 import 'widgets/double_tap_icon.dart';
 import 'widgets/material_icon_button.dart';
+import 'widgets/material_slider.dart';
 
 part 'widgets/animated_play_pause_icon.dart';
 
