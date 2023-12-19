@@ -213,7 +213,8 @@ class PodPlayerController {
       );
 
   //Change double tap duration
-  void setDoubeTapForwarDuration(int seconds) => _ctr.doubleTapForwardSeconds = seconds;
+  void setDoubeTapForwarDuration(int seconds) =>
+      _ctr.doubleTapForwardSeconds = seconds;
 
   ///Jumps to specific position of the video
   Future<void> videoSeekTo(Duration moment) async {
