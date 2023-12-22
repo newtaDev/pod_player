@@ -18,9 +18,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
       builder: (ctrx) {
         return RawKeyboardListener(
           autofocus: true,
-          focusNode:
-              (podCtr.isFullScreen ? FocusNode() : podCtr.keyboardFocusWeb) ??
-                  FocusNode(),
+          focusNode: (podCtr.isFullScreen ? FocusNode() : podCtr.keyboardFocusWeb) ?? FocusNode(),
           onKey: (value) => podCtr.onKeyBoardEvents(
             event: value,
             appContext: ctrx,
@@ -83,7 +81,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                           ),
                         );
 
-                    if (kIsWeb) {
+                    if (kIsWeb && podCtr.overlayBuilder == null) {
                       switch (podCtr.podVideoState) {
                         case PodVideoState.loading:
                           return loadingWidget;
@@ -132,18 +130,17 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                       : GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'overlay',
-                          builder: (podCtr) => podCtr.isOverlayVisible ||
-                                  !podCtr.alwaysShowProgressBar
-                              ? const SizedBox()
-                              : Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: PodProgressBar(
-                                    tag: tag,
-                                    alignment: Alignment.bottomCenter,
-                                    podProgressBarConfig:
-                                        podCtr.podProgressBarConfig,
-                                  ),
-                                ),
+                          builder: (podCtr) =>
+                              podCtr.isOverlayVisible || !podCtr.alwaysShowProgressBar
+                                  ? const SizedBox()
+                                  : Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: PodProgressBar(
+                                        tag: tag,
+                                        alignment: Alignment.bottomCenter,
+                                        podProgressBarConfig: podCtr.podProgressBarConfig,
+                                      ),
+                                    ),
                         ),
                 ),
             ],
