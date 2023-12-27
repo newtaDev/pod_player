@@ -226,24 +226,21 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                 toolTipMesg: podCtr.isFullScreen
                     ? podCtr.podPlayerLabels.exitFullScreen ??
                         'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                    : podCtr.podPlayerLabels.fullscreen ??
-                        'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                    : podCtr.podPlayerLabels.fullscreen ?? 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                 color: itemColor,
                 onPressed: () {
                   if (podCtr.isOverlayVisible) {
                     if (podCtr.isFullScreen) {
                       podCtr.disableFullScreen(context, tag);
                     } else {
-                      podCtr.enableFullScreen(tag);
+                      podCtr.enableFullScreen(tag, context);
                     }
                   } else {
                     podCtr.toggleVideoOverlay();
                   }
                 },
                 child: Icon(
-                  podCtr.isFullScreen
-                      ? Icons.fullscreen_exit
-                      : Icons.fullscreen,
+                  podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
                 ),
               ),
             ],
