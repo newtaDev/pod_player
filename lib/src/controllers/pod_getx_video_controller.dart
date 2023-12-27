@@ -248,7 +248,7 @@ class PodGetXVideoController extends _PodGesturesController {
       }
     } else {
       uni_html.document.documentElement?.requestFullscreen();
-      enableFullScreen(tag);
+      enableFullScreen(tag, context);
     }
   }
 

@@ -107,16 +107,12 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           id: 'volume',
                           builder: (podCtr) => MaterialIconButton(
                             toolTipMesg: podCtr.isMute
-                                ? podCtr.podPlayerLabels.unmute ??
-                                    'Unmute${kIsWeb ? ' (m)' : ''}'
-                                : podCtr.podPlayerLabels.mute ??
-                                    'Mute${kIsWeb ? ' (m)' : ''}',
+                                ? podCtr.podPlayerLabels.unmute ?? 'Unmute${kIsWeb ? ' (m)' : ''}'
+                                : podCtr.podPlayerLabels.mute ?? 'Mute${kIsWeb ? ' (m)' : ''}',
                             color: itemColor,
                             onPressed: podCtr.toggleMute,
                             child: Icon(
-                              podCtr.isMute
-                                  ? Icons.volume_off_rounded
-                                  : Icons.volume_up_rounded,
+                              podCtr.isMute ? Icons.volume_off_rounded : Icons.volume_up_rounded,
                             ),
                           ),
                         ),
@@ -167,9 +163,7 @@ class _WebOverlayBottomControlles extends StatelessWidget {
                           color: itemColor,
                           onPressed: () => _onFullScreenToggle(podCtr, context),
                           child: Icon(
-                            podCtr.isFullScreen
-                                ? Icons.fullscreen_exit
-                                : Icons.fullscreen,
+                            podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
                           ),
                         ),
                       ],
@@ -200,10 +194,10 @@ class _WebOverlayBottomControlles extends StatelessWidget {
       } else {
         if (kIsWeb) {
           uni_html.document.documentElement?.requestFullscreen();
-          podCtr.enableFullScreen(tag);
+          podCtr.enableFullScreen(tag, context);
           return;
         } else {
-          podCtr.enableFullScreen(tag);
+          podCtr.enableFullScreen(tag, context);
         }
       }
     } else {
