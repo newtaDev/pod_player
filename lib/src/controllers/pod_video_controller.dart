@@ -197,8 +197,7 @@ class _PodVideoController extends _PodUiController {
       } else {
         await Future.wait([
           SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight
           ]),
           if (!(defaultTargetPlatform == TargetPlatform.iOS)) ...[
             SystemChrome.setPreferredOrientations(DeviceOrientation.values),
