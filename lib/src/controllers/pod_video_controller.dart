@@ -196,9 +196,9 @@ class _PodVideoController extends _PodUiController {
         await onToggleFullScreen!(false);
       } else {
         await Future.wait([
-          SystemChrome.setPreferredOrientations([
+        /*  SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight
-          ]),
+          ]), */
           if (!(defaultTargetPlatform == TargetPlatform.iOS)) ...[
             SystemChrome.setPreferredOrientations(DeviceOrientation.values),
             SystemChrome.setEnabledSystemUIMode(
