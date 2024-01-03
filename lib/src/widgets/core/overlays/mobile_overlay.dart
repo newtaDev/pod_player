@@ -57,7 +57,7 @@ class _MobileOverlay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Expanded(
-                child: child: podCtr.videoTitle ?? const SizedBox(),
+                child: podCtr.videoTitle ?? const SizedBox(),
               ),
               MaterialIconButton(
                 toolTipMesg: podCtr.podPlayerLabels.settings,
