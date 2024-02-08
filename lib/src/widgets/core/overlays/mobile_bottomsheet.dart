@@ -234,8 +234,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                 onPressed: () {
                   if (podCtr.isOverlayVisible) {
                     if (podCtr.isFullScreen) {
-                      podCtr.disableFullScreen(
-                          fullScreenContext ?? context, tag);
+                      podCtr.disableFullScreen(context, tag);
                     } else {
                       podCtr.enableFullScreen(
                           tag, fullScreenContext ?? context);
