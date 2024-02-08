@@ -189,7 +189,7 @@ class _PodVideoController extends _PodUiController {
   }
 
   Future<void> disableFullScreen(
-    BuildContext context,
+    BuildContext? context,
     String tag, {
     bool enablePop = true,
   }) async {
@@ -222,9 +222,9 @@ class _PodVideoController extends _PodUiController {
     }
   }
 
-  void _exitFullScreenView(BuildContext context, String tag) {
+  void _exitFullScreenView(BuildContext? context, String tag) {
     podLog('popped-full-screen');
-    Navigator.of(fullScreenContext).pop();
+    Navigator.of(context ?? fullScreenContext).pop();
   }
 
   void _enableFullScreenView(

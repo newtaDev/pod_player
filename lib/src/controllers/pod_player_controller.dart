@@ -213,7 +213,8 @@ class PodPlayerController {
       );
 
   //Change double tap duration
-  void setDoubeTapForwarDuration(int seconds) => _ctr.doubleTapForwardSeconds = seconds;
+  void setDoubeTapForwarDuration(int seconds) =>
+      _ctr.doubleTapForwardSeconds = seconds;
 
   ///Jumps to specific position of the video
   Future<void> videoSeekTo(Duration moment) async {
@@ -263,7 +264,7 @@ class PodPlayerController {
   ///
   /// If onToggleFullScreen is set, you must handle the device
   /// orientation by yourself.
-  void disableFullScreen(BuildContext context) {
+  void disableFullScreen(BuildContext? context) {
     uni_html.document.exitFullscreen();
 
     if (!_ctr.isWebPopupOverlayOpen) {
