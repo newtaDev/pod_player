@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromNetwork extends StatefulWidget {
-  const PlayVideoFromNetwork({Key? key}) : super(key: key);
+  const PlayVideoFromNetwork({super.key});
 
   @override
   State<PlayVideoFromNetwork> createState() => _PlayVideoFromAssetState();

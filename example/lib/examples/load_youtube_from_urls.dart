@@ -6,7 +6,7 @@ void main(List<String> args) {
 }
 
 class YoutubeApp extends StatelessWidget {
-  const YoutubeApp({Key? key}) : super(key: key);
+  const YoutubeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class YoutubeApp extends StatelessWidget {
 }
 
 class YoutubeVideoViewer extends StatefulWidget {
-  const YoutubeVideoViewer({Key? key}) : super(key: key);
+  const YoutubeVideoViewer({super.key});
 
   @override
   State<YoutubeVideoViewer> createState() => _YoutubeVideoViewerState();

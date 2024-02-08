@@ -2,7 +2,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromVimeoId extends StatefulWidget {
-  const PlayVideoFromVimeoId({Key? key}) : super(key: key);
+  const PlayVideoFromVimeoId({super.key});
 
   @override
   State<PlayVideoFromVimeoId> createState() => _PlayVideoFromVimeoIdState();

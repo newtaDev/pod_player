@@ -7,7 +7,7 @@ void main(List<String> args) {
 }
 
 class ListOfVideosApp extends StatelessWidget {
-  const ListOfVideosApp({Key? key}) : super(key: key);
+  const ListOfVideosApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +82,7 @@ class ListOfVideosApp extends StatelessWidget {
 
 class ListOfVideosScreen extends StatelessWidget {
   final List<PlayVideoFrom> videosList;
-  const ListOfVideosScreen({Key? key, required this.videosList})
-      : super(key: key);
+  const ListOfVideosScreen({super.key, required this.videosList});
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +99,7 @@ class ListOfVideosScreen extends StatelessWidget {
 
 class ListOfVideosViewer extends StatefulWidget {
   final List<PlayVideoFrom> videosList;
-  const ListOfVideosViewer({Key? key, required this.videosList})
-      : super(key: key);
+  const ListOfVideosViewer({super.key, required this.videosList});
 
   @override
   State<ListOfVideosViewer> createState() => _ListOfVideosViewerState();

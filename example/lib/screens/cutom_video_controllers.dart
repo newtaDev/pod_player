@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomVideoControlls extends StatefulWidget {
-  const CustomVideoControlls({Key? key}) : super(key: key);
+  const CustomVideoControlls({super.key});
 
   @override
   State<CustomVideoControlls> createState() => _CustomVideoControllsState();

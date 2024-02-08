@@ -6,7 +6,7 @@ void main(List<String> args) {
 }
 
 class VimeoApp extends StatelessWidget {
-  const VimeoApp({Key? key}) : super(key: key);
+  const VimeoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class VimeoApp extends StatelessWidget {
 }
 
 class VimeoVideoViewer extends StatefulWidget {
-  const VimeoVideoViewer({Key? key}) : super(key: key);
+  const VimeoVideoViewer({super.key});
 
   @override
   State<VimeoVideoViewer> createState() => VimeoVideoViewerState();

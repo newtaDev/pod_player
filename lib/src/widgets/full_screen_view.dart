@@ -39,8 +39,8 @@ class _FullScreenViewState extends State<FullScreenView>
           strokeWidth: 2,
         );
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) async {
         if (kIsWeb) {
           await _podCtr.disableFullScreen(
             context,
@@ -49,7 +49,6 @@ class _FullScreenViewState extends State<FullScreenView>
           );
         }
         if (!kIsWeb) await _podCtr.disableFullScreen(context, widget.tag);
-        return true;
       },
       child: Scaffold(
         backgroundColor: Colors.black,

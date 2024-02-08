@@ -219,7 +219,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromNetwork extends StatefulWidget {
-  const PlayVideoFromNetwork({Key? key}) : super(key: key);
+  const PlayVideoFromNetwork({super.key});
 
   @override
   State<PlayVideoFromNetwork> createState() => _PlayVideoFromNetworkState();
@@ -308,7 +308,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromYoutube extends StatefulWidget {
-  const PlayVideoFromYoutube({Key? key}) : super(key: key);
+  const PlayVideoFromYoutube({super.key});
 
   @override
   State<PlayVideoFromYoutube> createState() => _PlayVideoFromYoutubeState();
@@ -350,7 +350,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromVimeo extends StatefulWidget {
-  const PlayVideoFromVimeo({Key? key}) : super(key: key);
+  const PlayVideoFromVimeo({super.key});
 
   @override
   State<PlayVideoFromVimeo> createState() => _PlayVideoFromVimeoState();
@@ -392,7 +392,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromVimeo extends StatefulWidget {
-  const PlayVideoFromVimeo({Key? key}) : super(key: key);
+  const PlayVideoFromVimeo({super.key});
 
   @override
   State<PlayVideoFromVimeo> createState() => _PlayVideoFromVimeoState();
@@ -434,7 +434,7 @@ import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
 
 class PlayVideoFromVimeoPrivateVideo extends StatefulWidget {
-  const PlayVideoFromVimeoPrivateVideo({Key? key}) : super(key: key);
+  const PlayVideoFromVimeoPrivateVideo({super.key});
 
   @override
   State<PlayVideoFromVimeoPrivateVideo> createState() =>
