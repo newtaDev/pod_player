@@ -46,14 +46,12 @@ class _FullScreenViewState extends State<FullScreenView>
       onPopInvoked: (_) async {
         if (kIsWeb) {
           await _podCtr.disableFullScreen(
-            widget.fullScreenContext ?? context,
+            context,
             widget.tag,
             enablePop: false,
           );
         }
-        if (!kIsWeb)
-          await _podCtr.disableFullScreen(
-              widget.fullScreenContext ?? context, widget.tag);
+        if (!kIsWeb) await _podCtr.disableFullScreen(context, widget.tag);
       },
       child: Scaffold(
         backgroundColor: Colors.black,
