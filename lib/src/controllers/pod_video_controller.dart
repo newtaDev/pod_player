@@ -179,7 +179,7 @@ class _PodVideoController extends _PodUiController {
         ]);
       }
 
-      _enableFullScreenView(tag, context);
+      _enableFullScreenView(tag, context ?? fullScreenContext);
       isFullScreen = true;
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         update(['full-screen']);
@@ -235,11 +235,12 @@ class _PodVideoController extends _PodUiController {
       podLog('full-screen-enabled');
 
       Navigator.push(
-        context ?? mainContext,
+        context ?? fullScreenContext,
         PageRouteBuilder<dynamic>(
           fullscreenDialog: true,
           pageBuilder: (BuildContext context, _, __) => FullScreenView(
             tag: tag,
+            fullScreenContext: context,
           ),
           reverseTransitionDuration: const Duration(milliseconds: 400),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
