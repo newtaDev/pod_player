@@ -2,9 +2,11 @@ part of 'package:pod_player/src/pod_player.dart';
 
 class _VideoOverlays extends StatelessWidget {
   final String tag;
+  final BuildContext? fullScreenContext;
 
   const _VideoOverlays({
     required this.tag,
+    required this.fullScreenContext,
   });
 
   @override
@@ -52,7 +54,7 @@ class _VideoOverlays extends StatelessWidget {
             child: Stack(
               fit: StackFit.passthrough,
               children: [
-                if (!kIsWeb) _MobileOverlay(tag: tag),
+                if (!kIsWeb) _MobileOverlay(tag: tag, fullScreenContext: fullScreenContext,),
                 if (kIsWeb) _WebOverlay(tag: tag),
               ],
             ),

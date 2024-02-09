@@ -108,6 +108,10 @@ class PodPlayerController {
 
   PodVideoPlayerType get videoPlayerType => _ctr.videoPlayerType;
 
+  int? get vimeoPlayingVideoQuality => _ctr.vimeoPlayingVideoQuality;
+
+  String get currentPaybackSpeed => _ctr.currentPaybackSpeed;
+
   // Future<void> initialize() async => _ctr.videoCtr?.initialize;
 
   //! video positions
@@ -140,6 +144,15 @@ class PodPlayerController {
     );
   }
 
+  /// change video quality
+  void changeQualityVideo(int quality) {
+    _ctr.changeVideoQuality(quality);
+  }
+
+  void setPlaybackSpeed(String speed) {
+    _ctr.setVideoPlayBack(speed);
+  }
+
   /// Remove registered listeners
   void removeListener(VoidCallback listener) {
     _checkAndWaitTillInitialized().then(
@@ -158,6 +171,21 @@ class PodPlayerController {
   /// toggle the volume
   Future<void> toggleVolume() async {
     _ctr.isMute ? await _ctr.unMute() : await _ctr.mute();
+  }
+
+  /// toggle looping
+  Future<void> toggleLooping() {
+    return _ctr.toggleLooping();
+  }
+
+  /// enable looping
+  Future<void> enableLooping() {
+    return _ctr.setLooping(true);
+  }
+
+  /// disable looping
+  Future<void> disableLooping() {
+    return _ctr.setLooping(false);
   }
 
   ///Dispose pod video player controller
@@ -227,16 +255,16 @@ class PodPlayerController {
   ///
   /// If onToggleFullScreen is set, you must handle the device
   /// orientation by yourself.
-  void enableFullScreen() {
+  void enableFullScreen({BuildContext? context}) {
     uni_html.document.documentElement?.requestFullscreen();
-    _ctr.enableFullScreen(getTag);
+    _ctr.enableFullScreen(getTag, context);
   }
 
   /// Disables fullscreen mode.
   ///
   /// If onToggleFullScreen is set, you must handle the device
   /// orientation by yourself.
-  void disableFullScreen(BuildContext context) {
+  void disableFullScreen(BuildContext? context) {
     uni_html.document.exitFullscreen();
 
     if (!_ctr.isWebPopupOverlayOpen) {

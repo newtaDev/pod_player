@@ -159,7 +159,10 @@ class _PodVideoController extends _PodUiController {
     update(['update-all']);
   }
 
-  Future<void> enableFullScreen(String tag) async {
+  Future<void> enableFullScreen(
+    String tag,
+    BuildContext? context,
+  ) async {
     podLog('-full-screen-enable-entred');
     if (!isFullScreen) {
       if (onToggleFullScreen != null) {
@@ -176,7 +179,7 @@ class _PodVideoController extends _PodUiController {
         ]);
       }
 
-      _enableFullScreenView(tag);
+      _enableFullScreenView(tag, context ?? fullScreenContext);
       isFullScreen = true;
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         update(['full-screen']);
@@ -186,7 +189,7 @@ class _PodVideoController extends _PodUiController {
   }
 
   Future<void> disableFullScreen(
-    BuildContext context,
+    BuildContext? context,
     String tag, {
     bool enablePop = true,
   }) async {
@@ -195,19 +198,21 @@ class _PodVideoController extends _PodUiController {
       if (onToggleFullScreen != null) {
         await onToggleFullScreen!(false);
       } else {
-        await Future.wait([
-          SystemChrome.setPreferredOrientations([
-            DeviceOrientation.portraitUp,
-            DeviceOrientation.portraitDown,
-          ]),
-          if (!(defaultTargetPlatform == TargetPlatform.iOS)) ...[
-            SystemChrome.setPreferredOrientations(DeviceOrientation.values),
-            SystemChrome.setEnabledSystemUIMode(
-              SystemUiMode.manual,
-              overlays: SystemUiOverlay.values,
-            ),
-          ]
-        ]);
+        await Future.wait(
+          [
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown,
+            ]),
+            if (!(defaultTargetPlatform == TargetPlatform.iOS)) ...[
+              SystemChrome.setPreferredOrientations(DeviceOrientation.values),
+              SystemChrome.setEnabledSystemUIMode(
+                SystemUiMode.manual,
+                overlays: SystemUiOverlay.values,
+              ),
+            ],
+          ],
+        );
       }
 
       if (enablePop) _exitFullScreenView(context, tag);
@@ -217,21 +222,26 @@ class _PodVideoController extends _PodUiController {
     }
   }
 
-  void _exitFullScreenView(BuildContext context, String tag) {
+  void _exitFullScreenView(BuildContext? context, String tag) {
     podLog('popped-full-screen');
-    Navigator.of(fullScreenContext).pop();
+    if (Navigator.of(fullScreenContext).canPop()) {
+      Navigator.of(fullScreenContext).pop();
+    }
   }
 
-  void _enableFullScreenView(String tag) {
+  void _enableFullScreenView(
+    String tag,
+    BuildContext? context,
+  ) {
     if (!isFullScreen) {
       podLog('full-screen-enabled');
-
       Navigator.push(
-        mainContext,
+        context ?? fullScreenContext,
         PageRouteBuilder<dynamic>(
           fullscreenDialog: true,
           pageBuilder: (BuildContext context, _, __) => FullScreenView(
             tag: tag,
+            fullScreenContext: context,
           ),
           reverseTransitionDuration: const Duration(milliseconds: 400),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
