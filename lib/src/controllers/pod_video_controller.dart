@@ -224,7 +224,7 @@ class _PodVideoController extends _PodUiController {
 
   void _exitFullScreenView(BuildContext? context, String tag) {
     podLog('popped-full-screen');
-    Navigator.of(context ?? fullScreenContext).pop();
+    Navigator.of(fullScreenContext).pop();
   }
 
   void _enableFullScreenView(
@@ -233,7 +233,6 @@ class _PodVideoController extends _PodUiController {
   ) {
     if (!isFullScreen) {
       podLog('full-screen-enabled');
-
       Navigator.push(
         context ?? fullScreenContext,
         PageRouteBuilder<dynamic>(
