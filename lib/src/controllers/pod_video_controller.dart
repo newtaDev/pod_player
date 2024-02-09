@@ -224,7 +224,9 @@ class _PodVideoController extends _PodUiController {
 
   void _exitFullScreenView(BuildContext? context, String tag) {
     podLog('popped-full-screen');
-    Navigator.of(fullScreenContext).pop();
+    if (Navigator.of(fullScreenContext).canPop()) {
+      Navigator.of(fullScreenContext).pop();
+    }
   }
 
   void _enableFullScreenView(
