@@ -55,26 +55,29 @@ class _FullScreenViewState extends State<FullScreenView>
       },
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: GetBuilder<PodGetXVideoController>(
-          tag: widget.tag,
-          builder: (podCtr) => Center(
-            child: ColoredBox(
-              color: Colors.black,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: podCtr.videoCtr == null
-                      ? loadingWidget
-                      : podCtr.videoCtr!.value.isInitialized
-                          ? _PodCoreVideoPlayer(
-                              tag: widget.tag,
-                              videoPlayerCtr: podCtr.videoCtr!,
-                              videoAspectRatio:
-                                  podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
-                              fullScreenContext: widget.fullScreenContext,
-                            )
-                          : loadingWidget,
+        body: SafeArea(
+          child: GetBuilder<PodGetXVideoController>(
+            tag: widget.tag,
+            builder: (podCtr) => Center(
+              child: ColoredBox(
+                color: Colors.black,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: podCtr.videoCtr == null
+                        ? loadingWidget
+                        : podCtr.videoCtr!.value.isInitialized
+                            ? _PodCoreVideoPlayer(
+                                tag: widget.tag,
+                                videoPlayerCtr: podCtr.videoCtr!,
+                                videoAspectRatio:
+                                    podCtr.videoCtr?.value.aspectRatio ??
+                                        16 / 9,
+                                fullScreenContext: widget.fullScreenContext,
+                              )
+                            : loadingWidget,
+                  ),
                 ),
               ),
             ),
