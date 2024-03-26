@@ -83,7 +83,7 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon> with Sin
       icon: AnimatedIcons.play_pause,
       progress: _payCtr,
       // 操作按钮的颜色
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).colorScheme.primary,
       size: widget.size,
     );
   }

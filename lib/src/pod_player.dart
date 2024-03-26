@@ -213,7 +213,7 @@ class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStat
     return widget.onLoading?.call(context) ??
         CircularProgressIndicator(
           backgroundColor: Colors.black87,
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           strokeWidth: 2,
         );
   }

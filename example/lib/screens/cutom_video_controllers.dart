@@ -208,13 +208,13 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 width: 20,
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.black,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                   strokeWidth: 1,
                 ),
               )
             : Icon(
                 !isVideoPlaying! ? Icons.play_arrow : Icons.pause,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
       ),
     );

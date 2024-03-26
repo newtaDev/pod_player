@@ -185,7 +185,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemColor = Theme.of(context).primaryColor;
+    final itemColor = Theme.of(context).colorScheme.primary;
     final durationTextStyle = TextStyle(color: itemColor);
 
     return GetBuilder<PodGetXVideoController>(
