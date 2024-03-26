@@ -199,24 +199,24 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.black,
-      //   onPressed: () => controller.togglePlayPause(),
-      //   child: isVideoPlaying == null
-      //       ? SizedBox(
-      //           height: 20,
-      //           width: 20,
-      //           child: CircularProgressIndicator(
-      //             backgroundColor: Colors.black,
-      //             color: Theme.of(context).primaryColor,
-      //             strokeWidth: 1,
-      //           ),
-      //         )
-      //       : Icon(
-      //           !isVideoPlaying! ? Icons.play_arrow : Icons.pause,
-      //           color: Theme.of(context).primaryColor,
-      //         ),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () => controller.togglePlayPause(),
+        child: isVideoPlaying == null
+            ? SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                  color: Theme.of(context).primaryColor,
+                  strokeWidth: 1,
+                ),
+              )
+            : Icon(
+                !isVideoPlaying! ? Icons.play_arrow : Icons.pause,
+                color: Theme.of(context).primaryColor,
+              ),
+      ),
     );
   }
 

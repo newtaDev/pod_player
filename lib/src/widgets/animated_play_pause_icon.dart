@@ -13,8 +13,7 @@ class _AnimatedPlayPauseIcon extends StatefulWidget {
   State<_AnimatedPlayPauseIcon> createState() => _AnimatedPlayPauseIconState();
 }
 
-class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
-    with SingleTickerProviderStateMixin {
+class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon> with SingleTickerProviderStateMixin {
   late final AnimationController _payCtr;
   late PodGetXVideoController _podCtr;
   @override
@@ -60,12 +59,9 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
           id: 'podVideoState',
           builder: (f) => MaterialIconButton(
             toolTipMesg: f.isvideoPlaying
-                ? podCtr.podPlayerLabels.pause ??
-                    'Pause${kIsWeb ? ' (space)' : ''}'
-                : podCtr.podPlayerLabels.play ??
-                    'Play${kIsWeb ? ' (space)' : ''}',
-            onPressed:
-                podCtr.isOverlayVisible ? podCtr.togglePlayPauseVideo : null,
+                ? podCtr.podPlayerLabels.pause ?? 'Pause${kIsWeb ? ' (space)' : ''}'
+                : podCtr.podPlayerLabels.play ?? 'Play${kIsWeb ? ' (space)' : ''}',
+            onPressed: podCtr.isOverlayVisible ? podCtr.togglePlayPauseVideo : null,
             child: onStateChange(podCtr),
           ),
         );
@@ -86,7 +82,8 @@ class _AnimatedPlayPauseIconState extends State<_AnimatedPlayPauseIcon>
     return AnimatedIcon(
       icon: AnimatedIcons.play_pause,
       progress: _payCtr,
-      color: Colors.white,
+      // 操作按钮的颜色
+      color: Theme.of(context).primaryColor,
       size: widget.size,
     );
   }

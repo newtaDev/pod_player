@@ -10,7 +10,6 @@ class _MobileOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const overlayColor = Colors.black38;
-    const itemColor = Colors.white;
     final podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Stack(
       alignment: Alignment.center,
@@ -57,7 +56,6 @@ class _MobileOverlay extends StatelessWidget {
               ),
               MaterialIconButton(
                 toolTipMesg: podCtr.podPlayerLabels.settings,
-                // color: itemColor,
                 onPressed: () {
                   if (podCtr.isOverlayVisible) {
                     _bottomSheet(context);
