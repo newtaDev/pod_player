@@ -57,7 +57,7 @@ class _MobileOverlay extends StatelessWidget {
               ),
               MaterialIconButton(
                 toolTipMesg: podCtr.podPlayerLabels.settings,
-                color: itemColor,
+                // color: itemColor,
                 onPressed: () {
                   if (podCtr.isOverlayVisible) {
                     _bottomSheet(context);
