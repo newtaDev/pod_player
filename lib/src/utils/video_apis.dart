@@ -31,7 +31,7 @@ class VideoApis {
     try {
       final response = await _makeRequestHash(videoId, hash);
       final jsonData = jsonDecode(response.body)['request']['files']
-          ['progressive'] as List<dynamic>;
+          ['progressive'] ?? [] as List<dynamic>;
       final progressiveUrls = List.generate(
         jsonData.length,
         (index) => VideoQalityUrls(
