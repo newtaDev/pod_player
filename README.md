@@ -39,24 +39,24 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 - Custom progress bar
 - Custom labels
 - `Change video quality` (for vimeo and youtube)
-- Enable/disable fullscreen player
+- Enable/disable full-screen player
 - support for live youtube video
 - [TODO] support for video playlist
 
 ## Features on web
 
-- Double tap on Video player to enable/disable fullscreen
-- `Mute/unmute` volume
+- Double tap on Video player to enable/disable full-screen
+- `Mute/unMute` volume
 - Video player integration with keyboard
 
   - `SPACE` play/pause video
   - `M` mute/unMute video
-  - `F` enable/disable fullscreen
-  - `ESC` enable/disable fullscreen
+  - `F` enable/disable full-screen
+  - `ESC` enable/disable full-screen
   - `->` seek video forward
   - `<-` seek video backward
 
-- Double tap on video (enable/diables fullscreen)
+- Double tap on video (enable/disables full-screen)
 
 ## Demo
 
@@ -98,7 +98,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 
 ---
 
-- On mobile full screen
+- On mobile full-screen
 
 ---
 
