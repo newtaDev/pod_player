@@ -53,7 +53,8 @@ class VideoApis {
             quality: int.parse(
               (item['quality'] as String?)?.split('p').first ?? '0',
             ),
-            url: '$firstUrlPiece/sep/video/$urlId/$lastUrlPiece',
+            // url: '$firstUrlPiece/sep/video/$urlId/$lastUrlPiece',
+            url: cdnVideoUrl, 
           ),
         );
       }
