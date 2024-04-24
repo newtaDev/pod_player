@@ -160,6 +160,11 @@ class PodPlayerController {
     _ctr.isMute ? await _ctr.unMute() : await _ctr.mute();
   }
 
+  /// set the volume of the video
+  Future<void> setVolume(double newVolumeValue) async {
+    await _ctr.setVolume(newVolumeValue);
+  }
+
   ///Dispose pod video player controller
   void dispose() {
     _isCtrInitialised = false;
