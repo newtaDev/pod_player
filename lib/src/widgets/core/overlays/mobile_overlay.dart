@@ -94,6 +94,7 @@ class _MobileOverlay extends StatelessWidget {
       'he', // Hebrew
       'ps', // Pashto
       'ur', // Urdu
+      'ku', // Kurdish
     ];
     for (int i = 0; i < langs.length; i++) {
       final lang = langs[i];
