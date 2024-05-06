@@ -1,3 +1,9 @@
+## 0.2.2
+- fixed broken vimeo api requests
+- upgraded minimum sdk version from ">=2.17.0 <4.0.0" to ">=3.0.0 <4.0.0"
+- upgraded all the dependencies to latest version
+- fix typos in README.md
+
 ## 0.2.1
 - upgraded all dependencies 
 - upgraded `http` lib to `^1.1.0`
