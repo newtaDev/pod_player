@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_breaks
+
 part of 'package:pod_player/src/pod_player.dart';
 
 class _WebSettingsDropdown extends StatefulWidget {
@@ -25,9 +27,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
             toolTipMesg: podCtr.podPlayerLabels.settings,
             color: Colors.white,
             child: const Icon(Icons.settings),
-            onPressed: () => podCtr.isFullScreen
-                ? podCtr.isWebPopupOverlayOpen = true
-                : podCtr.isWebPopupOverlayOpen = false,
+            onPressed: () => podCtr.isFullScreen ? podCtr.isWebPopupOverlayOpen = true : podCtr.isWebPopupOverlayOpen = false,
             onTapDown: (details) async {
               final settingsMenu = await showMenu<String>(
                 context: context,
@@ -46,9 +46,7 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
                     child: _bottomSheetTiles(
                       title: podCtr.podPlayerLabels.loopVideo,
                       icon: Icons.loop_rounded,
-                      subText: podCtr.isLooping
-                          ? podCtr.podPlayerLabels.optionEnabled
-                          : podCtr.podPlayerLabels.optionDisabled,
+                      subText: podCtr.isLooping ? podCtr.podPlayerLabels.optionEnabled : podCtr.podPlayerLabels.optionDisabled,
                     ),
                   ),
                   PopupMenuItem(

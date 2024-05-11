@@ -11,8 +11,7 @@ class FullScreenView extends StatefulWidget {
   State<FullScreenView> createState() => _FullScreenViewState();
 }
 
-class _FullScreenViewState extends State<FullScreenView>
-    with TickerProviderStateMixin {
+class _FullScreenViewState extends State<FullScreenView> with TickerProviderStateMixin {
   late PodGetXVideoController _podCtr;
   @override
   void initState() {
@@ -39,8 +38,9 @@ class _FullScreenViewState extends State<FullScreenView>
           strokeWidth: 2,
         );
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (v) async {
         if (kIsWeb) {
           await _podCtr.disableFullScreen(
             context,
@@ -49,7 +49,7 @@ class _FullScreenViewState extends State<FullScreenView>
           );
         }
         if (!kIsWeb) await _podCtr.disableFullScreen(context, widget.tag);
-        return true;
+        Navigator.pop(context);
       },
       child: Scaffold(
         backgroundColor: Colors.black,
@@ -68,8 +68,7 @@ class _FullScreenViewState extends State<FullScreenView>
                           ? _PodCoreVideoPlayer(
                               tag: widget.tag,
                               videoPlayerCtr: podCtr.videoCtr!,
-                              videoAspectRatio:
-                                  podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                              videoAspectRatio: podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
                             )
                           : loadingWidget,
                 ),
