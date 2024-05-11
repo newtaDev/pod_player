@@ -49,8 +49,7 @@ class DoubleTapRippleEffect extends StatefulWidget {
   State<DoubleTapRippleEffect> createState() => _DoubleTapRippleEffectState();
 }
 
-class _DoubleTapRippleEffectState extends State<DoubleTapRippleEffect>
-    with SingleTickerProviderStateMixin {
+class _DoubleTapRippleEffectState extends State<DoubleTapRippleEffect> with SingleTickerProviderStateMixin {
   // by default offset will be 0,0
   // it will be set when user tap on widget
   Offset _tapOffset = Offset.zero;
@@ -199,7 +198,7 @@ class _DoubleTapRippleEffectState extends State<DoubleTapRippleEffect>
                   fillColor: widget.rippleColor,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -222,9 +221,7 @@ class RipplePainer extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // throw an [rippleColor == null error] if ripple color is null
     final paint = Paint()
-      ..color = fillColor == null
-          ? throw Exception('rippleColor of TouchRippleEffect == null')
-          : fillColor!
+      ..color = fillColor == null ? throw Exception('rippleColor of TouchRippleEffect == null') : fillColor!
       ..isAntiAlias = true;
 
     // drawing canvas based on user click offset,radius and paint
