@@ -26,8 +26,7 @@ class DoubleTapIcon extends StatefulWidget {
   State<DoubleTapIcon> createState() => _DoubleTapIconState();
 }
 
-class _DoubleTapIconState extends State<DoubleTapIcon>
-    with SingleTickerProviderStateMixin {
+class _DoubleTapIconState extends State<DoubleTapIcon> with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Animation<double> opacityCtr;
 
@@ -81,10 +80,8 @@ class _DoubleTapIconState extends State<DoubleTapIcon>
       onDoubleTap: _onDoubleTap,
       rippleColor: Colors.white,
       wrapper: (parentWidget, curveRadius) {
-        final forwardRadius =
-            !widget.isForward ? Radius.zero : Radius.circular(curveRadius);
-        final backwardRadius =
-            widget.isForward ? Radius.zero : Radius.circular(curveRadius);
+        final forwardRadius = !widget.isForward ? Radius.zero : Radius.circular(curveRadius);
+        final backwardRadius = widget.isForward ? Radius.zero : Radius.circular(curveRadius);
         return ClipRRect(
           borderRadius: BorderRadius.only(
             bottomLeft: forwardRadius,
@@ -106,10 +103,11 @@ class _DoubleTapIconState extends State<DoubleTapIcon>
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
-          const icon = Icon(
+          final icon = Icon(
             Icons.play_arrow_sharp,
             size: 32,
-            color: Colors.white,
+            // color: Colors.white,
+            color: Theme.of(context).iconTheme.color,
           );
           return Center(
             child: Column(

@@ -97,8 +97,7 @@ class PodVideoPlayer extends StatefulWidget {
   State<PodVideoPlayer> createState() => _PodVideoPlayerState();
 }
 
-class _PodVideoPlayerState extends State<PodVideoPlayer>
-    with TickerProviderStateMixin {
+class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStateMixin {
   late PodGetXVideoController _podCtr;
 
   // late String tag;
@@ -212,9 +211,9 @@ class _PodVideoPlayerState extends State<PodVideoPlayer>
 
   Widget _buildLoading() {
     return widget.onLoading?.call(context) ??
-        const CircularProgressIndicator(
+        CircularProgressIndicator(
           backgroundColor: Colors.black87,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.primary,
           strokeWidth: 2,
         );
   }

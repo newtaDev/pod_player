@@ -15,17 +15,18 @@ dependencies:
   pod_player:
     path: ../
 
-  cupertino_icons: ^1.0.5
-  visibility_detector: ^0.3.3
+  cupertino_icons:
+  visibility_detector:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.1
+  flutter_lints:
 
 flutter:
   uses-material-design: true
-  
+
   assets:
     - assets/
+
