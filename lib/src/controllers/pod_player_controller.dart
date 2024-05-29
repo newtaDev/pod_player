@@ -268,4 +268,10 @@ class PodPlayerController {
 
   /// Show overlay of video
   void showOverlay() => _ctr.isShowOverlay(true);
+
+  /// Hide watermark of video
+  void hideWatermark() => _ctr.isShowWatermark(false);
+
+  /// Show watermark of video
+  void showWatermark() => _ctr.isShowWatermark(true);
 }

@@ -110,6 +110,9 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 matchFrameAspectRatioToVideo: true,
                 matchVideoAspectRatioToFrame: true,
                 videoTitle: videoTitle,
+                videoWatermark: const Center(
+                  child: FlutterLogo(size: 150),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -165,6 +168,17 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                         onPressed: () {
                       controller.hideOverlay();
                     }),
+                    sizeH20,
+                    _iconButton('Show Watermark', Icons.verified_rounded,
+                        onPressed: () {
+                      controller.showWatermark();
+                    }),
+                    sizeH20,
+                    _iconButton('Hide Watermark', Icons.verified_outlined,
+                        onPressed: () {
+                      controller.hideWatermark();
+                    }),
+                    sizeH20,
                     _iconButton('Backward video 5s', Icons.replay_5_rounded,
                         onPressed: () {
                       controller.doubleTapVideoBackward(5);

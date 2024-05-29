@@ -20,6 +20,8 @@ part 'widgets/core/overlays/mobile_overlay.dart';
 
 part 'widgets/core/overlays/overlays.dart';
 
+part 'widgets/core/video_watermark.dart';
+
 part 'widgets/core/overlays/web_dropdown_menu.dart';
 
 part 'widgets/core/overlays/web_overlay.dart';
@@ -44,6 +46,9 @@ class PodVideoPlayer extends StatefulWidget {
   final Widget? videoTitle;
   final Color? backgroundColor;
   final DecorationImage? videoThumbnail;
+
+  /// Optional watermark widget that is shown on the top of the video.
+  final Widget? videoWatermark;
 
   /// Optional callback, fired when full screen mode toggles.
   ///
@@ -72,6 +77,7 @@ class PodVideoPlayer extends StatefulWidget {
     this.videoThumbnail,
     this.onToggleFullScreen,
     this.onLoading,
+    this.videoWatermark,
   }) {
     addToUiController();
   }
@@ -90,7 +96,8 @@ class PodVideoPlayer extends StatefulWidget {
       ..videoTitle = videoTitle
       ..onToggleFullScreen = onToggleFullScreen
       ..onLoading = onLoading
-      ..videoThumbnail = videoThumbnail;
+      ..videoThumbnail = videoThumbnail
+      ..videoWatermark = videoWatermark;
   }
 
   @override
