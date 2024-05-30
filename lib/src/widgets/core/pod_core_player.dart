@@ -68,6 +68,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                   },
                 ),
               ),
+              _VideoWatermark(tag: tag),
               _VideoOverlays(tag: tag),
               IgnorePointer(
                 child: GetBuilder<PodGetXVideoController>(

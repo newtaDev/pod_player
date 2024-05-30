@@ -38,6 +38,7 @@ This plugin built upon flutter's official [`video_player`](https://pub.dartlang.
 - Custom overlay
 - Custom progress bar
 - Custom labels
+- Video Watermark (With ability to show/hide the watermark from the controller)
 - `Change video quality` (for vimeo and youtube)
 - Enable/disable full-screen player
 - support for live youtube video
@@ -298,6 +299,34 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
+## Add Video Watermark
+
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: PodVideoPlayer(
+      controller: controller,
+      videoWatermark: const Center(
+        child: FlutterLogo(size: 150),
+      ),
+    ),
+  );
+}
+```
+
+You can also use the `controller` to show/hide the watermark at any time.
+
+```dart
+// show watermark
+controller.showWatermark();
+
+// hide watermark
+controller.hideWatermark();
+```
+
+**Note:** The watermark is **hidden** by default.
 
 ## How to play video from youtube
 

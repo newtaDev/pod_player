@@ -5,6 +5,7 @@ class _PodVideoController extends _PodUiController {
   Timer? showOverlayTimer1;
 
   bool isOverlayVisible = true;
+  bool isWatermarkVisible = false;
   bool isLooping = false;
   bool isFullScreen = false;
   bool isvideoPlaying = false;
@@ -109,6 +110,15 @@ class _PodVideoController extends _PodUiController {
         update(['update-all']);
       }
     });
+  }
+
+  /// Toggle watermark visibility.
+  void isShowWatermark(bool val) {
+    if (isWatermarkVisible == val) return;
+
+    isWatermarkVisible = val;
+    update(['watermark']);
+    update(['update-all']);
   }
 
   ///overlay above video contrller
