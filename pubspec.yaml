@@ -17,6 +17,7 @@ dependencies:
   wakelock_plus: ^1.2.4
   universal_html: ^2.2.4
   youtube_explode_dart: ^2.2.0
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:
