@@ -80,17 +80,29 @@ class PodVideoPlayer extends StatefulWidget {
   static bool enableGetxLogs = false;
 
   void addToUiController() {
-    Get.find<PodGetXVideoController>(tag: controller.getTag)
+    try {
+      Get.find<PodGetXVideoController>(tag: controller.getTag)
 
-      ///add to ui controller
-      ..podPlayerLabels = podPlayerLabels
-      ..alwaysShowProgressBar = alwaysShowProgressBar
-      ..podProgressBarConfig = podProgressBarConfig
-      ..overlayBuilder = overlayBuilder
-      ..videoTitle = videoTitle
-      ..onToggleFullScreen = onToggleFullScreen
-      ..onLoading = onLoading
-      ..videoThumbnail = videoThumbnail;
+        ///add to ui controller
+        ..podPlayerLabels = podPlayerLabels
+        ..alwaysShowProgressBar = alwaysShowProgressBar
+        ..podProgressBarConfig = podProgressBarConfig
+        ..overlayBuilder = overlayBuilder
+        ..videoTitle = videoTitle
+        ..onToggleFullScreen = onToggleFullScreen
+        ..onLoading = onLoading
+        ..videoThumbnail = videoThumbnail;
+    } catch (e) {
+      Get.put(PodGetXVideoController())
+        ..podPlayerLabels = podPlayerLabels
+        ..alwaysShowProgressBar = alwaysShowProgressBar
+        ..podProgressBarConfig = podProgressBarConfig
+        ..overlayBuilder = overlayBuilder
+        ..videoTitle = videoTitle
+        ..onToggleFullScreen = onToggleFullScreen
+        ..onLoading = onLoading
+        ..videoThumbnail = videoThumbnail;
+    }
   }
 
   @override

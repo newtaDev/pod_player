@@ -119,9 +119,7 @@ class VideoQualitySelectorMob extends StatelessWidget {
   final void Function()? onTap;
   final String tag;
 
-  const VideoQualitySelectorMob({
-    required this.onTap,
-    required this.tag,
+  const VideoQualitySelectorMob({required this.onTap, required this.tag, super.key,
   });
 
   @override
@@ -151,9 +149,7 @@ class VideoPlaybackSelectorMob extends StatelessWidget {
   final void Function()? onTap;
   final String tag;
 
-  const VideoPlaybackSelectorMob({
-    required this.onTap,
-    required this.tag,
+  const VideoPlaybackSelectorMob({required this.onTap, required this.tag, super.key,
   });
 
   @override
