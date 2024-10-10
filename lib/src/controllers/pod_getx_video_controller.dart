@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_breaks
+
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
@@ -69,8 +71,7 @@ class PodGetXVideoController extends _PodGesturesController {
 
       update(['update-all']);
       // ignore: unawaited_futures
-      Future<void>.delayed(const Duration(milliseconds: 600))
-          .then((_) => _isWebAutoPlayDone = true);
+      Future<void>.delayed(const Duration(milliseconds: 600)).then((_) => _isWebAutoPlayDone = true);
     } catch (e) {
       podVideoStateChanger(PodVideoState.error);
       update(['errorState']);
@@ -202,32 +203,31 @@ class PodGetXVideoController extends _PodGesturesController {
 
   ///Listning on keyboard events
   void onKeyBoardEvents({
-    required RawKeyEvent event,
+    required KeyEvent event,
     required BuildContext appContext,
     required String tag,
   }) {
     if (kIsWeb) {
-      if (event.isKeyPressed(LogicalKeyboardKey.space)) {
+      if (event.logicalKey == LogicalKeyboardKey.space) {
         togglePlayPauseVideo();
         return;
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.keyM)) {
+      if (event.logicalKey == LogicalKeyboardKey.keyM) {
         toggleMute();
         return;
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+      if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
         onLeftDoubleTap();
         return;
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.arrowRight)) {
+      if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
         onRightDoubleTap();
         return;
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.keyF) &&
-          event.logicalKey.keyLabel == 'F') {
+      if (event.logicalKey == LogicalKeyboardKey.keyF && event.logicalKey.keyLabel == 'F') {
         toggleFullScreenOnWeb(appContext, tag);
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+      if (event.logicalKey == LogicalKeyboardKey.escape) {
         if (isFullScreen) {
           uni_html.document.exitFullscreen();
           if (!isWebPopupOverlayOpen) {
