@@ -362,7 +362,7 @@ class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
   @override
   void initState() {
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.vimeo('518228118'),
+      playVideoFrom: PlayVideoFrom.vimeo('1022609948'),
     )..initialise();
     super.initState();
   }
@@ -404,7 +404,7 @@ class _PlayVideoFromVimeoState extends State<PlayVideoFromVimeo> {
   @override
   void initState() {
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.vimeo('518228118', hash: '7cc595e1f8'),
+      playVideoFrom: PlayVideoFrom.vimeo('1022609948', hash: '7cc595e1f8'),
     )..initialise();
     super.initState();
   }

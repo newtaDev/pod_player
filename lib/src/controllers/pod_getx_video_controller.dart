@@ -42,6 +42,7 @@ class PodGetXVideoController extends _PodGesturesController {
   void config({
     required PlayVideoFrom playVideoFrom,
     required PodPlayerConfig playerConfig,
+    String? token,
   }) {
     this.playVideoFrom = playVideoFrom;
     _videoPlayerType = playVideoFrom.playerType;
@@ -135,6 +136,7 @@ class PodGetXVideoController extends _PodGesturesController {
       case PodVideoPlayerType.vimeo:
         await getQualityUrlsFromVimeoId(
           playVideoFrom.dataSource!,
+          playVideoFrom.token ?? '',
           hash: playVideoFrom.hash,
         );
         final url = await getUrlFromVideoQualityUrls(

@@ -12,48 +12,38 @@ String podErrorString(String val) {
 }
 
 class VideoApis {
-  static Future<Response> _makeRequestHash(String videoId, String? hash) {
-    if (hash == null) {
-      return http.get(
-        Uri.parse('https://player.vimeo.com/video/$videoId/config'),
-      );
-    } else {
-      return http.get(
-        Uri.parse('https://player.vimeo.com/video/$videoId/config?h=$hash'),
-      );
-    }
+  static Future<Response> _makeRequestHash(
+    String videoId,
+    String token,
+    String? hash,
+  ) {
+    return http.get(
+      Uri.parse('https://api.vimeo.com/videos/$videoId?fields=play'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/vnd.vimeo.*+json;version=3.4',
+        // 'Content-Type': 'application/json',
+      },
+    );
   }
 
   static Future<List<VideoQalityUrls>?> getVimeoVideoQualityUrls(
     String videoId,
+    String token,
     String? hash,
   ) async {
     try {
-      final response = await _makeRequestHash(videoId, hash);
-      final jsonData = jsonDecode(response.body)['request']['files'];
-      final dashData = jsonData['dash'];
-      final hlsData = jsonData['hls'];
-      final defaultCDN = hlsData['default_cdn'];
-      final cdnVideoUrl = (hlsData['cdns'][defaultCDN]['url'] as String?) ?? '';
+      final response = await _makeRequestHash(videoId, token, hash);
+      final jsonData = jsonDecode(response.body)['play'];
       final List<dynamic> rawStreamUrls =
-          (dashData['streams'] as List<dynamic>?) ?? <dynamic>[];
-
+          (jsonData['progressive'] as List<dynamic>?) ?? <dynamic>[];
       final List<VideoQalityUrls> vimeoQualityUrls = [];
 
       for (final item in rawStreamUrls) {
-        final sepList = cdnVideoUrl.split('/sep/video/');
-        final firstUrlPiece = sepList.firstOrNull ?? '';
-        final lastUrlPiece =
-            ((sepList.lastOrNull ?? '').split('/').lastOrNull) ??
-                (sepList.lastOrNull ?? '');
-        final String urlId =
-            ((item['id'] ?? '') as String).split('-').firstOrNull ?? '';
         vimeoQualityUrls.add(
           VideoQalityUrls(
-            quality: int.parse(
-              (item['quality'] as String?)?.split('p').first ?? '0',
-            ),
-            url: '$firstUrlPiece/sep/video/$urlId/$lastUrlPiece',
+            quality: (item['height'] as int?) ?? 0,
+            url: item['link'] as String,
           ),
         );
       }
@@ -61,11 +51,10 @@ class VideoApis {
         vimeoQualityUrls.add(
           VideoQalityUrls(
             quality: 720,
-            url: cdnVideoUrl,
+            url: '',
           ),
         );
       }
-
       return vimeoQualityUrls;
     } catch (error) {
       if (error.toString().contains('XMLHttpRequest')) {

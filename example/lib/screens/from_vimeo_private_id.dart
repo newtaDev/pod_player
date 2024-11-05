@@ -18,7 +18,7 @@ class _PlayVideoFromVimeoPrivateIdState
   @override
   void initState() {
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.vimeo('518228118'),
+      playVideoFrom: PlayVideoFrom.vimeo('1022609948', '{token}'),
     )..initialise();
     super.initState();
   }
@@ -58,7 +58,7 @@ class _PlayVideoFromVimeoPrivateIdState
             decoration: const InputDecoration(
               labelText: 'Enter vimeo private id',
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              hintText: 'ex: 518228118',
+              hintText: 'ex: 1022609948',
               border: OutlineInputBorder(),
             ),
           ),
@@ -98,6 +98,7 @@ class _PlayVideoFromVimeoPrivateIdState
                 await controller.changeVideo(
                   playVideoFrom: PlayVideoFrom.vimeoPrivateVideos(
                     videoTextFieldCtr.text,
+                    '{token}',
                     httpHeaders: headers,
                   ),
                 );

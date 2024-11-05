@@ -19,7 +19,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
         'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
   );
   final vimeoTextFieldCtr = TextEditingController(
-    text: '518228118',
+    text: '1022609948',
   );
   final youtubeTextFieldCtr = TextEditingController(
     text: 'https://youtu.be/A3ltMaM6noM',
@@ -39,7 +39,7 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
       // 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
       // 'https://user-images.githubusercontent.com/85326522/140480457-ab21345a-76e2-4b0e-b4ec-027c89f0e712.mp4',
       // 'http://techslides.com/demos/sample-videos/small.mp4',
-      // fromVimeoVideoId: '518228118',
+      // fromVimeoVideoId: '1022609948',
     )..initialise().then((value) {
         setState(() {
           isVideoPlaying = controller.isVideoPlaying;
@@ -255,7 +255,8 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
               snackBar('Loading....');
               FocusScope.of(context).unfocus();
               await controller.changeVideo(
-                playVideoFrom: PlayVideoFrom.vimeo(vimeoTextFieldCtr.text),
+                playVideoFrom:
+                    PlayVideoFrom.vimeo(vimeoTextFieldCtr.text, '{token}'),
               );
               controller.addListener(_listner);
               controller.onVideoQualityChanged(

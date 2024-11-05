@@ -16,7 +16,10 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   @override
   void initState() {
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.vimeo('518228118'),
+      playVideoFrom: PlayVideoFrom.vimeo(
+        '1022609948',
+        '{token}',
+      ),
     )..initialise();
     super.initState();
   }
@@ -56,7 +59,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
             decoration: const InputDecoration(
               labelText: 'Enter vimeo id',
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              hintText: 'ex: 518228118',
+              hintText: 'ex: 1022609948',
               border: OutlineInputBorder(),
             ),
           ),
@@ -89,6 +92,7 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
                 await controller.changeVideo(
                   playVideoFrom: PlayVideoFrom.vimeo(
                     videoTextFieldCtr.text,
+                    controller.playVideoFrom.token ?? '',
                     hash: vimeoHash.isNotEmpty ? vimeoHash : null,
                   ),
                 );

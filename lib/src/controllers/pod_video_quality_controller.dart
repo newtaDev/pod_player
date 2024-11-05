@@ -15,13 +15,15 @@ class _PodVideoQualityController extends _PodVideoController {
   ///
   ///get all  `quality urls`
   Future<void> getQualityUrlsFromVimeoId(
-    String videoId, {
+    String videoId,
+    String token, {
     String? hash,
   }) async {
     try {
       podVideoStateChanger(PodVideoState.loading);
       final vimeoVideoUrls = await VideoApis.getVimeoVideoQualityUrls(
         videoId,
+        token,
         hash,
       );
 

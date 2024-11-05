@@ -257,10 +257,11 @@ class PodPlayerController {
   }
 
   static Future<List<VideoQalityUrls>?> getVimeoUrls(
-    String videoId, {
+    String videoId,
+    String token, {
     String? hash,
   }) {
-    return VideoApis.getVimeoVideoQualityUrls(videoId, hash);
+    return VideoApis.getVimeoVideoQualityUrls(videoId, token, hash);
   }
 
   /// Hide overlay of video
