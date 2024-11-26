@@ -199,7 +199,7 @@ class _DoubleTapRippleEffectState extends State<DoubleTapRippleEffect>
                   fillColor: widget.rippleColor,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

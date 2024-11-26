@@ -7,7 +7,6 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../pod_player.dart';
 import '../utils/logger.dart';
-import '../utils/video_apis.dart';
 import 'pod_getx_video_controller.dart';
 
 class PodPlayerController {

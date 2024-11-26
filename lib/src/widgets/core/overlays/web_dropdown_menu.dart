@@ -68,14 +68,11 @@ class _WebSettingsDropdownState extends State<_WebSettingsDropdown> {
               switch (settingsMenu) {
                 case 'OUALITY':
                   await _onVimeoQualitySelect(details, podCtr);
-                  break;
                 case 'SPEED':
                   await _onPlaybackSpeedSelect(details, podCtr);
-                  break;
                 case 'LOOP':
                   podCtr.isWebPopupOverlayOpen = false;
                   await podCtr.toggleLooping();
-                  break;
                 default:
                   podCtr.isWebPopupOverlayOpen = false;
               }

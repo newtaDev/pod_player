@@ -4,7 +4,6 @@ analyzer:
     missing_required_param: error
     prefer_const_declarations: warning
     prefer_const_constructors: warning
-    import_of_legacy_library_into_null_safe: warning
     public_member_api_docs: ignore
   language:
     strict-casts: true

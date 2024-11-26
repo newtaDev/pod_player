@@ -16,12 +16,12 @@ class _PodCoreVideoPlayer extends StatelessWidget {
     final podCtr = Get.find<PodGetXVideoController>(tag: tag);
     return Builder(
       builder: (ctrx) {
-        return RawKeyboardListener(
+        return KeyboardListener(
           autofocus: true,
           focusNode:
               (podCtr.isFullScreen ? FocusNode() : podCtr.keyboardFocusWeb) ??
                   FocusNode(),
-          onKey: (value) => podCtr.onKeyBoardEvents(
+          onKeyEvent: (value) => podCtr.onKeyBoardEvents(
             event: value,
             appContext: ctrx,
             tag: tag,

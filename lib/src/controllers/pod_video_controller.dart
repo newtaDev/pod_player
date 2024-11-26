@@ -206,7 +206,7 @@ class _PodVideoController extends _PodUiController {
               SystemUiMode.manual,
               overlays: SystemUiOverlay.values,
             ),
-          ]
+          ],
         ]);
       }
 
