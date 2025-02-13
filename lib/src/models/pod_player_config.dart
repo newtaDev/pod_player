@@ -3,6 +3,7 @@ class PodPlayerConfig {
   final bool isLooping;
   final bool forcedVideoFocus;
   final bool wakelockEnabled;
+  final bool enableOverlay;
 
   /// Initial video quality priority. The first available option will be used,
   /// from start to the end of this list. If all options informed are not
@@ -16,6 +17,7 @@ class PodPlayerConfig {
     this.isLooping = false,
     this.forcedVideoFocus = false,
     this.wakelockEnabled = true,
+    this.enableOverlay = true,
     this.videoQualityPriority = const [1080, 720, 360],
   });
 
@@ -24,6 +26,7 @@ class PodPlayerConfig {
     bool? isLooping,
     bool? forcedVideoFocus,
     bool? wakelockEnabled,
+    bool? enableOverlay,
     List<int>? videoQualityPriority,
   }) {
     return PodPlayerConfig(
@@ -32,6 +35,7 @@ class PodPlayerConfig {
       forcedVideoFocus: forcedVideoFocus ?? this.forcedVideoFocus,
       wakelockEnabled: wakelockEnabled ?? this.wakelockEnabled,
       videoQualityPriority: videoQualityPriority ?? this.videoQualityPriority,
+      enableOverlay: enableOverlay ?? this.enableOverlay,
     );
   }
 }
