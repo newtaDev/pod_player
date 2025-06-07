@@ -140,14 +140,16 @@ class VideoApis {
       } else {
         final manifest =
             await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
+        final bestQuality = manifest.muxed.bestQuality;
         urls.addAll(
-          manifest.muxed.map(
+          [bestQuality].map(
             (element) => VideoQalityUrls(
               quality: int.parse(element.qualityLabel.split('p')[0]),
               url: element.url.toString(),
             ),
           ),
         );
+        print('urls: $urls');
       }
       // Close the YoutubeExplode's http client.
       yt.close();

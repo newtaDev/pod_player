@@ -81,13 +81,15 @@ class _PodBaseController extends GetxController {
 
   ///updates state with id `_podVideoState`
   void podVideoStateChanger(PodVideoState? val, {bool updateUi = true}) {
-    if (_podVideoState != (val ?? _podVideoState)) {
-      _podVideoState = val ?? _podVideoState;
-      if (updateUi) {
-        update(['podVideoState']);
-        update(['update-all']);
-      }
+    // 判断前值, 会导致 player 隐藏后无法再控制播放和暂停
+    // if (_podVideoState != (val ?? _podVideoState)) {
+    _podVideoState = val ?? _podVideoState;
+    if (updateUi) {
+      // print("podVideoStateChanger val=$val _podVideoState=$_podVideoState");
+      update(['podVideoState']);
+      update(['update-all']);
     }
+    // }
   }
 
   void _listneToVideoPosition() {
@@ -96,8 +98,7 @@ class _PodBaseController extends GetxController {
       update(['video-progress']);
       update(['update-all']);
     } else {
-      if (_videoPosition.inSeconds !=
-          (_videoCtr?.value.position ?? Duration.zero).inSeconds) {
+      if (_videoPosition.inSeconds != (_videoCtr?.value.position ?? Duration.zero).inSeconds) {
         _videoPosition = _videoCtr?.value.position ?? Duration.zero;
         update(['video-progress']);
         update(['update-all']);

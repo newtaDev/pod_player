@@ -35,7 +35,7 @@ class MaterialIconButton extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(radius),
             child: IconTheme(
-              data: IconThemeData(color: color, size: 24),
+              data: Theme.of(context).iconTheme,
               child: child,
             ),
           ),

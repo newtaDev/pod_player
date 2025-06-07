@@ -18,9 +18,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
       builder: (ctrx) {
         return RawKeyboardListener(
           autofocus: true,
-          focusNode:
-              (podCtr.isFullScreen ? FocusNode() : podCtr.keyboardFocusWeb) ??
-                  FocusNode(),
+          focusNode: (podCtr.isFullScreen ? FocusNode() : podCtr.keyboardFocusWeb) ?? FocusNode(),
           onKey: (value) => podCtr.onKeyBoardEvents(
             event: value,
             appContext: ctrx,
@@ -46,8 +44,7 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                       return const SizedBox();
                     }
 
-                    if (podCtr.podVideoState == PodVideoState.paused &&
-                        podCtr.videoPosition == Duration.zero) {
+                    if (podCtr.podVideoState == PodVideoState.paused && podCtr.videoPosition == Duration.zero) {
                       return SizedBox.expand(
                         child: TweenAnimationBuilder<double>(
                           builder: (context, value, child) => Opacity(
@@ -88,11 +85,12 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                         case PodVideoState.loading:
                           return loadingWidget;
                         case PodVideoState.paused:
-                          return const Center(
+                          return Center(
                             child: Icon(
                               Icons.play_arrow,
                               size: 45,
-                              color: Colors.white,
+                              color: Theme.of(context).iconTheme.color,
+                              // color: Colors.white,
                             ),
                           );
                         case PodVideoState.playing:
@@ -104,10 +102,11 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                               ),
                               tween: Tween<double>(begin: 1, end: 0),
                               duration: const Duration(seconds: 1),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.pause,
                                 size: 45,
-                                color: Colors.white,
+                                color: Theme.of(context).iconTheme.color,
+                                // color: Colors.white,
                               ),
                             ),
                           );
@@ -132,16 +131,14 @@ class _PodCoreVideoPlayer extends StatelessWidget {
                       : GetBuilder<PodGetXVideoController>(
                           tag: tag,
                           id: 'overlay',
-                          builder: (podCtr) => podCtr.isOverlayVisible ||
-                                  !podCtr.alwaysShowProgressBar
+                          builder: (podCtr) => podCtr.isOverlayVisible || !podCtr.alwaysShowProgressBar
                               ? const SizedBox()
                               : Align(
                                   alignment: Alignment.bottomCenter,
                                   child: PodProgressBar(
                                     tag: tag,
                                     alignment: Alignment.bottomCenter,
-                                    podProgressBarConfig:
-                                        podCtr.podProgressBarConfig,
+                                    podProgressBarConfig: podCtr.podProgressBarConfig,
                                   ),
                                 ),
                         ),

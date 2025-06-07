@@ -93,7 +93,6 @@ class PodGetXVideoController extends _PodGesturesController {
           httpHeaders: playVideoFrom.httpHeaders,
         );
         playingVideoUrl = playVideoFrom.dataSource;
-        break;
       case PodVideoPlayerType.networkQualityUrls:
         final url = await getUrlFromVideoQualityUrls(
           qualityList: podPlayerConfig.videoQualityPriority,
@@ -110,7 +109,6 @@ class PodGetXVideoController extends _PodGesturesController {
         );
         playingVideoUrl = url;
 
-        break;
       case PodVideoPlayerType.youtube:
         final urls = await getVideoQualityUrlsFromYoutube(
           playVideoFrom.dataSource!,
@@ -131,7 +129,6 @@ class PodGetXVideoController extends _PodGesturesController {
         );
         playingVideoUrl = url;
 
-        break;
       case PodVideoPlayerType.vimeo:
         await getQualityUrlsFromVimeoId(
           playVideoFrom.dataSource!,
@@ -151,7 +148,6 @@ class PodGetXVideoController extends _PodGesturesController {
         );
         playingVideoUrl = url;
 
-        break;
       case PodVideoPlayerType.asset:
 
         ///
@@ -163,7 +159,6 @@ class PodGetXVideoController extends _PodGesturesController {
         );
         playingVideoUrl = playVideoFrom.dataSource;
 
-        break;
       case PodVideoPlayerType.file:
         if (kIsWeb) {
           throw Exception('file doesnt support web');
@@ -176,7 +171,6 @@ class PodGetXVideoController extends _PodGesturesController {
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
         );
 
-        break;
       case PodVideoPlayerType.vimeoPrivateVideos:
         await getQualityUrlsFromVimeoPrivateId(
           playVideoFrom.dataSource!,
@@ -277,7 +271,9 @@ class PodGetXVideoController extends _PodGesturesController {
   ///checkes wether video should be `autoplayed` initially
   void checkAutoPlayVideo() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (autoPlay && (isVideoUiBinded ?? false)) {
+      // 一些奇怪的图片资源加载异常, 都会导致 isVideoUiBinded 不成功, 这里不再检查, 直接自动播放
+      // if (autoPlay && (isVideoUiBinded ?? false)) {
+      if (autoPlay) {
         if (kIsWeb) await _videoCtr?.setVolume(0);
         podVideoStateChanger(PodVideoState.playing);
       } else {

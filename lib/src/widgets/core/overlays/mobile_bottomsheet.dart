@@ -40,9 +40,7 @@ class _MobileBottomSheet extends StatelessWidget {
           _bottomSheetTiles(
             title: podCtr.podPlayerLabels.loopVideo,
             icon: Icons.loop_rounded,
-            subText: podCtr.isLooping
-                ? podCtr.podPlayerLabels.optionEnabled
-                : podCtr.podPlayerLabels.optionDisabled,
+            subText: podCtr.isLooping ? podCtr.podPlayerLabels.optionEnabled : podCtr.podPlayerLabels.optionDisabled,
             onTap: () {
               Navigator.of(context).pop();
               podCtr.toggleLooping();
@@ -187,8 +185,8 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const durationTextStyle = TextStyle(color: Colors.white70);
-    const itemColor = Colors.white;
+    final itemColor = Theme.of(context).colorScheme.primary;
+    final durationTextStyle = TextStyle(color: itemColor);
 
     return GetBuilder<PodGetXVideoController>(
       tag: tag,
@@ -207,9 +205,9 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                     children: [
                       Text(
                         podCtr.calculateVideoDuration(podCtr.videoPosition),
-                        style: const TextStyle(color: itemColor),
+                        style: TextStyle(color: itemColor),
                       ),
-                      const Text(
+                      Text(
                         ' / ',
                         style: durationTextStyle,
                       ),
@@ -224,10 +222,8 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
               const Spacer(),
               MaterialIconButton(
                 toolTipMesg: podCtr.isFullScreen
-                    ? podCtr.podPlayerLabels.exitFullScreen ??
-                        'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                    : podCtr.podPlayerLabels.fullscreen ??
-                        'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                    ? podCtr.podPlayerLabels.exitFullScreen ?? 'Exit full screen${kIsWeb ? ' (f)' : ''}'
+                    : podCtr.podPlayerLabels.fullscreen ?? 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                 color: itemColor,
                 onPressed: () {
                   if (podCtr.isOverlayVisible) {
@@ -241,9 +237,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   }
                 },
                 child: Icon(
-                  podCtr.isFullScreen
-                      ? Icons.fullscreen_exit
-                      : Icons.fullscreen,
+                  podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
                 ),
               ),
             ],
