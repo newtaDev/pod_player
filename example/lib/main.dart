@@ -8,6 +8,7 @@ import 'package:pod_player/pod_player.dart';
 
 import 'screens/cutom_video_controllers.dart';
 import 'screens/from_vimeo_id.dart';
+import 'examples/vimeo_error_handling_demo.dart';
 
 void main() {
   PodVideoPlayer.enableLogs = true;
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/fromNetworkQualityUrls': (context) =>
             const PlayVideoFromNetworkQualityUrls(),
         '/customVideo': (context) => const CustomVideoControlls(),
+        '/vimeoErrorDemo': (context) => const VimeoErrorHandlingDemo(),
       },
       home: const MainPage(),
     );
@@ -81,6 +83,10 @@ class _MainPageState extends State<MainPage> {
             _button(
               'Custom Video player',
               onPressed: () => Navigator.of(context).pushNamed('/customVideo'),
+            ),
+            _button(
+              'Vimeo Error Handling Demo',
+              onPressed: () => Navigator.of(context).pushNamed('/vimeoErrorDemo'),
             ),
           ],
         ),

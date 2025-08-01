@@ -1,5 +1,6 @@
 import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
+import '../utils/video_api_handler.dart';
 
 class PlayVideoFromVimeoId extends StatefulWidget {
   const PlayVideoFromVimeoId({Key? key}) : super(key: key);
@@ -12,13 +13,29 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   late final PodPlayerController controller;
   final videoTextFieldCtr = TextEditingController();
   final hashTextFieldCtr = TextEditingController();
+  bool hasInitError = false;
+  String? initErrorMessage;
 
   @override
   void initState() {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.vimeo('518228118'),
-    )..initialise();
+    );
+    _initializeController();
     super.initState();
+  }
+  
+  Future<void> _initializeController() async {
+    try {
+      await controller.initialise();
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          hasInitError = true;
+          initErrorMessage = VideoApiHandler.getDetailedErrorMessage(e);
+        });
+      }
+    }
   }
 
   @override
@@ -36,12 +53,47 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              PodVideoPlayer(controller: controller),
+              if (hasInitError)
+                _buildErrorWidget()
+              else
+                PodVideoPlayer(controller: controller),
               const SizedBox(height: 40),
               _loadVideoFromUrl()
             ],
           ),
         ),
+      ),
+    );
+  }
+  
+  Widget _buildErrorWidget() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.error_outline,
+            color: Colors.red,
+            size: 48,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Failed to load initial video',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            initErrorMessage ?? 'Unknown error',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Try loading a different video below',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
       ),
     );
   }
@@ -86,6 +138,13 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
                 snackBar('Loading....');
                 FocusScope.of(context).unfocus();
                 final vimeoHash = hashTextFieldCtr.text;
+                
+                // Reset error state when trying new video
+                setState(() {
+                  hasInitError = false;
+                  initErrorMessage = null;
+                });
+                
                 await controller.changeVideo(
                   playVideoFrom: PlayVideoFrom.vimeo(
                     videoTextFieldCtr.text,
@@ -95,7 +154,14 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
                 if (!mounted) return;
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
               } catch (e) {
-                snackBar('Unable to load,\n $e');
+                final errorMessage = VideoApiHandler.getDetailedErrorMessage(e);
+                snackBar('Unable to load:\n$errorMessage');
+                
+                // Update error state for UI
+                setState(() {
+                  hasInitError = true;
+                  initErrorMessage = errorMessage;
+                });
               }
             },
             child: const Text('Load Video'),
